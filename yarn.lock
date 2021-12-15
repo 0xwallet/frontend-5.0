@@ -907,6 +907,11 @@ esbuild@^0.13.12:
     esbuild-windows-64 "0.13.15"
     esbuild-windows-arm64 "0.13.15"
 
+eslint-config-vue-global-api@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-vue-global-api/-/eslint-config-vue-global-api-0.4.1.tgz#f735b8b61bd94948131604c0f3e4aaba582493a5"
+  integrity sha512-mJTiKBGLe1FXmEifYzCQzUTBpFv8OtfYzP6PAOuVRf+3hkGLMeiDh4bVzZEaJfdExtc8mPw9vp35YSLhwTselQ==
+
 estree-walker@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
@@ -1772,6 +1777,14 @@ vue-demi@*, vue-demi@^0.12.1, vue-demi@latest:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
   integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
+
+vue-global-api@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/vue-global-api/-/vue-global-api-0.4.1.tgz#b26680200e84d9682986d0258b826b51acd07531"
+  integrity sha512-283vpYOhVHJCpMkjNVEwZdgaAb+Y93zFaXGAWTI378MLoNuwQydjD/BAy1e81QYEmyA+JbxqcmMZVWcM9rbriw==
+  dependencies:
+    eslint-config-vue-global-api "0.4.1"
+    vue-demi latest
 
 vue-i18n@^9.1.7:
   version "9.1.9"
