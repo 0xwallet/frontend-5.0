@@ -18,7 +18,7 @@ export default defineConfig(({ command, mode }) => ({
   },
   plugins: [
     vue(),
-    writeCDNScripts(),
+    // writeCDNScripts(),
     // Components({
     // 这个懒加载会使得 vite 的加载异常的慢
     //   resolvers: [AntDesignVueResolver(), VantResolver()],
@@ -31,9 +31,7 @@ export default defineConfig(({ command, mode }) => ({
     include: ["ant-design-vue", "vant"],
     exclude: [
       "nkn",
-      "vue",
-      "vue-router",
-      "vue-i18n",
+      "pdfjs-dist",
       "pdfjs-dist/types/src/display/api",
       "streamsaver",
       "file-saver",
@@ -44,9 +42,6 @@ export default defineConfig(({ command, mode }) => ({
     rollupOptions: {
       external: [
         "nkn",
-        "vue",
-        "vue-router",
-        "vue-i18n",
         "pdfjs-dist",
         "streamsaver",
         "file-saver",
