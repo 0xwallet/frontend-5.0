@@ -234,9 +234,9 @@
 </template>
 
 <script lang="ts">
-import { apiQueryMeSpace } from "@/apollo/api";
-import { useUserStore } from "@/store";
-import { formatBytes } from "@/utils";
+import { apiQueryMeSpace } from "../../apollo/api";
+import { useUserStore } from "../../store";
+import { formatBytes } from "../../hooks";
 import { useLocalStorage } from "@vueuse/core";
 import { remove } from "lodash-es";
 import {
@@ -249,7 +249,7 @@ import {
 } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
-import { MSvgIcon } from "../components";
+import { MSvgIcon } from "../../components/mobile";
 
 /** 当前展开的索引,0网盘,1传输,2账户,3安全,4国际化 */
 type ExpandV = 0 | 1 | 2 | 3 | 4;

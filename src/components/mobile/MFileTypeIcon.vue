@@ -18,7 +18,7 @@ import psd from "../../assets/svg/fileType/psd.svg";
 import text from "../../assets/svg/fileType/text.svg";
 import video from "../../assets/svg/fileType/video.svg";
 import xls from "../../assets/svg/fileType/xls.svg";
-import { FILE_TYPE_MAP } from "@/constants";
+import { FILE_TYPE_MAP } from "../../constants";
 
 // fileType=folder doc docx xls xlsx mp3
 function getIcon(fileType: string | undefined) {

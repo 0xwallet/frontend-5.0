@@ -1,5 +1,5 @@
 // declare module "nkn-sdk" { // 这种是 import {..} from "nkn-sdk" 的方法
-declare module "nkn" {
+declare module "nkn-sdk" {
   // 这种是 import {..} from "nkn-sdk" 的方法
   // declare namespace nkn {
   class CacheClass<K, V> {

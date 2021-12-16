@@ -23,9 +23,10 @@
 </template>
 
 <script lang="ts">
-import { QR_CODE_URL } from "@/constants";
+import { QR_CODE_URL } from "../../../../constants";
 import { defineComponent } from "vue";
-import { XQrCode } from "../../../components";
+import { XQrCode } from "../../../../components/desktop";
+
 export default defineComponent({
   emits: ["setKey"],
   components: {

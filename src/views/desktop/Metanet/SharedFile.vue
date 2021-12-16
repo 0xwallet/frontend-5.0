@@ -200,7 +200,7 @@
                         :disabled="selectedRowKeys.length === 0"
                         @click="
                           saveToMetanetModalPreAction(
-                            selectedRows.map((i) => i.userFile)
+                            selectedRows.map((i) => i.userFile) as TFileItem[]
                           )
                         "
                         class="mr-2"
@@ -273,9 +273,9 @@
                         <a
                           href="javascript:;"
                           class="mx-2"
-                          :title="$lastOfArray(record.userFile.fullName)"
+                          :title="lastOfArray(record.userFile.fullName)"
                           @click="onItemNameClick(record)"
-                        >{{ $lastOfArray(record.userFile.fullName) }}</a>
+                        >{{ lastOfArray(record.userFile.fullName) }}</a>
                         <!-- class="truncate" -->
                         <div
                           class="text-overflow-2"
@@ -435,6 +435,7 @@ import {
   apiSecondUpload,
   QueryShareFileItem,
   TFileItem,
+TFileList,
 } from "../../../apollo/api";
 import dayjs from "dayjs";
 import {
@@ -937,7 +938,7 @@ const columns = [
   },
 ];
 /** 显示该分享 */
-const onShowDescriptionModal = (e: TFileItem) => {
+const onShowDescriptionModal = () => {
   isShowDescriptionModal.value = true;
 };
 /** 评论该分享 */

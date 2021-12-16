@@ -200,7 +200,7 @@
 </template>
 
 <script lang="ts">
-import { useUserStore } from "@/store";
+import { useUserStore } from "../../store";
 import { Modal } from "ant-design-vue";
 import { computed, createVNode, defineComponent, ref } from "vue";
 import { useI18n } from "vue-i18n";

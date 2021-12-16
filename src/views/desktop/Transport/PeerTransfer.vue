@@ -364,7 +364,7 @@ import {
   calcPercent,
   browserDetect,
 } from "../../../hooks";
-import { classMultiClient, TMessageType, TSession } from "nkn";
+import { classMultiClient, TMessageType, TSession } from "nkn-sdk";
 import { getAnonymousMultiClient } from "../../../apollo/nknConfig";
 import { useTransportStore, useUserStore } from "../../../store";
 import { pick, remove } from "lodash-es";
@@ -1109,79 +1109,70 @@ const isCanAddFiles = () => {
   }
 };
 // 拖拽 --start
-function useDropUpload() {
-  /** 是否鼠标拖动文件到区域上方,是就显示边框 */
-  const isFileOverUploadZone = ref(false);
-  const onDragEnter = (event: DragEvent) => {
-    event.preventDefault();
-    isFileOverUploadZone.value = true;
-  };
-  const onDragLeave = (event: DragEvent) => {
-    event.preventDefault();
-    isFileOverUploadZone.value = false;
-  };
-  const onDragOver = (event: DragEvent) => {
-    event.preventDefault();
-  };
-  const onDrop = async (event: DragEvent) => {
-    event.preventDefault();
-    isFileOverUploadZone.value = false;
-    if (!isUserLoggedIn.value) {
-      message.warning("请先登录再使用发送功能");
-      router.push({
-        name: "Login",
-        query: {
-          redirect: route.fullPath,
-        },
-      });
-      return;
-    }
-    // 判断是否上一次完成的任务没有清除
-    if (tableData.value.length && !peerLink.value) {
-      tableData.value.length = 0;
-    }
-    isActionSend.value === true;
-    if (isCanAddFiles() === false) {
-      message.warning("已过调整文件时间,此时不能再调整文件");
-      return;
-    }
-    if (!addFilesCountDownText.value) {
-      stopAddFilesCoutDown();
-      countDownAddFiles();
-    }
-    const files = event.dataTransfer?.files;
-    if (!files) return;
-    const fileArr: PeerFileItem[] = [...files].map((i) => ({
-      file: i,
-      fileName: i.name,
-      fileSize: i.size,
-      fileHash: makePrefixMsg(i.name, i.size.toString()),
-      fileType: getFileType({ isDir: false, fileName: i.name }),
-      progress: 0,
-      speed: 0,
-      // status: "queueing" as PeerFileItem["status"],
-      status: "calculating" as PeerFileItem["status"],
-    }));
-    calcFileListDigest(fileArr);
-    // 去掉已经加入的文件
-    const noSameFileArr = fileArr.filter(
-      (i) => !tableData.value.some((e) => e.fileHash === i.fileHash)
-    );
-    // 如果是第一次的添加文件, 直接生成link 和码
-    if (tableData.value.length === 0 && peerCode.value.length === 0) {
-      onMakeSendReady();
-    }
-    // tableData.value.push(...noSameFileArr);
-    tableData.value = tableData.value.concat(noSameFileArr);
-  };
-  return {
-    isFileOverUploadZone,
-    onDragEnter,
-    onDragLeave,
-    onDragOver,
-    onDrop,
-  };
-}
+/** 是否鼠标拖动文件到区域上方,是就显示边框 */
+const isFileOverUploadZone = ref(false);
+const onDragEnter = (event: DragEvent) => {
+  event.preventDefault();
+  isFileOverUploadZone.value = true;
+};
+const onDragLeave = (event: DragEvent) => {
+  event.preventDefault();
+  isFileOverUploadZone.value = false;
+};
+const onDragOver = (event: DragEvent) => {
+  event.preventDefault();
+};
+const onDrop = async (event: DragEvent) => {
+  event.preventDefault();
+  isFileOverUploadZone.value = false;
+  if (!isUserLoggedIn.value) {
+    message.warning("请先登录再使用发送功能");
+    router.push({
+      name: "Login",
+      query: {
+        redirect: route.fullPath,
+      },
+    });
+    return;
+  }
+  // 判断是否上一次完成的任务没有清除
+  if (tableData.value.length && !peerLink.value) {
+    tableData.value.length = 0;
+  }
+  isActionSend.value === true;
+  if (isCanAddFiles() === false) {
+    message.warning("已过调整文件时间,此时不能再调整文件");
+    return;
+  }
+  if (!addFilesCountDownText.value) {
+    stopAddFilesCoutDown();
+    countDownAddFiles();
+  }
+  const files = event.dataTransfer?.files;
+  if (!files) return;
+  const fileArr: PeerFileItem[] = [...files].map((i) => ({
+    file: i,
+    fileName: i.name,
+    fileSize: i.size,
+    fileHash: makePrefixMsg(i.name, i.size.toString()),
+    fileType: getFileType({ isDir: false, fileName: i.name }),
+    progress: 0,
+    speed: 0,
+    // status: "queueing" as PeerFileItem["status"],
+    status: "calculating" as PeerFileItem["status"],
+  }));
+  calcFileListDigest(fileArr);
+  // 去掉已经加入的文件
+  const noSameFileArr = fileArr.filter(
+    (i) => !tableData.value.some((e) => e.fileHash === i.fileHash)
+  );
+  // 如果是第一次的添加文件, 直接生成link 和码
+  if (tableData.value.length === 0 && peerCode.value.length === 0) {
+    onMakeSendReady();
+  }
+  // tableData.value.push(...noSameFileArr);
+  tableData.value = tableData.value.concat(noSameFileArr);
+};
 // 拖拽 --end
 // 表格项 action --start
 const onSendRecordStart = (record: PeerFileItem) => {

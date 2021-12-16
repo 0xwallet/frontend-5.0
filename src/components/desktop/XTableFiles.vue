@@ -16,7 +16,8 @@
     :customRow="customRow"
   >
     <!-- slot="header" 是插入别人的插槽 -->
-    <template v-for="slotName in slots" :key="slotName" #[slotName]="data">
+    <!-- <template v-for="slotName in slots" :key="slotName" #[slotName]="data"> -->
+    <template v-for="slotName in slots" :key="slotName" #[slotName]>
       <slot :name="slotName" v-bind="data"></slot>
     </template>
   </a-table>
@@ -59,7 +60,7 @@ export default defineComponent({
       required: true,
     },
     columns: {
-      type: Array as PropType<TColumn[]>,
+      type: Array,
       required: true,
     },
     loading: {
@@ -99,8 +100,8 @@ export default defineComponent({
     // 不能通过props 传递个ref 然后 .value = 赋值改了的话就没有响应式了 , 需要toRef 改成响应父组件的的
     // 从 column 里面算出要slot 的
     const slots = props.columns
-      .filter((i) => i.slots)
-      .map((i) => i.slots?.customRender);
+      .filter((i:any) => i.slots)
+      .map((i:any) => i.slots?.customRender);
     const rowSelection = props.disableSelect
       ? null
       : {

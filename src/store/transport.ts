@@ -1,6 +1,6 @@
-import { apiUploadSingle, ParamsUploadSingle } from "@/apollo/api";
-import { UPLOAD_MSG } from "@/constants";
-import { useDelay, getFileType, lastOfArray } from "@/utils";
+import { apiUploadSingle, ParamsUploadSingle } from "../apollo/api";
+import { UPLOAD_MSG } from "../constants";
+import { useDelay, getFileType, lastOfArray } from "../hooks";
 import { message } from "ant-design-vue";
 import { uniqueId, unset, values } from "lodash-es";
 import pLimit from "p-limit";

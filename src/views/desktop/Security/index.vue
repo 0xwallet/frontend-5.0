@@ -57,7 +57,7 @@
           </div>
           <div class="p-6 flex items-center justify-between">
             <div class="flex-center-y">
-              <img class="w-10 h-10 mb-1" src="~@/assets/svg/nkn_circle.svg" alt />
+              <img class="w-10 h-10 mb-1" src="../../../assets/svg/nkn_circle.svg" />
               <div class="text-gray-400 font-12">未绑定</div>
             </div>
           </div>

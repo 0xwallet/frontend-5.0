@@ -42,7 +42,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import { useLocalStorage, useTitle } from "@vueuse/core";
-import { DEFAULT_LANG, PRODUCT_NAME } from "@/constants";
+import { DEFAULT_LANG, PRODUCT_NAME } from "../../constants";
 import { Locale, useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { TranslationOutlined } from "@ant-design/icons-vue";

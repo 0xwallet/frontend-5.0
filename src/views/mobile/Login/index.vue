@@ -67,14 +67,14 @@
           }"
         >
           <a href="javascript:;" class="px-2">
-            <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+            <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
           </a>
           <a href="javascript:;" class="px-2">
             <!-- <DeploymentUnitOutlined /> -->
-            <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+            <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
           </a>
           <a href="javascript:;" class="px-2">
-            <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+            <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
           </a>
         </div>
         <van-button

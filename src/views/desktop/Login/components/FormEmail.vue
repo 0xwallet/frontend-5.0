@@ -97,8 +97,8 @@ import { useForm } from "@ant-design-vue/use";
 import { notification } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useUserStore } from "@/store";
-import { apiEmailLogin } from "@/apollo/api";
+import { useUserStore } from "../../../../store";
+import { apiEmailLogin } from "../../../../apollo/api";
 
 export default defineComponent({
   emits: ["setKey"],

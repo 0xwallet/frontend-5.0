@@ -71,18 +71,18 @@ const onUpdateVisible = (v: boolean) => baseStore.changeIsShowLoginModal(v);
 // font
 // dm Mono use for hash
 // font-weight : 300 400 500
-@import url("~@fontsource/dm-mono/500.css");
+@import url("@fontsource/dm-mono/500.css");
 // font-family: "DM Mono";
 .font-dmmono {
   font-family: "DM Mono";
 }
 
-@import url("~@fontsource/lato/400.css");
+@import url("@fontsource/lato/400.css");
 .font-lato {
   font-family: "Lato";
 }
 
-@import url("~tailwindcss/tailwind.css");
+@import "tailwindcss/tailwind.css";
 // fix tailwindcss-antd conflict bug
 // tailwindcss 中用了vertical-align : middle 导致antd 库的很多图标文字不能居中
 img,
@@ -108,7 +108,7 @@ body,
   background-color: rgba(0, 0, 0, 0.25);
 }
 // ant color
-@import "~ant-design-vue/lib/style/color/colors.less";
+@import "ant-design-vue/lib/style/color/colors.less";
 
 .ant-color-blue-1 {
   // table 里的hover
@@ -177,7 +177,7 @@ body,
   top: 12px;
   right: 16px;
   // overflow: hidden;
-  background-image: url("~@/assets/svg/modal_close.svg");
+  background-image: url("../../assets/svg/modal_close.svg");
   &:hover {
     transform: rotate(90deg);
     opacity: 0.75;

@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { apiSendSignInEmailCaptcha } from "@/apollo/api";
+import { apiSendSignInEmailCaptcha } from "../../../../apollo/api";
 import { useForm } from "@ant-design-vue/use";
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useI18n } from "vue-i18n";

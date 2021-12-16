@@ -169,14 +169,6 @@
 
 <script setup lang="ts">
 import {
-  computed,
-  createVNode,
-  defineComponent,
-  onActivated,
-  ref,
-  watch,
-} from "vue";
-import {
   InfoCircleOutlined,
   CopyOutlined,
   RotateRightOutlined,
@@ -209,6 +201,7 @@ import {
   lastOfArray,
 } from "../../../hooks";
 import dayjs from "dayjs";
+import { createVNode } from "vue";
 
 type TCollectItem = {
   type: "SHARE" | "PUBLISH";
@@ -415,6 +408,9 @@ const onRecordCancel = (record: TCollectItem) => {
     },
   });
 };
+const onClickTableItemName = (record: TCollectItem) => {
+  console.log('TODO')
+}
 const isShowDetailModal = ref(false);
 const currenDetailInfo = ref<TDetailInfo>({});
 // 关闭弹窗时清空数据

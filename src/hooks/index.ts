@@ -1,10 +1,10 @@
-import { classMultiClient, TSession } from "nkn";
+import { classMultiClient, TSession } from "nkn-sdk";
 import {
   FILE_TYPE_MAP,
   LEN_OF_HEADER_U8_LENGTH,
   PRODUCT_NAME,
   TAG_COLOR_LIST,
-} from "@/constants";
+} from "../constants";
 import streamSaver from "streamsaver";
 import { saveAs } from "file-saver";
 export { browserDetect } from "./browser-detect";

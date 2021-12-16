@@ -1,5 +1,5 @@
-import { MAX_FILEITEM_COUNT } from "@/constants";
-import { DescObj } from "@/utils";
+import { MAX_FILEITEM_COUNT } from "../constants";
+import { DescObj } from "../hooks";
 import { defineStore } from "pinia";
 import PhotoSwipeUI_Default from "photoswipe/dist/photoswipe-ui-default";
 

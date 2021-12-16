@@ -71,9 +71,9 @@
 </template>
 
 <script lang="ts">
-import { apiSendSignUpEmailCaptcha, apiResetPwd } from "@/apollo/api";
-import { useDelay } from "@/utils";
-import { useUserStore } from "@/store";
+import { apiSendSignUpEmailCaptcha, apiResetPwd } from "../../../../apollo/api";
+import { useDelay } from "../../../../hooks";
+import { useUserStore } from "../../../../store";
 import { useForm } from "@ant-design-vue/use";
 import { message, notification } from "ant-design-vue";
 import { RuleObject } from "ant-design-vue/lib/form/interface";

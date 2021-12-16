@@ -279,7 +279,7 @@
         }"
       >
         <img
-          src="~@/assets/images/money_button.png"
+          src="../../assets/images/money_button.png"
           alt=""
           :style="{
             width: '22px',
@@ -318,9 +318,9 @@ import {
   apiEmailLogin,
   apiSendSignUpEmailCaptcha,
   apiSignUp,
-} from "@/apollo/api";
-import { useBaseStore, useUserStore } from "@/store";
-import { getRandomNumAndStr, XToast } from "@/utils";
+} from "../../apollo/api";
+import { useBaseStore, useUserStore } from "../../store";
+import { getRandomNumAndStr, XToast } from "../../hooks";
 import {
   computed,
   createVNode,
@@ -340,7 +340,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons-vue";
 import { message, Modal, notification } from "ant-design-vue";
-import { REG_OBJ } from "@/constants";
+import { REG_OBJ } from "../../constants";
 
 type LoginType = "password" | "nMobile" | "webAuthn";
 type FormType = "signIn" | "signUp";

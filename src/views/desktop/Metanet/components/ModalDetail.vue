@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { XFileTypeIcon } from "../../../components";
+import { XFileTypeIcon } from "../../../../components/desktop";
 
 export type TDetailInfo = {
   [key: string]: any;

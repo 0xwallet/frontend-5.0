@@ -234,7 +234,7 @@
         >
           <div class="flex items-center">
             <img
-              src="~@/assets/images/money_button.png"
+              src="../../assets/images/money_button.png"
               alt=""
               :style="{
                 width: '22px',
@@ -280,10 +280,10 @@ import {
   apiEmailLogin,
   apiSendSignUpEmailCaptcha,
   apiSignUp,
-} from "@/apollo/api";
-import { REG_OBJ } from "@/constants";
-import { useBaseStore, useUserStore } from "@/store";
-import { getRandomNumAndStr } from "@/utils";
+} from "../../apollo/api";
+import { REG_OBJ } from "../../constants";
+import { useBaseStore, useUserStore } from "../../store";
+import { getRandomNumAndStr } from "../../hooks";
 import { Dialog, Toast } from "vant";
 import {
   computed,

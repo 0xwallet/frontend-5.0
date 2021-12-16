@@ -6,7 +6,7 @@
 import { defineComponent, PropType, ref, watch } from "vue";
 import marked from "marked";
 import DOMPurify from "dompurify";
-import { transformRawDescription } from "@/utils";
+import { transformRawDescription } from "../../hooks";
 
 type MdTheme = "light" | "dark";
 

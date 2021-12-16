@@ -1,13 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 颜色 -->
+    <meta name="theme-color" content="#404A66" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
+    <link rel="icon" href="./favicon.ico" />
+    <style>
+      .hidden {
+        display: none;
+      }
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .logoSvgBoxWrap {
+        position: fixed;
+        background-color: #f0f2f5;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5556;
+      }
+      .logoSvgBox {
+        transform: scale(3);
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        filter: drop-shadow(0px 0px 2px #231f20);
+      }
+      .logoSvg {
+        animation: 2s ease infinite 0s aniLogoSvg;
+      }
+      @keyframes aniLogoSvg {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      #globalLoader {
+        position: fixed;
+        z-index: 5555;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        /* display: flex; */
+        /* 首次打开应该是不显示, 根据登录状态来判断 */
+        display: none;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .stageTitle {
+        font-size: 24px;
+        margin-right: 12px;
+      }
+      .mb24 {
+        margin-bottom: 20px;
+      }
+      /* 媒体查询 手机版字体变小为 18px */
+      @media (max-width: 576px) {
+        .stageTitle {
+          font-size: 18px;
+        }
+      }
+      .mainLoader {
+        width: 72px;
+        height: 72px;
+        border-radius: 1000px;
+        margin-bottom: 60px;
+      }
+      .loaderStage {
+        display: flex;
+        align-items: center;
+      }
+      .loaderStage:nth-of-type(1) {
+        opacity: 1;
+      }
+      .loaderStage:nth-of-type(2) {
+        opacity: 0.75;
+      }
+      .loaderStage:nth-of-type(3) {
+        opacity: 0.5;
+      }
+      .loaderStage:nth-of-type(4) {
+        opacity: 0.25;
+      }
+      .loaderStage > img {
+        width: 16px;
+        height: 16px;
+      }
+      .stageLoading {
+        animation: rotate 0.8s linear infinite;
+      }
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(1turn);
+        }
+      }
+    </style>
+    <title>BitDrive</title>
   </head>
   <body>
-    <div id="app"></div>
+    <noscript>
+      <strong
+        >We're sorry but BitDrive doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="globalLoader" class="">
+      <img class="mainLoader" src="./loader-dark.gif" />
+      <div class="loaderStage mb24">
+        <span class="stageTitle">解密</span>
+        <span>
+          <img class="stageLoading" src="./stage_loading.png" />
+          <img class="stageFinished hidden" src="./stage_finished.png" />
+        </span>
+      </div>
+      <div class="loaderStage mb24">
+        <span class="stageTitle">正在接收账户资料</span>
+        <span>
+          <img class="stageLoading" src="./stage_loading.png" />
+          <img class="stageFinished hidden" src="./stage_finished.png" />
+        </span>
+      </div>
+      <div class="loaderStage mb24">
+        <span class="stageTitle">自动获取 NKN 地址</span>
+        <span>
+          <img class="stageLoading" src="./stage_loading.png" />
+          <img class="stageFinished hidden" src="./stage_finished.png" />
+        </span>
+      </div>
+      <div class="loaderStage">
+        <span class="stageTitle">请求加密网络连接</span>
+        <span>
+          <img class="stageLoading" src="./stage_loading.png" />
+          <img class="stageFinished hidden" src="./stage_finished.png" />
+        </span>
+      </div>
+    </div>
+    <div id="app">
+      <div class="logoSvgBoxWrap">
+        <div class="logoSvgBox">
+          <svg class="logoSvg" width="22.1" height="24.8">
+            <path
+              fill="#fff"
+              d="M9.8 24.4l-8.6-4.9C.5 19.1 0 18.2 0 17.3V7.4c0-.9.5-1.7 1.3-2.2L9.9.3c.8-.4 1.7-.4 2.5 0L21 5.2c.8.4 1.3 1.3 1.3 2.2v9.9c0 .9-.5 1.7-1.3 2.2l-8.6 4.9c-.9.5-1.8.5-2.6 0z"
+            />
+            <circle fill="#423d3d" cx="11.06" cy="12.4" r="9" />
+            <circle fill="#231f20" cx="11.06" cy="12.4" r="6" />
+            <path
+              stroke="#fff"
+              stroke-width="3"
+              stroke-linecap="round"
+              fill="none"
+              stroke-linejoin="round"
+              d="M9.33 13.4l1.73-1 1.73 1m-1.73-1v-2"
+            />
+            <circle fill="#423d3d" cx="11.06" cy="12.4" r="2" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <!-- nkn -->
+    <script src="./js/nkn.min.js"></script>
+    <!-- 用vite plugin 切换不同环境的cdn -->
+    {{development_CDNS}}
+    {{production_CDNS}}
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/moment@2.29.1/locale/zh-cn.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/moment@2.29.1/locale/en-gb.js"
+    ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.10.377/build/pdf.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.1.266/build/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
     <script type="module" src="/src/main.ts"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/vconsole@3.9.1/dist/vconsole.min.js"
+    ></script>
+    <script>
+      const useDelay = (t = 1000) => new Promise((r) => setTimeout(r, t));
+      // VConsole will be exported to `window.VConsole` by default.
+      window.addEventListener(
+        "DOMContentLoaded",
+        () => {
+          // if(window.__isMobile__) {}
+          // 生产环境才调用
+          if (location.protocol.includes("https")) {
+            var vConsole = new window.VConsole();
+          }
+        },
+        { once: true }
+      );
+      // global loader
+      // 比特网盘初始化流程提示（对用户）：
+      // 0.  解密（一直显示）
+      // 1.  正在接收账户资料 （完成打✅）
+      // 2.  自动生成临时NKN地址/ 自动获取NKN地址（完成打✅）
+      // 3.  请求NKN网络连接（完成打✅）
+      // dispose 控制不用每次路由都show - 关联 router.beforeEach
+      let dispose = false;
+      window.globalLoaderController = {
+        show() {
+          if (!dispose) {
+            document.getElementById("globalLoader").style.display = "flex";
+          }
+        },
+        hide() {
+          document.getElementById("globalLoader").style.display = "none";
+          dispose = true;
+        },
+        // status 0隐藏 / 1显示
+        toggleStageStatus(idx, status) {
+          const [elLoading, elFinished] = [
+            document.getElementsByClassName("stageLoading")[idx],
+            document.getElementsByClassName("stageFinished")[idx],
+          ];
+          if (status === 1) {
+            elLoading.classList.add("hidden");
+            elFinished.classList.remove("hidden");
+          } else {
+            elLoading.classList.remove("hidden");
+            elFinished.classList.add("hidden");
+          }
+        },
+        successStage(idx) {
+          const e = window.globalLoaderController;
+          e.toggleStageStatus(idx, 1);
+          // 如果是最后一个, 把前面的全部完成
+          if (idx === 3) {
+            [0, 1, 2].forEach((i) => e.toggleStageStatus(i, 1));
+            useDelay(300).then(e.hide);
+          }
+        },
+      };
+    </script>
+    <!-- built files will be auto injected -->
   </body>
 </html>

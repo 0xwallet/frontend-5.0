@@ -5,28 +5,28 @@ import { PRODUCT_NAME } from "../../constants/index";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useUserStore } from "../../store";
 // vue 文件
-import Login from "../pages/Login/index.vue";
-import Register from "../pages/Register/index.vue";
-import ResetPwd from "../pages/ResetPwd/index.vue";
-import Dashboard from "../pages/Dashboard/index.vue";
-import Account from "../pages/Account/index.vue";
-import Security from "../pages/Security/index.vue";
+import Login from "../../views/desktop/Login/index.vue";
+import Register from "../../views/desktop/Register/index.vue";
+import ResetPwd from "../../views/desktop/ResetPwd/index.vue";
+import Dashboard from "../../views/desktop/Dashboard/index.vue";
+import Account from "../../views/desktop/Account/index.vue";
+import Security from "../../views/desktop/Security/index.vue";
 //
-import LayoutIndex from "../layouts/index.vue";
-import Layout from "../layouts/Common.vue";
-import MetanetFile from "../pages/Metanet/File.vue";
-import MetanetShare from "../pages/Metanet/Share.vue";
-import MetanetSharedFile from "../pages/Metanet/SharedFile.vue";
-import MetanetPublish from "../pages/Metanet/Publish.vue";
-import MetanetCollect from "../pages/Metanet/Collect.vue";
-import MetanetRecycle from "../pages/Metanet/Recycle.vue";
-import TransportUploading from "../pages/Transport/Uploading.vue";
-import TransportUploadHistory from "../pages/Transport/UploadHistory.vue";
-import TransportPeerTransfer from "../pages/Transport/PeerTransfer.vue";
-import ErrPage403 from "../pages/Error/403.vue";
-import ErrPage404 from "../pages/Error/404.vue";
-import ErrPage500 from "../pages/Error/500.vue";
-import PdfView from "../pages/PdfView/index.vue";
+import LayoutIndex from "../../layouts/desktop/index.vue";
+import Layout from "../../layouts/desktop/Common.vue";
+import MetanetFile from "../../views/desktop/Metanet/File.vue";
+import MetanetShare from "../../views/desktop/Metanet/Share.vue";
+import MetanetSharedFile from "../../views/desktop/Metanet/SharedFile.vue";
+import MetanetPublish from "../../views/desktop/Metanet/Publish.vue";
+import MetanetCollect from "../../views/desktop/Metanet/Collect.vue";
+import MetanetRecycle from "../../views/desktop/Metanet/Recycle.vue";
+import TransportUploading from "../../views/desktop/Transport/Uploading.vue";
+import TransportUploadHistory from "../../views/desktop/Transport/UploadHistory.vue";
+import TransportPeerTransfer from "../../views/desktop/Transport/PeerTransfer.vue";
+import ErrPage403 from "../../views/desktop/Error/403.vue";
+import ErrPage404 from "../../views/desktop/Error/404.vue";
+import ErrPage500 from "../../views/desktop/Error/500.vue";
+import PdfView from "../../views/desktop/PdfView/index.vue";
 
 const routes: RouteRecordRaw[] = [
   {

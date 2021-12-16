@@ -60,9 +60,9 @@
           <a
             href="javascript:;"
             class="ml-2"
-            :title="$lastOfArray(record.userFile.fullName)"
+            :title="lastOfArray(record.userFile.fullName)"
             @click="onClickTableItemName(record)"
-          >{{ $lastOfArray(record.userFile.fullName) }}</a>
+          >{{ lastOfArray(record.userFile.fullName) }}</a>
           <!-- hover 才显示的shortCut栏 -->
           <!-- 非上级目录 -->
           <div class="tableShortcut hidden inline-block absolute right-0">

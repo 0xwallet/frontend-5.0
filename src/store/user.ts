@@ -1,12 +1,12 @@
 import { useLocalStorage } from "@vueuse/core";
-import { Wallet, ClassWallet, classMultiClient } from "nkn";
+import { Wallet, ClassWallet, classMultiClient } from "nkn-sdk";
 import { pick, assign } from "lodash-es";
 import { defineStore } from "pinia";
-import { getMultiClient } from "@/apollo/nknConfig";
+import { getMultiClient } from "../apollo/nknConfig";
 import { toRaw } from "vue";
-import { apiNknOnline, apiQueryMeAvatar, TApiRes } from "@/apollo/api";
+import { apiNknOnline, apiQueryMeAvatar, TApiRes } from "../apollo/api";
 import { Channel, Socket } from "phoenix";
-import { promiseChecker, useDelay } from "@/utils";
+import { promiseChecker, useDelay } from "../hooks";
 const userLocalStorage = useLocalStorage<UserBaseState | Record<string, never>>(
   "user",
   {}

@@ -114,7 +114,7 @@ import "photoswipe/dist/default-skin/default-skin.css";
 import PhotoSwipe from "photoswipe";
 import PhotoSwipeUI_Default from "photoswipe/dist/photoswipe-ui-default";
 import { onClickOutside } from "@vueuse/core";
-import { useBaseStore } from "@/store";
+import { useBaseStore } from "../../store";
 import { MMdParser } from ".";
 
 export default defineComponent({

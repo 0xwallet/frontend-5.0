@@ -9,7 +9,7 @@ import {
   NetFile_Publish,
   NetFile_Collection,
 } from "./documents";
-import { TMessageType, TSession } from "nkn";
+import { TMessageType, TSession } from "nkn-sdk";
 import { UPLOAD_MSG, MAX_MTU } from "../constants";
 import { getFileSHA256, writeHeaderInSession, useDelay } from "../hooks";
 import pLimit from "p-limit";

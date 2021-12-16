@@ -276,7 +276,7 @@
                 <div class="relative ml-2">
                   <img
                     class="w-16 h-16"
-                    :src="require(`@/assets/images/cryptos/${item}.png`)"
+                    :src="require(`../../../assets/images/cryptos/${item}.png`)"
                     :alt="item"
                   />
                   <div

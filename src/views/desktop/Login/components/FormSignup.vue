@@ -89,8 +89,8 @@
 </template>
 
 <script lang="ts">
-import { apiSendSignUpEmailCaptcha, apiSignUp } from "@/apollo/api";
-import { useDelay } from "@/utils";
+import { apiSendSignUpEmailCaptcha, apiSignUp } from "../../../../apollo/api";
+import { useDelay } from "../../../../hooks";
 import { useForm } from "@ant-design-vue/use";
 import { useIntervalFn } from "@vueuse/core";
 import { message, notification } from "ant-design-vue";

@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import App from "./App.vue";
+import App from "./views/mobile/App_mobile.vue";
 import router from "./router/mobile";
 import { createPinia } from "pinia";
 import languages from "./languages";

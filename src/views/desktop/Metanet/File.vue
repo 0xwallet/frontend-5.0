@@ -28,7 +28,7 @@ const fileItemComponents = Array(MAX_FILEITEM_COUNT)
     return acc;
   }, {});
 /** 根据数字获取对应的组件名称 */
-export const getComponentNameByNum = (n: number) => `FileItem${n}`;
+const getComponentNameByNum = (n: number) => `FileItem${n}`;
 
 
 // 每次进来, 判断路由, 根据navList 确定keepAliveList

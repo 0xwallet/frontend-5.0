@@ -1,16 +1,15 @@
-import LayoutIndex from "../Layouts/index.vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useTitle } from "@vueuse/core";
 import { i18n } from "../../main_mobile";
 import { PRODUCT_NAME } from "../../constants";
 import { useBaseStore, useUserStore } from "../../store";
 
-import Login from "../pages/Login/index.vue";
-import Register from "../pages/Register/index.vue";
-import ResetPwd from "../pages/ResetPwd/index.vue";
-import Account from "../pages/Account/index.vue";
-import MetanetSharedFile from "../pages/Metanet/SharedFile.vue";
-import MetanetFile from "../pages/Metanet/File.vue";
+import Login from "../../views/mobile/Login/index.vue";
+import Register from "../../views/mobile/Register/index.vue";
+import ResetPwd from "../../views/mobile/ResetPwd/index.vue";
+import Account from "../../views/mobile/Account/index.vue";
+import MetanetSharedFile from "../../views/mobile/Metanet/SharedFile.vue";
+import MetanetFile from "../../views/mobile/Metanet/File.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -81,7 +80,7 @@ const router = createRouter({
         title: "common.pdfView",
       },
       component: () =>
-        import(/* webpackChunkName: "pdfview" */ "../pages/PdfView/index.vue"),
+        import(/* webpackChunkName: "pdfview" */ "../../views/mobile/PdfView/index.vue"),
     },
     {
       path: "/:catchAll(.*)",

@@ -17,18 +17,8 @@
           </div>
         </div>
         <div class="flex-1 text-center flex items-center justify-center font-14 relative">
-          <!-- <img
-            class="w-4 h-4 mr-1"
-            src="~@/assets/images/calendar.png"
-            alt=""
-          />-->
           📅
           <span class="mr-1">{{ insertedAtText }}</span>
-          <!-- <img
-            class="w-4 h-4 mr-1"
-            src="~@/assets/images/hourglass.png"
-            alt=""
-          />-->
           ⏳
           <span>{{ expiredText }}</span>
           <div

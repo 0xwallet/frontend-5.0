@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { XFileTypeIcon } from "./";
 import { FolderFilled, FolderOpenFilled } from "@ant-design/icons-vue";
 
@@ -77,7 +77,7 @@ export default defineComponent({
       required: true,
     },
     footer: {
-      type: [String, Object],
+      type: [String, Object] as PropType<String | Object | null>,
       // 源码中 undefined 才会显示默认的按钮
       default: () => undefined,
     },

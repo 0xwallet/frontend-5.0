@@ -23,9 +23,9 @@
     >
       <template #name="{ record }">
         <!-- <div>55----{{ record }}</div> -->
-        <div :title="$lastOfArray(record.fullName)">
+        <div :title="lastOfArray(record.fullName)">
           <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" />
-          <span>{{ $lastOfArray(record.fullName) }}</span>
+          <span>{{ lastOfArray(record.fullName) }}</span>
         </div>
       </template>
       <template #fileSize="{ record }">
@@ -46,31 +46,31 @@
         <!-- success_upload -->
         <div v-if="record.isSecondUpload" class="flex items-center">
           <div class="w-3.5 h-3.5 mr-2">
-            <img src="~@/assets/images/success_rocket.png" alt />
+            <img src="../../../assets/images/success_rocket.png" />
           </div>
           <div class="text-gray-400">极速秒传</div>
         </div>
         <div v-else-if="record.status === 'success'" class="flex items-center">
           <div class="w-3.5 h-3.5 mr-2">
-            <img src="~@/assets/images/success_upload.png" alt />
+            <img src="../../../assets/images/success_upload.png" />
           </div>
           <div class="text-gray-400">上传成功</div>
         </div>
         <div v-else-if="record.status === 'successUpdate'" class="flex items-center">
           <div class="w-3.5 h-3.5 mr-2">
-            <img src="~@/assets/images/success_update.png" alt />
+            <img src="../../../assets/images/success_update.png" />
           </div>
           <div class="text-gray-400">更新成功</div>
         </div>
         <div v-else-if="record.status === 'successPeerTransferSend'" class="flex items-center">
           <div class="w-3.5 h-3.5 mr-2">
-            <img src="~@/assets/images/success_peerTransfer.png" alt />
+            <img src="../../../assets/images/success_peerTransfer.png" />
           </div>
           <div class="text-gray-400">空投发送成功</div>
         </div>
         <div v-else-if="record.status === 'successPeerTransferReceive'" class="flex items-center">
           <div class="w-3.5 h-3.5 mr-2">
-            <img src="~@/assets/images/success_peerTransfer.png" alt />
+            <img src="../../../assets/images/success_peerTransfer.png" />
           </div>
           <div class="text-gray-400">空投接收成功</div>
         </div>

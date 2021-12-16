@@ -82,18 +82,18 @@
           >
             <a href="javascript:;">
               <a-tooltip title="WebAuthn">
-                <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+                <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
               </a-tooltip>
             </a>
             <a href="javascript:;">
               <a-tooltip title="nMobile">
                 <!-- <DeploymentUnitOutlined /> -->
-                <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+                <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
               </a-tooltip>
             </a>
             <a href="javascript:;">
               <a-tooltip title="other">
-                <img src="~@/assets/images/nkn_gray.png" class="w-6 h-6" />
+                <img src="../../../assets/images/nkn_gray.png" class="w-6 h-6" />
               </a-tooltip>
             </a>
           </div>
@@ -199,7 +199,7 @@
         <TwitterSquareFilled class="font-20 mr-4" />
       </div>
       <div class="cursor-pointer" @click="onOpen('discord')" title="discord">
-        <img class="w-5 h-5" src="~@/assets/svg/icon_discord.svg" />
+        <img class="w-5 h-5" src="../../../assets/svg/icon_discord.svg" />
       </div>
     </div>
   </footer>
@@ -317,8 +317,7 @@ const onOpen = (type: "facebook" | "twitter" | "discord") => {
 <style lang="less" scoped>
 .imgContainer {
   // background-color: darkgoldenrod;
-  // background-image: url("~@/assets/images/login_bg.jpg");
-  background-image: url("~@/assets/images/login_bg.jpg");
+  background-image: url("../../../assets/images/login_bg.jpg");
   background-size: cover;
 }
 .background-walk-y {

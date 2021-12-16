@@ -6,8 +6,8 @@
 import "vue-global-api";
 import { isMobile } from "./hooks";
 // markdown style
-// import "@/assets/github-markdown-css.less";
-import "@/assets/github-markdown.css";
+// import "./assets/github-markdown-css.less";
+import "./assets/github-markdown.css";
 (window as any).__isMobile__ = isMobile();
 if ((window as any).__isMobile__) {
   console.log("isMobile");
