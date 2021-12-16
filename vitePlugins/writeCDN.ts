@@ -21,33 +21,19 @@ export default function writeCDNScripts(): Plugin {
   };
 }
 
-var CDNS = {
-  devlopment: `
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue@3.2.1/dist/vue.global.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue-i18n@9.1.7/dist/vue-i18n.global.js"
-></script>  
-  `,
-  production: `
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue@3.2.1/dist/vue.global.prod.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.prod.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/vue-i18n@9.1.7/dist/vue-i18n.global.prod.js"
-></script>
-  `,
+const makeScriptStr = (srcList: string[]) => {
+  return srcList.map((src) => `<script src="${src}"></script>`).join("\n");
+};
+
+const CDNS = {
+  devlopment: makeScriptStr([
+    "https://cdn.jsdelivr.net/npm/vue@3.2.1/dist/vue.global.js",
+    "https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.js",
+    "https://cdn.jsdelivr.net/npm/vue-i18n@9.1.7/dist/vue-i18n.global.js",
+  ]),
+  production: makeScriptStr([
+    "https://cdn.jsdelivr.net/npm/vue@3.2.1/dist/vue.global.prod.js",
+    "https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.prod.js",
+    "https://cdn.jsdelivr.net/npm/vue-i18n@9.1.7/dist/vue-i18n.global.prod.js",
+  ]),
 };
