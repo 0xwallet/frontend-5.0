@@ -3,3 +3,5 @@ node_modules
 dist
 dist-ssr
 *.local
+stats.html 
+# stats.html 是 rollup-plugin-visualizer 的分析产物

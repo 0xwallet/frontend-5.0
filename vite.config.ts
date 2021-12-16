@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { visualizer } from "rollup-plugin-visualizer";
 import writeCDNScripts from "./vitePlugins/writeCDN";
 // vite.config.js
 // import ViteComponents, {
@@ -9,7 +10,7 @@ import writeCDNScripts from "./vitePlugins/writeCDN";
 // import Components from "unplugin-vue-components/vite";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command, mode }) => ({
   resolve: {
     alias: {
       // dayjs: "dayjs/esm",
@@ -22,6 +23,9 @@ export default defineConfig({
     // 这个懒加载会使得 vite 的加载异常的慢
     //   resolvers: [AntDesignVueResolver(), VantResolver()],
     // }),
+    visualizer({
+      open: true,
+    }), // 分析打包产物
   ],
   optimizeDeps: {
     include: ["ant-design-vue", "vant"],
@@ -36,6 +40,19 @@ export default defineConfig({
     ],
     // include: ["streamsaver", "file-saver"],
   },
+  build: {
+    rollupOptions: {
+      external: [
+        "nkn",
+        "vue",
+        "vue-router",
+        "vue-i18n",
+        "pdfjs-dist",
+        "streamsaver",
+        "file-saver",
+      ],
+    },
+  },
   server: {
     port: 4000, // 要 4000 才能websocket auth验证通过
   },
@@ -46,4 +63,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
