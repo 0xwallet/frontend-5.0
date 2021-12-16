@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { visualizer } from "rollup-plugin-visualizer";
+// import { visualizer } from "rollup-plugin-visualizer";
 import writeCDNScripts from "./vitePlugins/writeCDN";
 // vite.config.js
 // import ViteComponents, {
@@ -23,9 +23,9 @@ export default defineConfig(({ command, mode }) => ({
     // 这个懒加载会使得 vite 的加载异常的慢
     //   resolvers: [AntDesignVueResolver(), VantResolver()],
     // }),
-    visualizer({
-      open: true,
-    }), // 分析打包产物
+    // visualizer({
+    //   open: true,
+    // }), // 分析打包产物
   ],
   optimizeDeps: {
     include: ["ant-design-vue", "vant"],
