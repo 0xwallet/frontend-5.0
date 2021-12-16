@@ -13,7 +13,7 @@ import { TMessageType, TSession } from "nkn-sdk";
 import { UPLOAD_MSG, MAX_MTU } from "../constants";
 import { getFileSHA256, writeHeaderInSession, useDelay } from "../hooks";
 import pLimit from "p-limit";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { makeUploadItemUniqueId, UploadStatus } from "../store/transport";
 import { remove } from "lodash-es";
 

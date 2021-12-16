@@ -5,11 +5,11 @@ import {
   PRODUCT_NAME,
   TAG_COLOR_LIST,
 } from "../constants";
-import streamSaver from "streamsaver";
-import { saveAs } from "file-saver";
+const { streamSaver } = window;
+const { saveAs } = window;
 export { browserDetect } from "./browser-detect";
-import duration from "dayjs/plugin/duration";
-import dayjs from "dayjs";
+import duration from "dayjs/esm/plugin/duration";
+import dayjs from "dayjs/esm";
 dayjs.extend(duration);
 /** 延迟函数,默认1000毫秒(1秒) */
 export const useDelay = (t = 1000): Promise<void> => {

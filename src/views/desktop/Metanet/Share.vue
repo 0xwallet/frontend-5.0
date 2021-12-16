@@ -293,7 +293,7 @@ import {
 } from "@ant-design/icons-vue";
 import { XFileTypeIcon, XTableFiles, XMdParser } from "../../../components/desktop";
 import { useI18n } from "vue-i18n";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import {
   apiDeleteShare,
   apiEditFileDescption,

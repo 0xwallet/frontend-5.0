@@ -57,7 +57,7 @@
               </a-popover>
               <XLink class="flex-1 truncate mr-2" @click="onCopyPeerLink">
                 {{
-                  peerLink
+                peerLink
                 }}
               </XLink>
               <XLink class="inline-block" @click="onCopyPeerLink">
@@ -149,9 +149,9 @@
           <!-- 处于ws等待状态的时候 已发送大小显示手动改为文件的全大小, 因为progress实际上还没到100(为了等待故意暂停的) -->
           <div class="text-gray-400">
             {{
-              record.status === "waiting"
-                ? formatBytes(record.fileSize)
-                : formatBytes(record.fileSize * (record.progress / 100))
+            record.status === "waiting"
+            ? formatBytes(record.fileSize)
+            : formatBytes(record.fileSize * (record.progress / 100))
             }}
             /
             {{ formatBytes(record.fileSize) }}
@@ -377,11 +377,11 @@ import {
 import { decode, encode } from "@msgpack/msgpack";
 import { MAX_MTU } from "../../../constants";
 import { useClipboard, useLocalStorage } from "@vueuse/core";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import pLimit from "p-limit";
 import { useRoute, useRouter } from "vue-router";
 import Bowser from "bowser";
-import saveAs from "file-saver";
+const { saveAs } = window;
 
 type PeerFileItem = {
   file?: File;

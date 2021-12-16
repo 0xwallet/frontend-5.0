@@ -200,7 +200,7 @@ import {
   getFileType,
   lastOfArray,
 } from "../../../hooks";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { createVNode } from "vue";
 
 type TCollectItem = {

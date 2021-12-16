@@ -434,10 +434,9 @@ import {
   apiQuerySharedFile,
   apiSecondUpload,
   QueryShareFileItem,
-  TFileItem,
-TFileList,
 } from "../../../apollo/api";
-import dayjs from "dayjs";
+import type { TFileItem } from '../../../apollo/api'
+import dayjs from "dayjs/esm";
 import {
   onBeforeRouteLeave,
   onBeforeRouteUpdate,

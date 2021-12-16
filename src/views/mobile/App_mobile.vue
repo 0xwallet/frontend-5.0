@@ -72,18 +72,16 @@ trySignInWithLocalStorageAndRedirect();
 </script>
 
 <style lang="less">
-@import url("@fontsource/dm-mono/500.css");
+@import "@fontsource/dm-mono/500.css";
 // font-family: "DM Mono";
 .font-dmmono {
   font-family: "DM Mono";
 }
 
-@import url("@fontsource/lato/400.css");
+@import "@fontsource/lato/400.css";
 .font-lato {
   font-family: "Lato";
 }
-
-@import url("tailwindcss/tailwind.css");
 
 html,
 body,

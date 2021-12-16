@@ -1,5 +1,5 @@
 import { ClassWallet, MultiClient } from "nkn-sdk";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { MAX_MTU, NKN_SUB_CLIENT_COUNT } from "../constants";
 
 const NKN_CONFIG = {

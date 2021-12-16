@@ -1,11 +1,9 @@
 <template>
   <a-config-provider :locale="refLocale">
     <!-- 全局登录弹窗 -->
-    <XModalLogin
-      :visible="isShowLoginModal"
-      @update:visible="onUpdateVisible"
-    />
+    <XModalLogin :visible="isShowLoginModal" @update:visible="onUpdateVisible" />
     <router-view />
+    <h1 class="mt-2">heyyeyeh</h1>
     <XPhotoSwipe />
   </a-config-provider>
 </template>
@@ -82,7 +80,6 @@ const onUpdateVisible = (v: boolean) => baseStore.changeIsShowLoginModal(v);
   font-family: "Lato";
 }
 
-@import "tailwindcss/tailwind.css";
 // fix tailwindcss-antd conflict bug
 // tailwindcss 中用了vertical-align : middle 导致antd 库的很多图标文字不能居中
 img,

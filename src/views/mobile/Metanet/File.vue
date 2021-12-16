@@ -218,10 +218,8 @@ import {
   apiLoopQueryFileByDir,
   apiQueryFileByDir,
   ParamsQueryFileByDir,
-  TFileItem,
-  TFileList,
-  // TFileList,
 } from "../../../apollo/api";
+import type { TFileItem, TFileList } from "../../../apollo/api";
 import { FILE_TYPE_MAP, TAG_COLOR_LIST } from "../../../constants";
 import { useBaseStore, useUserStore } from "../../../store";
 import {
@@ -234,7 +232,7 @@ import {
   formatBytes,
   downloadFileByUrl,
 } from "../../../hooks";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
 import {
   computed,

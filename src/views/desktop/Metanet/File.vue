@@ -8,25 +8,17 @@
 import { MAX_FILEITEM_COUNT } from "../../../constants";
 import { useBaseStore } from "../../../store";
 import { values } from "lodash-es";
-import {
-  Component,
-  computed,
-  defineComponent,
-  onActivated,
-  ref,
-  watch,
-} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import FileItem from "./components/FileItem.vue";
 
 /** {FileItem1:FIleItem,...,FileItem20:FileItem} */
-const fileItemComponents = Array(MAX_FILEITEM_COUNT)
-  .fill(null)
-  .map((i, idx) => `FileItem${idx}`)
-  .reduce<{ [key: string]: Component }>((acc, cur) => {
-    acc[cur] = FileItem;
-    return acc;
-  }, {});
+// const fileItemComponents = Array(MAX_FILEITEM_COUNT)
+//   .fill(null)
+//   .map((i, idx) => `FileItem${idx}`)
+//   .reduce<{ [key: string]: Component }>((acc, cur) => {
+//     acc[cur] = FileItem;
+//     return acc;
+//   }, {});
 /** 根据数字获取对应的组件名称 */
 const getComponentNameByNum = (n: number) => `FileItem${n}`;
 

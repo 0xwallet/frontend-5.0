@@ -139,12 +139,12 @@
                 <a-menu @click="onClickDropDownMenuUpload">
                   <a-menu-item key="file">
                     {{
-                      $t("metanet.uploadFile")
+                    $t("metanet.uploadFile")
                     }}
                   </a-menu-item>
                   <a-menu-item key="folder">
                     {{
-                      $t("metanet.uploadFolder")
+                    $t("metanet.uploadFolder")
                     }}
                   </a-menu-item>
                 </a-menu>
@@ -161,19 +161,19 @@
                   <!-- 新建文件 -->
                   <a-menu-item key="file">
                     {{
-                      $t("metanet.createFile")
+                    $t("metanet.createFile")
                     }}
                   </a-menu-item>
                   <!-- 新建文件夹 -->
                   <a-menu-item key="folder">
                     {{
-                      $t("metanet.createFolder")
+                    $t("metanet.createFolder")
                     }}
                   </a-menu-item>
                   <!-- 新建by 导入 -->
                   <a-menu-item key="import">
                     {{
-                      $t("metanet.createByImport")
+                    $t("metanet.createByImport")
                     }}
                   </a-menu-item>
                 </a-menu>
@@ -735,7 +735,7 @@
           <a-col :span="17" class="pt-4">
             <a-button type="primary" shape="round">
               {{
-                $t("metanet.buyStorage")
+              $t("metanet.buyStorage")
               }}
             </a-button>
           </a-col>
@@ -879,7 +879,7 @@ import {
   TFileItem,
   TFileList,
 } from "../../../../apollo/api";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { assign, isEqual } from "lodash-es";
 import { message, Modal } from "ant-design-vue";
 import { useBaseStore, useTransportStore, useUserStore } from "../../../../store";

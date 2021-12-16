@@ -182,11 +182,16 @@
         </div>
       </div>
     </div>
-    <!-- nkn -->
-    <script src="./js/nkn.min.js"></script>
     <!-- 用vite plugin 切换不同环境的cdn -->
-    {{development_CDNS}}
-    {{production_CDNS}}
+    {{development_CDNS}} {{production_CDNS}}
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.5/StreamSaver.min.js"
+    ></script>
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"

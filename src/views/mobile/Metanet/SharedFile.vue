@@ -472,7 +472,7 @@ import {
   transformRawDescription,
   makeFileUrl,
 } from "../../../hooks";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { Dialog, Toast } from "vant";
 import {
   computed,
