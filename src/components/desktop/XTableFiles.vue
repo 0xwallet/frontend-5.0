@@ -16,6 +16,7 @@
     :customRow="customRow"
   >
     <!-- slot="header" 是插入别人的插槽 -->
+    <!-- 如果用的是volar插件, 这个data会报错,其实不是真实的错误 -->
     <template v-for="slotName in slots" :key="slotName" #[slotName]="data">
       <!-- <template v-for="slotName in slots" :key="slotName" #[slotName]> -->
       <slot :name="slotName" v-bind="data"></slot>

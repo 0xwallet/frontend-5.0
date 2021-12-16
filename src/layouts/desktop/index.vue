@@ -16,7 +16,6 @@ type Layout = "NoLogin" | "Common";
 const userStore = useUserStore();
 const route = useRoute();
 const curLayout = ref<Layout>("Common");
-console.log("curLayout", curLayout);
 /** 不重复设置相同的值 */
 const dupSetCurLayout = (str: Layout) => {
   if (curLayout.value !== str) curLayout.value = str;

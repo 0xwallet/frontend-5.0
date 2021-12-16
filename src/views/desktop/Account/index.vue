@@ -482,7 +482,6 @@ const onRecharge = () => {
 const onWithDraw = () => {
   message.info("TODO");
 };
-
 const modalAssetTitle = ref("");
 const modalAssetStage = ref<ModalAssetStage>();
 const modalAddAssetVisible = ref(false);
