@@ -1,18 +1,31 @@
 <template>
   <div>
     <!-- 这个为隐藏的作为选择文件用的 -->
-    <input class="hidden" type="file" id="shareSingleInput" @change="onChangeUploadFile" />
+    <input
+      class="hidden"
+      type="file"
+      id="shareSingleInput"
+      @change="onChangeUploadFile"
+    />
     <!-- 功能区 height 32px-->
     <div class="relative h-8 flex items-center mb-3">
       <!-- 刷新按钮 -->
       <a-tooltip title="添加">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onAddShare()">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onAddShare()"
+        >
           <FileAddOutlined />
         </a>
       </a-tooltip>
       <!-- 刷新按钮 -->
       <a-tooltip :title="$t('metanet.refresh')">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onRefreshTableData()">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onRefreshTableData()"
+        >
           <SyncOutlined :spin="tableLoading" />
         </a>
       </a-tooltip>
@@ -23,7 +36,9 @@
           'border-radius': '50px',
           'background-color': '#f7f7f8',
         }"
-      >{{ shareWeight }}</div>
+      >
+        {{ shareWeight }}
+      </div>
       <a-button
         shape="round"
         :disabled="selectedRowKeys.length === 0"
@@ -62,19 +77,28 @@
             class="ml-2"
             :title="lastOfArray(record.userFile.fullName)"
             @click="onClickTableItemName(record)"
-          >{{ lastOfArray(record.userFile.fullName) }}</a>
+            >{{ lastOfArray(record.userFile.fullName) }}</a
+          >
           <!-- hover 才显示的shortCut栏 -->
           <!-- 非上级目录 -->
           <div class="tableShortcut hidden inline-block absolute right-0">
             <!-- 详情 -->
             <a-tooltip title="详情">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordDetail(record)">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordDetail(record)"
+              >
                 <InfoCircleOutlined />
               </a>
             </a-tooltip>
             <!-- 详情 -->
             <a-tooltip title="复制链接">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordCopyShare(record)">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordCopyShare(record)"
+              >
                 <CopyOutlined />
               </a>
             </a-tooltip>
@@ -111,14 +135,16 @@
           href="javascript:;"
           class="ant-color-blue-6"
           @click="onRecordEdit(record)"
-        >{{ calcExpiredText(record) }}</a>
+          >{{ calcExpiredText(record) }}</a
+        >
       </template>
       <template #code="{ record }">
         <a
           href="javascript:;"
           class="ant-color-blue-6"
           @click="onRecordEdit(record)"
-        >{{ record.code }}</a>
+          >{{ record.code }}</a
+        >
       </template>
       <!-- <template #action="{ record }">
         <a-dropdown placement="bottomRight">
@@ -195,7 +221,10 @@
               'border-radius': '12px',
             }"
           >
-            <XMdParser v-if="record.rawDescription" :content="record.rawDescription" />
+            <XMdParser
+              v-if="record.rawDescription"
+              :content="record.rawDescription"
+            />
             <div v-else class="text-gray-300 text-center">
               <!-- 无 -->
             </div>
@@ -229,10 +258,17 @@
     >
       <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
         <a-form-item label="有效期" v-bind="shareFileValidateInfos.expired">
-          <a-input-number :maxlength="30" :min="1" v-model:value="shareFileModelRef.expired" />
+          <a-input-number
+            :maxlength="30"
+            :min="1"
+            v-model:value="shareFileModelRef.expired"
+          />
           <span class="ml-1">天内</span>
         </a-form-item>
-        <a-form-item :label="$t('metanet.createFileType')" v-bind="shareFileValidateInfos.type">
+        <a-form-item
+          :label="$t('metanet.createFileType')"
+          v-bind="shareFileValidateInfos.type"
+        >
           <a-radio-group v-model:value="shareFileModelRef.type">
             <a-radio value="PUBLIC">公开</a-radio>
             <a-radio value="PRIVATE">私密</a-radio>
@@ -269,6 +305,11 @@
   </div>
 </template>
 
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "MetanetShare" };
+</script>
+
 <script setup lang="ts">
 import {
   computed,
@@ -291,7 +332,11 @@ import {
   CloseCircleOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons-vue";
-import { XFileTypeIcon, XTableFiles, XMdParser } from "../../../components/desktop";
+import {
+  XFileTypeIcon,
+  XTableFiles,
+  XMdParser,
+} from "../../../components/desktop";
 import { useI18n } from "vue-i18n";
 import dayjs from "dayjs/esm";
 import {
@@ -497,11 +542,7 @@ onActivated(() => {
         // 默认选中
         const found = tableData.value.find((i) => i.id === paramsId);
         if (found) selectedRows.value.push(found);
-        console.log(
-          "根据路由params默认选中",
-          selectedRowKeys,
-          selectedRows
-        );
+        console.log("根据路由params默认选中", selectedRowKeys, selectedRows);
       }
     });
 });
@@ -828,10 +869,8 @@ const onRecordEdit = (record: TTableShareFileItem) => {
   currentShareFile.name = lastOfArray(record.userFile.fullName);
   currentShareFile.id = record.id; // 分享的id , 并非userFile 里的id
   shareFileModelRef.type = record.code === "无" ? "PUBLIC" : "PRIVATE";
-  shareFileModelRef.expired =
-    dayjs(record.expiredAt).diff(dayjs(), "days") + 1;
-  shareFileModelRef.code =
-    record.code === "无" ? "" : (record.code as string);
+  shareFileModelRef.expired = dayjs(record.expiredAt).diff(dayjs(), "days") + 1;
+  shareFileModelRef.code = record.code === "无" ? "" : (record.code as string);
   isShowShareFileModal.value = true;
 };
 
@@ -927,8 +966,6 @@ const onResetShareFileModalForm = () => {
   currentShareFile.name = "";
   currentShareFile.id = "";
 };
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

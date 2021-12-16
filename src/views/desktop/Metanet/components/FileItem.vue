@@ -65,7 +65,11 @@
         </XLink>
       </a-tooltip>
       <a-tooltip :title="$t('metanet.refresh')">
-        <a href="javascript:;" class="inline-block mr-2 px-1" @click="onRefreshTableData">
+        <a
+          href="javascript:;"
+          class="inline-block mr-2 px-1"
+          @click="onRefreshTableData"
+        >
           <SyncOutlined :spin="isLoadingAllTableData" />
         </a>
       </a-tooltip>
@@ -97,20 +101,23 @@
               <a
                 @click="onClickHistoryDirUpperLevel(hItemIdx)"
                 style="color: #1890ff"
-              >{{ hItem.name }}</a>
+                >{{ hItem.name }}</a
+              >
             </a-breadcrumb-item>
           </template>
           <a-breadcrumb-item
             :style="{
               color: 'rgba(0, 0, 0, 0.85)',
             }"
-          >{{ lastOfArray(historyDir).name }}</a-breadcrumb-item>
+            >{{ lastOfArray(historyDir).name }}</a-breadcrumb-item
+          >
           <template v-if="currentClickItem.name.length > 0">
             <a-breadcrumb-item
               :style="{
                 color: 'rgba(0, 0, 0, 0.85)',
               }"
-            >{{ currentClickItem.name }}</a-breadcrumb-item>
+              >{{ currentClickItem.name }}</a-breadcrumb-item
+            >
           </template>
         </a-breadcrumb>
         <a-tooltip :title="getIsShareText()">
@@ -138,14 +145,10 @@
               <template #overlay>
                 <a-menu @click="onClickDropDownMenuUpload">
                   <a-menu-item key="file">
-                    {{
-                    $t("metanet.uploadFile")
-                    }}
+                    {{ $t("metanet.uploadFile") }}
                   </a-menu-item>
                   <a-menu-item key="folder">
-                    {{
-                    $t("metanet.uploadFolder")
-                    }}
+                    {{ $t("metanet.uploadFolder") }}
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -160,21 +163,15 @@
                 <a-menu @click="onClickDropDownMenuCreate">
                   <!-- 新建文件 -->
                   <a-menu-item key="file">
-                    {{
-                    $t("metanet.createFile")
-                    }}
+                    {{ $t("metanet.createFile") }}
                   </a-menu-item>
                   <!-- 新建文件夹 -->
                   <a-menu-item key="folder">
-                    {{
-                    $t("metanet.createFolder")
-                    }}
+                    {{ $t("metanet.createFolder") }}
                   </a-menu-item>
                   <!-- 新建by 导入 -->
                   <a-menu-item key="import">
-                    {{
-                    $t("metanet.createByImport")
-                    }}
+                    {{ $t("metanet.createByImport") }}
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -213,9 +210,12 @@
                         selectedRows.map((i) => i.id)
                       )
                     "
-                  >复制</a-menu-item>
+                    >复制</a-menu-item
+                  >
                   <!-- 删除 -->
-                  <a-menu-item key="folder" @click="onBatchDelete">删除</a-menu-item>
+                  <a-menu-item key="folder" @click="onBatchDelete"
+                    >删除</a-menu-item
+                  >
                 </a-menu>
               </template>
               <a-button class="ant-btn-cyan" shape="round">
@@ -248,7 +248,8 @@
             class="ml-2"
             :title="record.fullName[0]"
             @click.stop="onClickItemName(record)"
-          >{{ record.fullName[0] }}</a>
+            >{{ record.fullName[0] }}</a
+          >
           <div v-else class="inline-flex items-center ml-1">
             <a-input
               ref="renameInput"
@@ -306,7 +307,11 @@
             <!-- 下载 -->
             <!-- 非文件夹才显示 -->
             <a-tooltip v-if="!record.isDir" title="下载">
-              <a class="shortcutButton ml-1" href="javascript:;" @click.stop="onDownload(record)">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click.stop="onDownload(record)"
+              >
                 <DownloadOutlined />
               </a>
             </a-tooltip>
@@ -336,7 +341,11 @@
           </a-button>
           <a-button type="danger">{{ $t("metanet.delButton") }}</a-button>
         </a-button-group>-->
-        <a-dropdown class="rounded-xl" placement="bottomRight" :trigger="['hover', 'click']">
+        <a-dropdown
+          class="rounded-xl"
+          placement="bottomRight"
+          :trigger="['hover', 'click']"
+        >
           <div class="text-center">
             <!-- <a href="javascript:void(0)" class="ant-color-blue-6">...</a> -->
             <a href="javascript:'">
@@ -346,16 +355,25 @@
           <template #overlay>
             <a-menu class="rounded-xl">
               <!-- 详情 -->
-              <a-menu-item class="px-4 flex items-center" @click="onRecordDetail(record)">
+              <a-menu-item
+                class="px-4 flex items-center"
+                @click="onRecordDetail(record)"
+              >
                 <InfoCircleOutlined />详情
               </a-menu-item>
               <!-- 分享 -->
-              <a-menu-item class="px-4 flex items-center" @click="onRecordShare(record)">
+              <a-menu-item
+                class="px-4 flex items-center"
+                @click="onRecordShare(record)"
+              >
                 <ShareAltOutlined />
                 {{ $t("metanet.shareButton") }}
               </a-menu-item>
               <!-- 发布 -->
-              <a-menu-item class="px-4 flex items-center" @click="onRecordPublish(record)">
+              <a-menu-item
+                class="px-4 flex items-center"
+                @click="onRecordPublish(record)"
+              >
                 <ApartmentOutlined />
                 {{ $t("metanet.publish") }}
               </a-menu-item>
@@ -393,7 +411,10 @@
                 {{ $t("metanet.buttonCopyTo") }}
               </a-menu-item>
               <!-- 重命名 -->
-              <a-menu-item class="px-4 flex items-center" @click="onRecordRename(record)">
+              <a-menu-item
+                class="px-4 flex items-center"
+                @click="onRecordRename(record)"
+              >
                 <EditOutlined />
                 {{ $t("metanet.rename") }}
               </a-menu-item>
@@ -427,9 +448,16 @@
     >
       <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
         <a-form-item label="有效期" v-bind="shareFileValidateInfos.expired">
-          <a-input-number :maxlength="30" :min="1" v-model:value="shareFileModelRef.expired" />
+          <a-input-number
+            :maxlength="30"
+            :min="1"
+            v-model:value="shareFileModelRef.expired"
+          />
         </a-form-item>
-        <a-form-item :label="$t('metanet.createFileType')" v-bind="shareFileValidateInfos.type">
+        <a-form-item
+          :label="$t('metanet.createFileType')"
+          v-bind="shareFileValidateInfos.type"
+        >
           <a-radio-group v-model:value="shareFileModelRef.type">
             <a-radio value="PUBLIC">公开</a-radio>
             <a-radio value="PRIVATE">私密</a-radio>
@@ -466,7 +494,8 @@
                 @click="onCopySuccessShareInput('url')"
                 class="ant-color-blue-6"
                 href="javascript:;"
-              >{{ $t("metanet.copyButton") }}</a>
+                >{{ $t("metanet.copyButton") }}</a
+              >
             </template>
           </a-input>
         </a-col>
@@ -486,7 +515,8 @@
                 @click="onCopySuccessShareInput('code')"
                 class="ant-color-blue-6"
                 href="javascript:;"
-              >{{ $t("metanet.copyButton") }}</a>
+                >{{ $t("metanet.copyButton") }}</a
+              >
             </template>
           </a-input>
         </a-col>
@@ -494,7 +524,9 @@
       <a-row>
         <a-col>
           链接
-          <span class="ant-color-blue-6">{{ currentSuccessShare.expired }}天</span>后失效
+          <span class="ant-color-blue-6"
+            >{{ currentSuccessShare.expired }}天</span
+          >后失效
         </a-col>
       </a-row>
     </a-modal>
@@ -509,13 +541,17 @@
     >
       <a-form :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }">
         <a-form-item label="发布ID" v-bind="publishValidateInfos.publishId">
-          <a-select v-model:value="publishModelRef.publishId" placeholder="选择发布ID">
+          <a-select
+            v-model:value="publishModelRef.publishId"
+            placeholder="选择发布ID"
+          >
             <a-select-option key="new">新的发布</a-select-option>
             <a-select-option
               v-for="item in publishModalOptionList"
               :key="item.publishId"
               :title="item.showText"
-            >{{ item.showText }}</a-select-option>
+              >{{ item.showText }}</a-select-option
+            >
           </a-select>
         </a-form-item>
         <!-- TODO tag 参数? -->
@@ -543,7 +579,10 @@
             <a-radio value="markdown">markdown</a-radio>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('metanet.fileName')" v-bind="createFileValidateInfos.fileName">
+        <a-form-item
+          :label="$t('metanet.fileName')"
+          v-bind="createFileValidateInfos.fileName"
+        >
           <a-input
             :maxlength="30"
             :placeholder="$t('metanet.fileName')"
@@ -712,13 +751,20 @@
     </a-modal>-->
 
     <!-- 详情卡片 -->
-    <ModalDetail v-model:visible="isShowDetailModal" :detail="currentDetailInfo">
+    <ModalDetail
+      v-model:visible="isShowDetailModal"
+      :detail="currentDetailInfo"
+    >
       <!-- <template #name="{ value }">
         <div>i am the name--{{ value }}</div>
       </template>-->
-      <template v-if="currentDetailInfo.slotDiskUsageInfo" #slotDiskUsagePercent>
+      <template
+        v-if="currentDetailInfo.slotDiskUsageInfo"
+        #slotDiskUsagePercent
+      >
         <a-tooltip
-          :title="`总空间 ${currentDetailInfo.slotDiskUsageInfo.split(' / ')[1]
+          :title="`总空间 ${
+            currentDetailInfo.slotDiskUsageInfo.split(' / ')[1]
           }, 已使用 ${currentDetailInfo.slotDiskUsageInfo.split(' / ')[0]}`"
         >
           <a-row class="mb-1" justify="space-between">
@@ -734,9 +780,7 @@
           <a-col :span="6" class="ant-color-gray"></a-col>
           <a-col :span="17" class="pt-4">
             <a-button type="primary" shape="round">
-              {{
-              $t("metanet.buyStorage")
-              }}
+              {{ $t("metanet.buyStorage") }}
             </a-button>
           </a-col>
         </a-row>
@@ -782,7 +826,10 @@
               'border-radius': '12px',
             }"
           >
-            <XMdParser v-if="record.rawDescription" :content="record.rawDescription" />
+            <XMdParser
+              v-if="record.rawDescription"
+              :content="record.rawDescription"
+            />
             <div v-else class="text-gray-400 text-center">暂无描述</div>
           </div>
           <div
@@ -805,6 +852,11 @@
     </ModalDetail>
   </div>
 </template>
+
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "FileItem" };
+</script>
 
 <script setup lang="ts">
 import {
@@ -882,7 +934,11 @@ import {
 import dayjs from "dayjs/esm";
 import { assign, isEqual } from "lodash-es";
 import { message, Modal } from "ant-design-vue";
-import { useBaseStore, useTransportStore, useUserStore } from "../../../../store";
+import {
+  useBaseStore,
+  useTransportStore,
+  useUserStore,
+} from "../../../../store";
 import {
   DescObj,
   useDelay,
@@ -990,11 +1046,7 @@ const onClickDropDownMenuCreate = ({
   if (key === "folder") isShowCreateFolderModal.value = true;
   // if (key === "import") isShowImportModal.value = true;
 };
-const onClickDropDownMenuUpload = ({
-  key,
-}: {
-  key: "file" | "folder";
-}) => {
+const onClickDropDownMenuUpload = ({ key }: { key: "file" | "folder" }) => {
   // console.log("onClickDropDownMenuUpload", key);
   // 点击文件
   if (key === "file") {
@@ -1019,9 +1071,7 @@ const onBatchDelete = () => {
     //   "metanet.delContent2"
     // )}?`,
     title: `是否删除以下文件?`,
-    content: selectedRows.value
-      .map((i) => lastOfArray(i.fullName))
-      .join(" , "),
+    content: selectedRows.value.map((i) => lastOfArray(i.fullName)).join(" , "),
     icon: createVNode(ExclamationCircleOutlined),
     // content: createVNode(
     //   "div",
@@ -1109,9 +1159,7 @@ const onChangeMultipleUploadFile = async (e: Event) => {
   }
   const { availableSpace } = resultQuerySpace.data.me.driveSetting;
   // 如果即将要传的文件总大小超出可用, 退出
-  if (
-    [...input.files].reduce((a, b) => (a += b.size), 0) > +availableSpace
-  ) {
+  if ([...input.files].reduce((a, b) => (a += b.size), 0) > +availableSpace) {
     message.warning("超出最大可用容量!");
     input.value = "";
     return;
@@ -1161,9 +1209,7 @@ const onChangeMultipleUploadFolder = async (e: Event) => {
   }
   const { availableSpace } = resultQuerySpace.data.me.driveSetting;
   // 如果即将要传的文件总大小超出可用, 退出
-  if (
-    [...input.files].reduce((a, b) => (a += b.size), 0) > +availableSpace
-  ) {
+  if ([...input.files].reduce((a, b) => (a += b.size), 0) > +availableSpace) {
     message.warning("超出最大可用容量!");
     input.value = "";
     return;
@@ -1279,13 +1325,12 @@ const getAndSetCopyMoveModalTableData = () => {
       // console.log("目录res", item.dirId, item.dirName, resItem);
       if (resultQueryFileItem.err) return item;
       // 排除 非目录文件/ 根目录/ 自身/ 父目录(上一级)
-      const afterFilterList =
-        resultQueryFileItem.data.driveListFiles.filter(
-          (i): i is TFileItem =>
-            i !== null &&
-            i.isDir &&
-            !["root", item.dirId, parentId].includes(i.id)
-        );
+      const afterFilterList = resultQueryFileItem.data.driveListFiles.filter(
+        (i): i is TFileItem =>
+          i !== null &&
+          i.isDir &&
+          !["root", item.dirId, parentId].includes(i.id)
+      );
       // console.log("afterFilterList", afterFilterList);
       if (!afterFilterList.length) return item;
       item.children = await Promise.all(
@@ -1358,9 +1403,7 @@ const onCopyMoveModalConfirm = () => {
     )
   ) {
     message.warning(
-      isActionCopy
-        ? "不能复制到自身或其子目录下"
-        : "不能移动到自身或其子目录下"
+      isActionCopy ? "不能复制到自身或其子目录下" : "不能移动到自身或其子目录下"
     );
     return;
   }
@@ -1445,10 +1488,7 @@ const copyMoveModalTableRowClassName = (record: TDir, index: number) => {
     : "copyMoveModalRow";
 };
 /** 设置要移动的idList,操作类型 */
-const onCopyMoveModalPreAction = (
-  type: "move" | "copy",
-  idList: string[]
-) => {
+const onCopyMoveModalPreAction = (type: "move" | "copy", idList: string[]) => {
   // 重置为全部文件
   copyMoveModalCurrentSelectedDir.value = {
     dirId: "root",
@@ -1545,8 +1585,8 @@ const shareFileRulesRef = reactive({
   ],
 });
 const {
-  resetFields:resetConfirmFields,
-  validate:confirmValidate,
+  resetFields: resetConfirmFields,
+  validate: confirmValidate,
   validateInfos: shareFileValidateInfos,
 } = useForm(shareFileModelRef, shareFileRulesRef);
 const shareFileModalConfirmLoading = ref(false);
@@ -1661,13 +1701,14 @@ getPublishOptionList = async () => {
       fileId: i.current.userFile.id,
       fileName: lastOfArray(i.current.userFile.fullName),
       version: i.current.version,
-      showText: `id-${i.id}/ 版本-${i.current.version}/ 收藏数-${i.collectedCount
-        }/ ${lastOfArray(i.current.userFile.fullName)}`,
+      showText: `id-${i.id}/ 版本-${i.current.version}/ 收藏数-${
+        i.collectedCount
+      }/ ${lastOfArray(i.current.userFile.fullName)}`,
     }));
 };
 const {
-  resetFields:resetPublishFields,
-  validate:publishValidate,
+  resetFields: resetPublishFields,
+  validate: publishValidate,
   validateInfos: publishValidateInfos,
 } = useForm(publishModelRef, publishRulesRef);
 const publishModalConfirmLoading = ref(false);
@@ -1679,12 +1720,12 @@ const onPublishModalConfirm = async () => {
     const resultPublishCreateOrUpdate =
       publishId === "new"
         ? await apiPublishCreate({
-          userFileId: currentPublish.id,
-        })
+            userFileId: currentPublish.id,
+          })
         : await apiPublishUpdate({
-          userFileId: currentPublish.id,
-          id: publishId,
-        });
+            userFileId: currentPublish.id,
+            id: publishId,
+          });
     publishModalConfirmLoading.value = false;
     if (resultPublishCreateOrUpdate.err) {
       message.warning(resultPublishCreateOrUpdate.err.message);
@@ -1720,8 +1761,8 @@ const createFileRulesRef = reactive({
   ],
 });
 const {
-  resetFields:resetCreateFileFields,
-  validate:createFileValidate,
+  resetFields: resetCreateFileFields,
+  validate: createFileValidate,
   validateInfos: createFileValidateInfos,
 } = useForm(createFileModelRef, createFileRulesRef);
 const createFileModalConfirmLoading = ref(false);
@@ -2024,8 +2065,7 @@ const onRecordDetail = async (record: TFileItem) => {
   editDescriptionModalRef.desc = record.info.description || "";
   // 如果是文件夹 请求文件夹大小接口
   const showSize = record.isDir
-    ? (await apiQueryDirSize({ dirId: record.id })).data?.driveDirSize ??
-    0
+    ? (await apiQueryDirSize({ dirId: record.id })).data?.driveDirSize ?? 0
     : record.info.size;
   // 点击详情的时候设置编辑描述的弹窗里的内容 -end]
   currentDetailInfo.value = {
@@ -2040,9 +2080,8 @@ const onRecordDetail = async (record: TFileItem) => {
     }),
     size: formatBytes(+showSize),
     usedSpaceRatio:
-      ((+showSize / +record.user.driveSetting.totalSpace) * 100).toFixed(
-        3
-      ) + "%",
+      ((+showSize / +record.user.driveSetting.totalSpace) * 100).toFixed(3) +
+      "%",
     insertedAt: dayjs(record.insertedAt).format("YYYY年MM月DD日hh:mm"),
     updatedAt: dayjs(record.updatedAt).format("YYYY年MM月DD日hh:mm"),
     rawDescription: record.info.description || "",
@@ -2065,9 +2104,7 @@ const onRecordRename = (record: TFileItem) => {
   nextTick(() => {
     // console.log("renameInput", renameInput.value);
     // 设置默认选中编辑的文字区域
-    const end = record.isDir
-      ? toEditName.length
-      : toEditName.lastIndexOf(".");
+    const end = record.isDir ? toEditName.length : toEditName.lastIndexOf(".");
     renameInput.value?.input.setSelectionRange(0, end);
     renameInput.value?.focus();
   });
@@ -2114,7 +2151,6 @@ const onRecordDelete = (record: TFileItem) => {
     },
   });
 };
-
 
 let getAndSetTableDataFn: (
   params: Omit<ParamsQueryFileByDir, "pageNumber" | "pageSize">
@@ -2383,9 +2419,7 @@ const columns = [
       // 文件夹的排在前面
       if (a.isDir && !b.isDir) return 0;
       else if (!a.isDir && b.isDir) return 0;
-      return lastOfArray(a.fullName).localeCompare(
-        lastOfArray(b.fullName)
-      );
+      return lastOfArray(a.fullName).localeCompare(lastOfArray(b.fullName));
     },
     // width: 100,
     // ellipsis: true,
@@ -2412,13 +2446,7 @@ const columns = [
       else if (!a.isDir && b.isDir) return 0;
       return Number(a.info.size) - Number(b.info.size);
     },
-    customRender: ({
-      record,
-      text,
-    }: {
-      record: TFileItem;
-      text: string;
-    }) => {
+    customRender: ({ record, text }: { record: TFileItem; text: string }) => {
       return record.isDir ? "" : formatBytes(+text);
     },
   },
@@ -2504,8 +2532,7 @@ getAndSetTableDataFn = (
               // 如果目标文件夹是根目录,注册当前目录的id为root
               if (params.fullName?.length === 0) {
                 curFolderId.value = "root";
-                historyDir.value[historyDir.value.length - 1].isShared =
-                  false;
+                historyDir.value[historyDir.value.length - 1].isShared = false;
                 const curFileWindowId = exactUniqueTabId(route.fullPath);
                 baseStore.setWindowIdItem(+curFileWindowId, {
                   path: historyDir.value.map((i) => i.name).join("/"),
@@ -2532,9 +2559,7 @@ getAndSetTableDataFn = (
                 // });
                 baseStore.setWindowIdItem(+curFileWindowId, {
                   path: historyDir.value.map((i) => i.name).join("/"),
-                  desc: cacheFormatDescription(
-                    obj.info.description || ""
-                  ),
+                  desc: cacheFormatDescription(obj.info.description || ""),
                 });
                 return null;
               }
@@ -2565,16 +2590,12 @@ getAndSetTableDataFn = (
         );
         if (resultQueryFile.data.driveListFiles.length) {
           // 这里从第二页开始, 因为上面请求了第一页
-          apiLoopQueryFileByDir({ ...params, startPage: 2 }).then(
-            (loopRes) => {
-              tableData.value.push(
-                ...filterDriveListFiles(
-                  loopRes.data?.driveListFiles ?? []
-                )
-              );
-              isLoadingAllTableData.value = false;
-            }
-          );
+          apiLoopQueryFileByDir({ ...params, startPage: 2 }).then((loopRes) => {
+            tableData.value.push(
+              ...filterDriveListFiles(loopRes.data?.driveListFiles ?? [])
+            );
+            isLoadingAllTableData.value = false;
+          });
         } else {
           isLoadingAllTableData.value = false;
         }
@@ -2712,7 +2733,6 @@ const onDownload = (record: TFileItem) => {
   // .finally(hideLoadingMsg);
 };
 
-
 /** 当前详情数据 */
 const currentDetailInfo = ref<TDetailInfo>({});
 const isShowDetailModal = ref(false);
@@ -2743,9 +2763,9 @@ const onShowDiskDetail = () => {
     // currentDetailInfo.value.
     const { usedSpace, totalSpace, availableSpace } =
       resultQuerySpace.data.me.driveSetting;
-    diskDetail.slotDiskUsageInfo = `${formatBytes(
-      +usedSpace
-    )} / ${formatBytes(+totalSpace)}`;
+    diskDetail.slotDiskUsageInfo = `${formatBytes(+usedSpace)} / ${formatBytes(
+      +totalSpace
+    )}`;
     diskDetail.slotDiskUsagePercent = (
       (+usedSpace / +totalSpace) *
       100
@@ -2766,7 +2786,6 @@ watch(
     }
   }
 );
-
 </script>
 
 <style lang="less" scoped>
@@ -2775,5 +2794,4 @@ watch(
 }
 </style>
 
-<style lang="less" >
-</style>
+<style lang="less"></style>

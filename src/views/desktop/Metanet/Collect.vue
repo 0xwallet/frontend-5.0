@@ -4,14 +4,22 @@
     <div class="relative h-8 flex items-center mb-3 pr-1">
       <!-- 添加按钮 -->
       <a-tooltip title="添加">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onAddCollect">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onAddCollect"
+        >
           <FileAddOutlined />
         </a>
       </a-tooltip>
 
       <!-- 刷新按钮 -->
       <a-tooltip :title="$t('metanet.refresh')">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onRefreshTableData">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onRefreshTableData"
+        >
           <SyncOutlined :spin="tableLoading" />
         </a>
       </a-tooltip>
@@ -33,13 +41,15 @@
           shape="round"
           type="primary"
           @click="onOther"
-        >其他操作</a-button>
+          >其他操作</a-button
+        >
         <a-button
           :disabled="selectedRows.length === 0"
           shape="round"
           type="danger"
           @click="onBatchCancel"
-        >取消收藏</a-button>
+          >取消收藏</a-button
+        >
       </div>
     </div>
     <!-- 表格 -->
@@ -60,12 +70,17 @@
             class="ml-2"
             :title="record.fullName[0]"
             @click="onClickTableItemName(record)"
-          >{{ record.fullName[0] }}</a>
+            >{{ record.fullName[0] }}</a
+          >
           <!-- hover 才显示的shortCut栏 -->
           <div class="tableShortcut hidden inline-block absolute right-0">
             <!-- 详情 -->
             <a-tooltip title="详情">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordDetail(record)">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordDetail(record)"
+              >
                 <InfoCircleOutlined />
               </a>
             </a-tooltip>
@@ -157,7 +172,8 @@
                 color="orange"
                 :key="item"
                 class="mb-1"
-              >{{ item }}</a-tag>
+                >{{ item }}</a-tag
+              >
             </template>
             {{ record.desc.text }}
           </a-col>
@@ -166,6 +182,11 @@
     </ModalDetail>
   </div>
 </template>
+
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "MetanetCollect" };
+</script>
 
 <script setup lang="ts">
 import {
@@ -201,7 +222,7 @@ import {
   lastOfArray,
 } from "../../../hooks";
 import dayjs from "dayjs/esm";
-import { createVNode } from "vue";
+import { createVNode, onActivated } from "vue";
 
 type TCollectItem = {
   type: "SHARE" | "PUBLISH";
@@ -299,8 +320,8 @@ const onRefreshTableData = () => {
             ? i.item.status === null
               ? `剩余时间${dayjs(i.item.expiredAt).diff(dayjs(), "day")}天`
               : i.item.status === "expired"
-                ? "已过期"
-                : "无效"
+              ? "已过期"
+              : "无效"
             : "已删除",
           hash: i.item.userFile?.hash ?? "",
           code: i.item.code ?? "",
@@ -409,8 +430,8 @@ const onRecordCancel = (record: TCollectItem) => {
   });
 };
 const onClickTableItemName = (record: TCollectItem) => {
-  console.log('TODO')
-}
+  console.log("TODO");
+};
 const isShowDetailModal = ref(false);
 const currenDetailInfo = ref<TDetailInfo>({});
 // 关闭弹窗时清空数据
@@ -424,5 +445,4 @@ watch(
 );
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

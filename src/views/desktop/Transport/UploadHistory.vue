@@ -7,7 +7,8 @@
         class="mr-2"
         :disabled="uploadSuccessList.length === 0"
         @click="onBatchClear"
-      >清除所有记录</a-button>
+        >清除所有记录</a-button
+      >
       <div v-if="uploadSuccessList.length > 0">
         共传输完成
         <span class="ant-color-blue-6">{{ uploadSuccessList.length }}</span>
@@ -56,19 +57,28 @@
           </div>
           <div class="text-gray-400">上传成功</div>
         </div>
-        <div v-else-if="record.status === 'successUpdate'" class="flex items-center">
+        <div
+          v-else-if="record.status === 'successUpdate'"
+          class="flex items-center"
+        >
           <div class="w-3.5 h-3.5 mr-2">
             <img src="../../../assets/images/success_update.png" />
           </div>
           <div class="text-gray-400">更新成功</div>
         </div>
-        <div v-else-if="record.status === 'successPeerTransferSend'" class="flex items-center">
+        <div
+          v-else-if="record.status === 'successPeerTransferSend'"
+          class="flex items-center"
+        >
           <div class="w-3.5 h-3.5 mr-2">
             <img src="../../../assets/images/success_peerTransfer.png" />
           </div>
           <div class="text-gray-400">空投发送成功</div>
         </div>
-        <div v-else-if="record.status === 'successPeerTransferReceive'" class="flex items-center">
+        <div
+          v-else-if="record.status === 'successPeerTransferReceive'"
+          class="flex items-center"
+        >
           <div class="w-3.5 h-3.5 mr-2">
             <img src="../../../assets/images/success_peerTransfer.png" />
           </div>
@@ -103,6 +113,11 @@
   </div>
 </template>
 
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "TransportHistory" };
+</script>
+
 <script setup lang="ts">
 import { useBaseStore, useTransportStore } from "../../../store";
 import {
@@ -127,7 +142,6 @@ import { apiLoopQueryFileByDir } from "../../../apollo/api";
 import { THistoryDirItem } from "../Metanet/components/FileItem.vue";
 import { useLocalStorage } from "@vueuse/core";
 import { Modal } from "ant-design-vue";
-
 
 const { t } = useI18n();
 const router = useRouter();
@@ -233,9 +247,7 @@ const onRecordOpenDir = async (record: UploadItem) => {
       name: "MetanetFile",
       query: {
         id: windowId,
-        path: upperPath.length
-          ? "~/" + fullName.slice(0, -1).join("/")
-          : "~",
+        path: upperPath.length ? "~/" + fullName.slice(0, -1).join("/") : "~",
       },
       params: {
         // TODO 万一有重名文件?
@@ -261,5 +273,4 @@ const fullNameToFileDir = (record: UploadItem) => {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

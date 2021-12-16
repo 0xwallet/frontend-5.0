@@ -5,8 +5,14 @@
         <component :is="Component" />
       </transition>
     </router-view>
-    <MPopupLogin :visible="isShowLoginPopup" @update:visible="onUpdateVisible" />
-    <MPopupLeftMenu :visible="isShowMobileLeftMenuPopup" @update:visible="onUpdateLeftMenuVisible" />
+    <MPopupLogin
+      :visible="isShowLoginPopup"
+      @update:visible="onUpdateVisible"
+    />
+    <MPopupLeftMenu
+      :visible="isShowMobileLeftMenuPopup"
+      @update:visible="onUpdateLeftMenuVisible"
+    />
     <MPhotoSwipe />
   </div>
 </template>
@@ -17,7 +23,11 @@ import { addHead } from "../../hooks";
 import { Toast } from "vant";
 import { computed, defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { MPopupLogin, MPopupLeftMenu, MPhotoSwipe } from "../../components/mobile";
+import {
+  MPopupLogin,
+  MPopupLeftMenu,
+  MPhotoSwipe,
+} from "../../components/mobile";
 
 // document
 //   .getElementsByName("viewport")[0]
@@ -38,8 +48,7 @@ const router = useRouter();
 const route = useRoute();
 /** 全局的登录弹窗 -start*/
 const isShowLoginPopup = computed(() => baseStore.isShowLoginModal);
-const onUpdateVisible = (v: boolean) =>
-  baseStore.changeIsShowLoginModal(v);
+const onUpdateVisible = (v: boolean) => baseStore.changeIsShowLoginModal(v);
 /** 全局的登录弹窗 -end*/
 
 /** 全局的左侧菜单弹层 -start*/
@@ -68,7 +77,6 @@ async function trySignInWithLocalStorageAndRedirect() {
   // console.log("[从本地存储中登录成功] : ", result.data);
 }
 trySignInWithLocalStorageAndRedirect();
-
 </script>
 
 <style lang="less">
@@ -89,6 +97,9 @@ body,
   width: 100%;
   height: 100%;
   font-family: "lato";
+}
+a {
+  color: inherit;
 }
 html {
   // font-size: 14px;

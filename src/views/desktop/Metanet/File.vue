@@ -4,31 +4,31 @@
   </keep-alive>
 </template>
 
+<script lang="ts">
+import FileItem from "./components/FileItem.vue";
+
+/** {FileItem1:FIleItem,...,FileItem20:FileItem} */
+const fileItemComponents = Array(MAX_FILEITEM_COUNT)
+  .fill(null)
+  .map((i, idx) => `FileItem${idx}`)
+  .reduce<{ [key: string]: typeof FileItem }>((acc, cur) => {
+    acc[cur] = FileItem;
+    return acc;
+  }, {});
+export default {
+  name: "MetanetFile", // name for keepAlive
+  components: {
+    ...fileItemComponents, // dynamic fileItem components
+  },
+};
+</script>
+
 <script setup lang="ts">
 import { MAX_FILEITEM_COUNT } from "../../../constants";
 import { useBaseStore } from "../../../store";
 import { values } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
-import FileItem from "./components/FileItem.vue";
 
-/** {FileItem1:FIleItem,...,FileItem20:FileItem} */
-// const fileItemComponents = Array(MAX_FILEITEM_COUNT)
-//   .fill(null)
-//   .map((i, idx) => `FileItem${idx}`)
-//   .reduce<{ [key: string]: Component }>((acc, cur) => {
-//     acc[cur] = FileItem;
-//     return acc;
-//   }, {});
-const FileItem1 = FileItem;
-const FileItem2 = FileItem;
-const FileItem3 = FileItem;
-const FileItem4 = FileItem;
-const FileItem5 = FileItem;
-const FileItem6 = FileItem;
-const FileItem7 = FileItem;
-const FileItem8 = FileItem;
-const FileItem9 = FileItem;
-const FileItem10 = FileItem;
 /** 根据数字获取对应的组件名称 */
 const getComponentNameByNum = (n: number) => `FileItem${n}`;
 
@@ -44,20 +44,6 @@ const keepAliveList = computed(() => {
 });
 // const curComponent = computed(() => baseStore.curFileWindow);
 const curComponent = ref("FileItem1");
-// watch(
-//   () => curComponent.value,
-//   (newVal) => console.log("curComponent-newVal", newVal)
-// );
-// watch(
-//   () => keepAliveList.value,
-//   (newVal) => {
-//     console.log("keepAliveList", newVal);
-//   },
-//   {
-//     immediate: true,
-//     deep: true,
-//   }
-// );
 watch(
   () => route,
   (newVal) => {

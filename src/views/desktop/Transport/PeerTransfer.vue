@@ -1,8 +1,10 @@
 <template>
-  <div :style="{
-    height: '100%',
-    padding: 0,
-  }">
+  <div
+    :style="{
+      height: '100%',
+      padding: 0,
+    }"
+  >
     <!-- 这个为隐藏的作为选择文件用的 -->
     <input
       multiple
@@ -27,14 +29,35 @@
           </XLink>
         </a-tooltip>
         <div
-          class="flex-1 mr-2 px-3 flex items-center h-address-bar bg-address-bar rounded-full truncate relative"
+          class="
+            flex-1
+            mr-2
+            px-3
+            flex
+            items-center
+            h-address-bar
+            bg-address-bar
+            rounded-full
+            truncate
+            relative
+          "
         >
           <!-- <XLink @click="onSendAddFiles">
             <PlusSquareOutlined class="mr-2" />
           </XLink>-->
           <span v-if="!peerLink" class="text-gray-400">拖拽添加文件</span>
           <div
-            class="absolute left-2 inset-0 z-50 rounded-full flex items-center justify-between pr-2"
+            class="
+              absolute
+              left-2
+              inset-0
+              z-50
+              rounded-full
+              flex
+              items-center
+              justify-between
+              pr-2
+            "
             :style="{
               border: '2px dashed transparent',
             }"
@@ -56,9 +79,7 @@
                 </XLink>
               </a-popover>
               <XLink class="flex-1 truncate mr-2" @click="onCopyPeerLink">
-                {{
-                  peerLink
-                }}
+                {{ peerLink }}
               </XLink>
               <XLink class="inline-block" @click="onCopyPeerLink">
                 <CopyOutlined />
@@ -68,7 +89,19 @@
         </div>
         <div
           v-if="isUserLoggedIn"
-          class="w-28 text-center font-semibold h-address-bar rounded-full pl-2 bg-address-bar flex items-center peerCodeWrap mr-2"
+          class="
+            w-28
+            text-center
+            font-semibold
+            h-address-bar
+            rounded-full
+            pl-2
+            bg-address-bar
+            flex
+            items-center
+            peerCodeWrap
+            mr-2
+          "
         >
           <div class="flex-1">
             <input
@@ -83,7 +116,11 @@
           <XLink v-if="peerLink" class="inline-block" @click="onCopyPeerCode">
             <CopyOutlined class="px-2" />
           </XLink>
-          <XLink v-else :disabled="peerCode.length < 6" @click="onReceiveConfirmPeerCode">
+          <XLink
+            v-else
+            :disabled="peerCode.length < 6"
+            @click="onReceiveConfirmPeerCode"
+          >
             <LoadingOutlined v-if="isCheckingPeerCode" class="px-2" />
             <RightCircleOutlined v-else class="px-2" />
           </XLink>
@@ -91,7 +128,15 @@
         <!-- 发送端 显示添加文件剩余时间和 关闭按钮 -->
         <!-- <template v-if="isActionSend"> -->
         <div
-          class="rounded-full h-address-bar bg-address-bar overflow-hidden flex items-center justify-between"
+          class="
+            rounded-full
+            h-address-bar
+            bg-address-bar
+            overflow-hidden
+            flex
+            items-center
+            justify-between
+          "
           :style="{
             transition: '.3s',
             'max-width': peerLink ? '200px' : '0px',
@@ -101,7 +146,8 @@
             <span
               v-if="addFilesCountDownText"
               class="font-semibold ant-color-blue-6 ml-2"
-            >{{ addFilesCountDownText }}</span>
+              >{{ addFilesCountDownText }}</span
+            >
           </a-tooltip>
 
           <XLink class="inline-block" @click="onResetStatus">
@@ -137,7 +183,12 @@
           </span>
         </div>
       </div>-->
-      <XTableFiles rowKey="fileHash" :disableSelect="true" :columns="columns" :data="tableData">
+      <XTableFiles
+        rowKey="fileHash"
+        :disableSelect="true"
+        :columns="columns"
+        :data="tableData"
+      >
         <template #name="{ record }">
           <!-- <div>55----{{ record }}</div> -->
           <div :title="record.fileName" class="truncate">
@@ -168,9 +219,11 @@
               :percent="record.progress"
               :showInfo="false"
             ></a-progress>
-            <div :style="{
-              'margin-top': '-4px',
-            }">
+            <div
+              :style="{
+                'margin-top': '-4px',
+              }"
+            >
               <template
                 v-if="
                   [
@@ -181,16 +234,31 @@
                   ].includes(record.status)
                 "
               >
-                <span v-if="record.status === 'downloadUnstarted'">下载未开始</span>
-                <span v-else-if="record.status === 'downloading'">下载进行中</span>
-                <span v-else-if="record.status === 'successSend'">发送成功</span>
-                <span v-else-if="record.status === 'successReceive'">接收成功</span>
+                <span v-if="record.status === 'downloadUnstarted'"
+                  >下载未开始</span
+                >
+                <span v-else-if="record.status === 'downloading'"
+                  >下载进行中</span
+                >
+                <span v-else-if="record.status === 'successSend'"
+                  >发送成功</span
+                >
+                <span v-else-if="record.status === 'successReceive'"
+                  >接收成功</span
+                >
               </template>
               <template v-else>
                 <!-- 指示灯 -->
                 <a-tooltip :title="calcRecordStatusTooltip(record)">
                   <span
-                    class="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle"
+                    class="
+                      inline-block
+                      w-1.5
+                      h-1.5
+                      rounded-full
+                      mr-1
+                      align-middle
+                    "
                     :style="{
                       'background-color': calcRecordStatusColor(record),
                     }"
@@ -208,7 +276,9 @@
                     <!-- {{ calcStatusText(record.status) }} -->
                     {{ formatBytes(record.speed) }}/S
                   </span>
-                  <span v-if="record.speed > 0">- {{ calcTimeLeftText(record) }}</span>
+                  <span v-if="record.speed > 0"
+                    >- {{ calcTimeLeftText(record) }}</span
+                  >
                 </template>
                 <template v-else-if="record.status === 'waiting'">
                   <!-- <span>等待确认</span> -->
@@ -232,7 +302,9 @@
                     <!-- {{ calcStatusText(record.status) }} -->
                     {{ formatBytes(record.speed) }}/S
                   </span>
-                  <span v-if="record.speed > 0">- {{ calcTimeLeftText(record) }}</span>
+                  <span v-if="record.speed > 0"
+                    >- {{ calcTimeLeftText(record) }}</span
+                  >
                 </template>
                 <!-- <template v-else-if="record.status === 'successReceive'">
                   <span>下载成功</span>
@@ -313,6 +385,11 @@
   </div>
 </template>
 
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "TransportPeerTransfer" };
+</script>
+
 <script setup lang="ts">
 import {
   computed,
@@ -368,12 +445,7 @@ import type { classMultiClient, TMessageType, TSession } from "nkn";
 import { getAnonymousMultiClient } from "../../../apollo/nknConfig";
 import { useTransportStore, useUserStore } from "../../../store";
 import { pick, remove } from "lodash-es";
-import {
-  get,
-  set,
-  delMany,
-  keys,
-} from "idb-keyval";
+import { get, set, delMany, keys } from "idb-keyval";
 import { decode, encode } from "@msgpack/msgpack";
 import { MAX_MTU } from "../../../constants";
 import { useClipboard, useLocalStorage } from "@vueuse/core";
@@ -392,19 +464,19 @@ type PeerFileItem = {
   progress: number;
   speed: number;
   status:
-  | "calculating" // 计算 hash 中
-  | "queueing"
-  | "sending"
-  | "receiving"
-  | "pause" // 暂停
-  | "cancel" // 取消
-  | "waiting" // 发送完后等待对方确认收到
-  | "downloadUnstarted" // 下载未开始
-  | "downloading" // 下载中
-  | "downloadFinished" // 下载已完成
-  | "successSend"
-  | "successReceive"
-  | "failed";
+    | "calculating" // 计算 hash 中
+    | "queueing"
+    | "sending"
+    | "receiving"
+    | "pause" // 暂停
+    | "cancel" // 取消
+    | "waiting" // 发送完后等待对方确认收到
+    | "downloadUnstarted" // 下载未开始
+    | "downloading" // 下载中
+    | "downloadFinished" // 下载已完成
+    | "successSend"
+    | "successReceive"
+    | "failed";
 };
 
 /** channel shakehand message type */
@@ -572,10 +644,7 @@ const removeNknClientMsgListener = (fn: (m: TMessageType) => void) => {
 const remoteDeviceInfo = ref("");
 const calcRecordStatusTooltip = (record: PeerFileItem) => {
   if (
-    isStatus(
-      ["calculating", "queueing", "pause", "cancel", "failed"],
-      record
-    )
+    isStatus(["calculating", "queueing", "pause", "cancel", "failed"], record)
   ) {
     return "未连接";
   }
@@ -587,10 +656,7 @@ const calcRecordStatusTooltip = (record: PeerFileItem) => {
 };
 const calcRecordStatusColor = (record: PeerFileItem) => {
   if (
-    isStatus(
-      ["calculating", "queueing", "pause", "cancel", "failed"],
-      record
-    )
+    isStatus(["calculating", "queueing", "pause", "cancel", "failed"], record)
   ) {
     return "#ff4d4f";
   }
@@ -613,10 +679,10 @@ const calcFileListDigest = (list: PeerFileItem[]) => {
       if (!i.file) return;
       const { fileName, fileSize } = i;
       const fileHashStr = await getFileDigest(i.file);
-      setTableItem(
-        (v) => v.fileName === fileName && v.fileSize === fileSize,
-        { fileHash: fileHashStr, status: "queueing" }
-      );
+      setTableItem((v) => v.fileName === fileName && v.fileSize === fileSize, {
+        fileHash: fileHashStr,
+        status: "queueing",
+      });
       console.log(`${fileName}文件的摘要为:${fileHashStr}`);
     })
   ).finally(() => remove(calcHashPromiseArr, (v) => v === task));
@@ -1077,9 +1143,7 @@ const onResetStatus = () => {
             item.status = "cancel";
           });
           // 全部删除 idb 缓存
-          delMany(tableData.value.map((i) => i.fileHash)).then(() =>
-            resolve()
-          );
+          delMany(tableData.value.map((i) => i.fileHash)).then(() => resolve());
           tableData.value.length = 0;
           peerLink.value = "";
           peerCode.value = "";
@@ -1349,25 +1413,23 @@ if (storegeReceiveData.value.length) {
         isActionSend.value = false;
         storegeReceiveData.value = hasDataList;
         Promise.all(
-          storegeReceiveData.value.map<Promise<PeerFileItem>>(
-            async (item) => {
-              const sameHashIdbKeyList = fileIdbNameList.filter((i) =>
-                i.includes(item.fileHash)
-              );
-              const totalIdbLen = await getIdbItemLen(
-                sameHashIdbKeyList,
-                item.fileSize
-              );
-              const progress = calcPercent(totalIdbLen, item.fileSize);
-              return {
-                ...item,
-                file: new File(["0"], item.fileName),
-                progress,
-                speed: 0,
-                status: progress === 100 ? "successReceive" : "queueing",
-              };
-            }
-          )
+          storegeReceiveData.value.map<Promise<PeerFileItem>>(async (item) => {
+            const sameHashIdbKeyList = fileIdbNameList.filter((i) =>
+              i.includes(item.fileHash)
+            );
+            const totalIdbLen = await getIdbItemLen(
+              sameHashIdbKeyList,
+              item.fileSize
+            );
+            const progress = calcPercent(totalIdbLen, item.fileSize);
+            return {
+              ...item,
+              file: new File(["0"], item.fileName),
+              progress,
+              speed: 0,
+              status: progress === 100 ? "successReceive" : "queueing",
+            };
+          })
         ).then((list) => {
           tableData.value.push(...list);
           if (list.some((e) => e.progress < 100)) {
@@ -1568,10 +1630,7 @@ const handleReceiveFile = async (
       i.includes(itemToPush.fileHash)
     );
     if (sameHashIdbKeyList.length) {
-      startLen = await getIdbItemLen(
-        sameHashIdbKeyList,
-        itemToPush.fileSize
-      );
+      startLen = await getIdbItemLen(sameHashIdbKeyList, itemToPush.fileSize);
     }
     console.log("startLen", startLen);
     // 发送offset信息
@@ -1853,7 +1912,6 @@ const onCloseAlert = (type: "unsupported" | "outdated") => {
   }
 };
 // 不支持的浏览器/过期提示 --end
-
 </script>
 
 <style lang="less" scoped>
@@ -1894,39 +1952,11 @@ input::placeholder {
   border-color: #1890ff !important;
 }
 </style>
-.bg-address-bar {
-  background-color: #f7f7f8;
-}
-.h-address-bar {
-  height: 28px;
-  line-height: 28px;
-}
-.peerCodeWrap {
-  border: 2px solid transparent;
-  transition: 0.2s;
-}
-.peerCodeInput {
-  &:focus {
-    outline: none;
-  }
-}
-.peerCodeWrap {
-  &:focus-within {
-    background-color: white;
-    border-color: #1890ff;
-  }
-}
-// 名称列的圆角
-// :deep(.ant-table-thead > tr > th:nth-of-type(1)) {
-//   border-radius: 10px 0 0 10px !important;
-// }
-// .ant-table-placeholder {
-//   border-top: none;
-// }
-input::placeholder {
-  font-weight: normal;
-}
-.dashedBorder {
-  // border: 2px dashed #1890ff;
-  border-color: #1890ff !important;
-}
+.bg-address-bar { background-color: #f7f7f8; } .h-address-bar { height: 28px;
+line-height: 28px; } .peerCodeWrap { border: 2px solid transparent; transition:
+0.2s; } .peerCodeInput { &:focus { outline: none; } } .peerCodeWrap {
+&:focus-within { background-color: white; border-color: #1890ff; } } //
+名称列的圆角 // :deep(.ant-table-thead > tr > th:nth-of-type(1)) { //
+border-radius: 10px 0 0 10px !important; // } // .ant-table-placeholder { //
+border-top: none; // } input::placeholder { font-weight: normal; } .dashedBorder
+{ // border: 2px dashed #1890ff; border-color: #1890ff !important; }

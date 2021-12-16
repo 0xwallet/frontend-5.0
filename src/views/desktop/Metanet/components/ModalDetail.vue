@@ -26,9 +26,9 @@
           <slot :name="key" :record="detail">
             <a-row class="mb-1" justify="space-between" :key="key">
               <a-col class="ant-color-gray" :span="6">{{
-                formatDetailKey(key)
+                formatDetailKey(`${key}`)
               }}</a-col>
-              <template v-if="canShowToolTipKeys.includes(key)">
+              <template v-if="canShowToolTipKeys.includes(`${key}`)">
                 <a-tooltip :title="value">
                   <a-col :span="17" class="truncate">{{ value }}</a-col>
                 </a-tooltip>
@@ -52,7 +52,7 @@ export type TDetailInfo = {
   [key: string]: any;
 };
 // TODOD 国际化
-const MAP_DETAIL_KEY = {
+const MAP_DETAIL_KEY: { [k: string]: string } = {
   name: "名称",
   size: "大小",
   type: "类型",
@@ -87,12 +87,10 @@ export default defineComponent({
     /** 穿透v-model */
     const updateFromAModal = (v: boolean) => emit("update:visible", v);
     /** map出文字 */
-    const formatDetailKey = (k: keyof typeof MAP_DETAIL_KEY) =>
-      MAP_DETAIL_KEY[k];
+    const formatDetailKey = (k: string) => MAP_DETAIL_KEY[k] ?? "";
     return { updateFromAModal, formatDetailKey, canShowToolTipKeys };
   },
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

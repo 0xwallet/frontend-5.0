@@ -4,14 +4,22 @@
     <div class="relative h-8 flex items-center mb-3 pr-1">
       <!-- 添加按钮 -->
       <a-tooltip title="添加">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onAddPublish">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onAddPublish"
+        >
           <FileAddOutlined />
         </a>
       </a-tooltip>
 
       <!-- 刷新按钮 -->
       <a-tooltip :title="$t('metanet.refresh')">
-        <a href="javascript:;" class="inline-block px-1 mr-2" @click="onRefreshTableData">
+        <a
+          href="javascript:;"
+          class="inline-block px-1 mr-2"
+          @click="onRefreshTableData"
+        >
           <SyncOutlined :spin="tableLoading" />
         </a>
       </a-tooltip>
@@ -33,13 +41,15 @@
           shape="round"
           type="primary"
           @click="onCopyPublish"
-        >复制发布</a-button>
+          >复制发布</a-button
+        >
         <a-button
           :disabled="selectedRows.length === 0"
           shape="round"
           type="danger"
           @click="onBatchDelete"
-        >删除发布</a-button>
+          >删除发布</a-button
+        >
       </div>
     </div>
     <!-- 表格 -->
@@ -54,30 +64,46 @@
       <template #name="{ record }">
         <div class="truncate relative">
           <!-- 空白就是blank 文件夹就是folder -->
-          <XFileTypeIcon class="w-6 h-6" :type="record.current.userFile.fileType" />
+          <XFileTypeIcon
+            class="w-6 h-6"
+            :type="record.current.userFile.fileType"
+          />
           <a
             href="javascript:;"
             class="ml-2"
             :title="record.current.userFile.fullName[0]"
             @click="onClickTableItemName(record)"
-          >{{ record.current.userFile.fullName[0] }}</a>
+            >{{ record.current.userFile.fullName[0] }}</a
+          >
           <!-- hover 才显示的shortCut栏 -->
           <div class="tableShortcut hidden inline-block absolute right-0">
             <!-- 详情 -->
             <a-tooltip title="详情">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordDetail(record)">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordDetail(record)"
+              >
                 <InfoCircleOutlined />
               </a>
             </a-tooltip>
             <!-- 详情 -->
             <a-tooltip title="复制链接">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordCopyLink()">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordCopyLink()"
+              >
                 <CopyOutlined />
               </a>
             </a-tooltip>
             <!-- 替换 -->
             <a-tooltip title="更新(版本)">
-              <a class="shortcutButton ml-1" href="javascript:;" @click="onRecordUpdate()">
+              <a
+                class="shortcutButton ml-1"
+                href="javascript:;"
+                @click="onRecordUpdate()"
+              >
                 <RotateRightOutlined />
               </a>
             </a-tooltip>
@@ -113,7 +139,11 @@
           <a-col class="ant-color-gray" :span="6">
             资源
             <a-tooltip title="复制地址">
-              <a href="javascript:;" class="ml-2" @click="onCopyTxid(record.txid)">
+              <a
+                href="javascript:;"
+                class="ml-2"
+                @click="onCopyTxid(record.txid)"
+              >
                 <CopyOutlined />
               </a>
             </a-tooltip>
@@ -135,7 +165,8 @@
                 color="orange"
                 :key="item"
                 class="mb-1"
-              >{{ item }}</a-tag>
+                >{{ item }}</a-tag
+              >
             </template>
             {{ record.desc.text }}
           </a-col>
@@ -144,6 +175,11 @@
     </ModalDetail>
   </div>
 </template>
+
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "MetanetPublish" };
+</script>
 
 <script setup lang="ts">
 import {
@@ -182,7 +218,6 @@ import {
 import { cloneDeep } from "lodash-es";
 import ModalDetail, { TDetailInfo } from "./components/ModalDetail.vue";
 import { useClipboard } from "@vueuse/core";
-
 
 const { t } = useI18n();
 const tableLoading = ref(false);
@@ -385,8 +420,6 @@ watch(
     }
   }
 );
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

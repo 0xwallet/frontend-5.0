@@ -29,25 +29,46 @@
           <div v-if="userStore.avatar"></div>
           <div
             v-else
-            class="w-14 h-14 relative rounded-full flex items-center justify-center text-xl text-white"
+            class="
+              w-14
+              h-14
+              relative
+              rounded-full
+              flex
+              items-center
+              justify-center
+              text-xl text-white
+            "
             :style="{
               background: 'linear-gradient(45deg, #00acc1, #00d5e2)',
             }"
-          >{{ userStore.username[0].toUpperCase() }}</div>
+          >
+            {{ userStore.username[0].toUpperCase() }}
+          </div>
           <!-- 姓名与签名 -->
           <div class="ml-3">
-            <div class="font-semibold font-16 mb-2">{{ userStore.username }}</div>
+            <div class="font-semibold font-16 mb-2">
+              {{ userStore.username }}
+            </div>
             <div class="font-12 text-gray-400">签名签名签名</div>
           </div>
         </div>
-        <div v-if="bsvUsdExchangeRate" class="font-semibold">1 BSV = {{ bsvUsdExchangeRate }} USD</div>
+        <div v-if="bsvUsdExchangeRate" class="font-semibold">
+          1 BSV = {{ bsvUsdExchangeRate }} USD
+        </div>
       </div>
-      <div :style="{
-        height: '1px',
-        background: '#eff2f9',
-      }"></div>
+      <div
+        :style="{
+          height: '1px',
+          background: '#eff2f9',
+        }"
+      ></div>
       <div class="px-6 py-6 flex items-center">
-        <div v-for="(obj, key) in userVerifyForm" :key="key" class="flex-1 pl-5 relative">
+        <div
+          v-for="(obj, key) in userVerifyForm"
+          :key="key"
+          class="flex-1 pl-5 relative"
+        >
           <XStatusDot
             :type="obj.isVerified ? 'success' : 'default'"
             class="absolute"
@@ -97,8 +118,12 @@
                 width: 'calc(100% - 75px)',
               }"
             >
-              <a-tooltip :title="userStore.multiClient ? userStore.multiClient.addr : ''">
-                <a href="javascript:;">{{ userStore.multiClient ? userStore.multiClient.addr : "" }}</a>
+              <a-tooltip
+                :title="userStore.multiClient ? userStore.multiClient.addr : ''"
+              >
+                <a href="javascript:;">{{
+                  userStore.multiClient ? userStore.multiClient.addr : ""
+                }}</a>
               </a-tooltip>
             </div>
             <div class="flex items-center">
@@ -185,7 +210,9 @@
               <div>1.085227 BSV</div>
             </div>
             <div class="flex items-center">
-              <a-button class="mr-2" type="primary" @click="onRecharge">充值</a-button>
+              <a-button class="mr-2" type="primary" @click="onRecharge"
+                >充值</a-button
+              >
               <a-button @click="onWithDraw">提现</a-button>
             </div>
           </div>
@@ -266,7 +293,10 @@
         >
           <a-col :span="6">代币类型:</a-col>
           <a-col v-if="modalAssetStageOneType === 1" :span="16">
-            <a-radio-group class="flex items-center" v-model:value="modalAssetStageTwoCryptoType">
+            <a-radio-group
+              class="flex items-center"
+              v-model:value="modalAssetStageTwoCryptoType"
+            >
               <a-radio
                 v-for="item in modalAssetStageTwoCryptoRadioOptions"
                 :key="item"
@@ -274,14 +304,17 @@
                 :value="item"
               >
                 <div class="relative ml-2">
+                  <!-- :src="require(`../../../assets/images/cryptos/${item}.png`)" -->
                   <img
                     class="w-16 h-16"
-                    :src="require(`../../../assets/images/cryptos/${item}.png`)"
+                    :src="getCryptosImageUrl(item)"
                     :alt="item"
                   />
                   <div
                     class="absolute font-14 left-0 right-0 text-center pt-0.5"
-                  >{{ item.toUpperCase() }}</div>
+                  >
+                    {{ item.toUpperCase() }}
+                  </div>
                 </div>
               </a-radio>
             </a-radio-group>
@@ -312,15 +345,34 @@
       <template #footer>
         <div v-if="modalAssetStage === 1">
           <a-button class="w-20" @click="onCloseModalAsset">取消</a-button>
-          <a-button class="w-20" type="primary" @click="onConfirmModalAssetStage(1)">下一步</a-button>
+          <a-button
+            class="w-20"
+            type="primary"
+            @click="onConfirmModalAssetStage(1)"
+            >下一步</a-button
+          >
         </div>
         <div v-if="modalAssetStage === 2">
-          <a-button class="w-20" @click="onBackToModalAssetStage(1)">上一步</a-button>
-          <a-button class="w-20" type="primary" @click="onConfirmModalAssetStage(2)">下一步</a-button>
+          <a-button class="w-20" @click="onBackToModalAssetStage(1)"
+            >上一步</a-button
+          >
+          <a-button
+            class="w-20"
+            type="primary"
+            @click="onConfirmModalAssetStage(2)"
+            >下一步</a-button
+          >
         </div>
         <div v-if="modalAssetStage === 3">
-          <a-button class="w-20" @click="onBackToModalAssetStage(2)">上一步</a-button>
-          <a-button class="w-20" type="primary" @click="onConfirmModalAssetStage(3)">确认</a-button>
+          <a-button class="w-20" @click="onBackToModalAssetStage(2)"
+            >上一步</a-button
+          >
+          <a-button
+            class="w-20"
+            type="primary"
+            @click="onConfirmModalAssetStage(3)"
+            >确认</a-button
+          >
         </div>
       </template>
     </a-modal>
@@ -352,7 +404,10 @@ type ModalAssetCryptoType = "bsv" | "nkn";
 /** 第二步中的法定货币类型 */
 type ModalAssetLegalType = "dollar" | "cny";
 
-
+const getCryptosImageUrl = (item: "bsv" | "nkn") => {
+  return new URL(`../../../assets/images/cryptos/${item}.png`, import.meta.url)
+    .href;
+};
 const { t } = useI18n();
 const userStore = useUserStore();
 /** 编辑个人资料 */
@@ -495,7 +550,6 @@ const onModalAssetClose = () => {
 const modalQrCodeAddr = ref("");
 const modalQrCodeVisible = ref(false);
 /** 二维码弹窗控制 end*/
-
 </script>
 
 <style scoped></style>

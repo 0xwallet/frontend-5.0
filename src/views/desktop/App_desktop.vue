@@ -1,7 +1,10 @@
 <template>
   <a-config-provider :locale="refLocale">
     <!-- 全局登录弹窗 -->
-    <XModalLogin :visible="isShowLoginModal" @update:visible="onUpdateVisible" />
+    <XModalLogin
+      :visible="isShowLoginModal"
+      @update:visible="onUpdateVisible"
+    />
     <router-view />
     <XPhotoSwipe />
   </a-config-provider>
@@ -99,6 +102,9 @@ body,
   height: 100%;
   font-family: "lato";
 }
+a {
+  color: inherit;
+}
 /* 不加 scope 属性,密码强度栏的默认配色 */
 .po-password-strength-bar {
   background-color: rgba(0, 0, 0, 0.25);
@@ -189,6 +195,9 @@ body,
 // ant notification的圆角
 .ant-notification-notice {
   border-radius: @default_radius;
+}
+.ant-btn-primary {
+  background-color: @blue-6;
 }
 // html font-size :16px
 .font-24 {

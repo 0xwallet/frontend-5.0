@@ -350,10 +350,10 @@
                     </div>
                   </div> -->
                       <span class="mr-2">
-                        {{ getFileWindowTips(item, "path") }}
+                        {{ getFileWindowTipsPath(item) }}
                       </span>
                       <template
-                        v-if="getFileWindowTips(item, 'desc').tagArr.length"
+                        v-if="getFileWindowTipsTagObj(item).tagArr.length"
                       >
                         <a-tag
                           :style="{
@@ -361,7 +361,7 @@
                             'line-height': '16px',
                           }"
                           class="inline-block"
-                          v-for="(item, idx) in getFileWindowTips(item, 'desc')
+                          v-for="(item, idx) in getFileWindowTipsTagObj(item)
                             .tagArr"
                           :color="TAG_COLOR_LIST[idx]"
                           :key="item"
@@ -430,7 +430,7 @@
             minHeight: 'calc(100vh - 100px)',
           }"
         >
-          <router-view class="p-4 pb-6" v-slot="{ Component }">
+          <router-view class="p-4 pb-6" v-slot="{ Component, route }">
             <keep-alive :include="keepAliveList">
               <component :is="Component" />
             </keep-alive>
@@ -461,7 +461,7 @@
     </a-modal>
   </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import {
   computed,
   createVNode,
@@ -544,441 +544,369 @@ const getWiFiImageUrl = (wifiPngIdx: number) => {
   // return new URL(`./dir/${name}.png`, import.meta.url).href
 };
 
-export default defineComponent({
-  components: {
-    // icon
-    CloudServerOutlined,
-    SwapOutlined,
-    FolderOpenOutlined,
-    ShareAltOutlined,
-    GlobalOutlined,
-    StarOutlined,
-    SyncOutlined,
-    UploadOutlined,
-    CloudUploadOutlined,
-    HistoryOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UserOutlined,
-    LogoutOutlined,
-    CloseOutlined,
-    PieChartOutlined,
-    RightOutlined,
-    CheckOutlined,
-    LoadingOutlined,
-    // ExclamationCircleOutlined,
-    XLocaleSwither,
-    XUserAvatar,
-    XSvgIcon,
-  },
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const { t } = useI18n();
-    const transPortStore = useTransportStore();
-    const userStore = useUserStore();
-    const baseStore = useBaseStore();
-    // console.log("router", router);
-    /** logo区域 */
-    function useSvgLogo() {
-      return { PRODUCT_NAME };
-    }
+const router = useRouter();
+const route = useRoute();
+const { t } = useI18n();
+const transPortStore = useTransportStore();
+const userStore = useUserStore();
+const baseStore = useBaseStore();
+// console.log("router", router);
 
-    /** 菜单数据 */
-    function useLayoutMenu() {
-      // console.log("route", route);
-      // 默认打开网盘 传输
-      const openKeys = ref(["metanet", "transport"]);
-      const selectedKeys = ref([""]);
-      /** 面包屑 */
-      const breadArr = ref<string[]>([]);
-      // 观察路由path 改变菜单
-      watch(
-        () => route,
-        (newRoute) => {
-          // console.log("route-newVal", newRoute.fullPath);
-          const pathStr = newRoute.path;
-          const fullPath = newRoute.fullPath;
-          // 分享链接页 / error页(403/4/500) 不进入tab栏
-          if (
-            fullPath.includes("metanet/sharedFile") ||
-            fullPath.includes("error")
-          ) {
-            return;
-          }
-          // console.log("routeNewVal", pathStr, openKeys.value);
-          // console.log("pathStr", newRoute, pathStr);
-          // /general/account
-          const [s, subKey, itemKey] = pathStr.split("/");
-          // filter undefinde itemKey
-          breadArr.value = [subKey, itemKey]
-            .filter((i) => !!i)
-            .map((i) => t(`metanet.${i}`));
-          // 这里先针对dashboard 特殊处理
-          /** 是否dashboard 路由 */
-          const isDashBoard = subKey === "dashboard";
-          // openKeys.value = [subKey];
-          if (isDashBoard) {
-            selectedKeys.value = [subKey];
-          } else {
-            selectedKeys.value = [itemKey];
-          }
-          // 控制tab 栏
-          const newRouteTitle = newRoute.meta.title as string;
-          activeNavUniqueId.value = exactUniqueTabId(fullPath);
-          if (
-            !navList.value.some(
-              (i) =>
-                exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
-            )
-          ) {
-            navList.value.push({
-              routePath: fullPath,
-              uniqueId: exactUniqueTabId(fullPath),
-              title: newRouteTitle,
-            });
-          } else if (fullPath.includes("metanet/file")) {
-            // 如果tab 有相同id的文件窗口了, 更新routePath
-            const found = navList.value.find(
-              (i) =>
-                exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
-            );
-            if (found) found.routePath = fullPath;
-          } else if (fullPath.includes("metanet/sharedFile")) {
-            // 如果是分享页面,更新routePath
-            // const found = navList.value.find(
-            //   (i) =>
-            //     exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
-            // );
-            // if (found) found.routePath = fullPath;
-          }
-        },
-        {
-          immediate: true,
-          deep: true,
-        }
+/** 菜单数据 */
+// console.log("route", route);
+// 默认打开网盘 传输
+const openKeys = ref(["metanet", "transport"]);
+const selectedKeys = ref([""]);
+/** 面包屑 */
+const breadArr = ref<string[]>([]);
+// 观察路由path 改变菜单
+const activeNavUniqueId = ref("");
+const navList = useLocalStorage<TNavItem[]>("navList", []);
+
+watch(
+  () => route,
+  (newRoute) => {
+    // console.log("route-newVal", newRoute.fullPath);
+    const pathStr = newRoute.path;
+    const fullPath = newRoute.fullPath;
+    // 分享链接页 / error页(403/4/500) 不进入tab栏
+    if (fullPath.includes("metanet/sharedFile") || fullPath.includes("error")) {
+      return;
+    }
+    // console.log("routeNewVal", pathStr, openKeys.value);
+    // console.log("pathStr", newRoute, pathStr);
+    // /general/account
+    const [s, subKey, itemKey] = pathStr.split("/");
+    // filter undefinde itemKey
+    breadArr.value = [subKey, itemKey]
+      .filter((i) => !!i)
+      .map((i) => t(`metanet.${i}`));
+    // 这里先针对dashboard 特殊处理
+    /** 是否dashboard 路由 */
+    const isDashBoard = subKey === "dashboard";
+    // openKeys.value = [subKey];
+    if (isDashBoard) {
+      selectedKeys.value = [subKey];
+    } else {
+      selectedKeys.value = [itemKey];
+    }
+    // 控制tab 栏
+    const newRouteTitle = newRoute.meta.title as string;
+
+    activeNavUniqueId.value = exactUniqueTabId(fullPath);
+
+    if (
+      !navList.value.some(
+        (i) => exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
+      )
+    ) {
+      navList.value.push({
+        routePath: fullPath,
+        uniqueId: exactUniqueTabId(fullPath),
+        title: newRouteTitle,
+      });
+    } else if (fullPath.includes("metanet/file")) {
+      // 如果tab 有相同id的文件窗口了, 更新routePath
+      const found = navList.value.find(
+        (i) => exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
       );
-      // 测试打印 navlist
-      // watch(
-      //   () => navList,
-      //   (newVal) => {
-      //     console.log("watch-navList", newVal);
-      //   },
-      //   {
-      //     immediate: true,
-      //     deep: true,
-      //   }
+      if (found) found.routePath = fullPath;
+    } else if (fullPath.includes("metanet/sharedFile")) {
+      // 如果是分享页面,更新routePath
+      // const found = navList.value.find(
+      //   (i) =>
+      //     exactUniqueTabId(i.routePath) === exactUniqueTabId(fullPath)
       // );
-      const collapsed = ref(false);
-      const lockBeforeCollapsed = ref(true);
-      const onChangeCollapsed = () => {
-        if (collapsed.value === true) {
-          collapsed.value = !collapsed.value;
-          lockBeforeCollapsed.value = true;
-        } else {
-          lockBeforeCollapsed.value = false;
-          setTimeout(() => {
-            collapsed.value = !collapsed.value;
-          }, 0);
-        }
-      };
-      const onMenuSelect = ({ item, key, keyPath }: TMenuSelect) => {
-        // key: "account"
-        // keyPath: (2) ["account", "general"]
-        // console.log("选中的菜单key", key, keyPath);
-        const toRoute = "/" + keyPath.reverse().join("/");
-        // console.log("onMenuSelect-toRoute", toRoute);
-        // /metanet/file
-        // console.log("toRouwte", toRoute, route);
-        // 新开文件tab
-        if (toRoute === "/metanet/file") {
-          // 要打开的窗口id
-          const windowId = baseStore.getNewOpenWindowId();
-          // console.log(`左菜单栏点击的,获取的还未激活的windoId,${windowId}`);
-          router.push({
-            name: "MetanetFile",
-            query: {
-              id: windowId,
-              path: "~",
-            },
-          });
-        } else {
-          if (toRoute !== route.fullPath) {
-            // console.log("router.push", item);
-            // /general/account
-            router.push({
-              path: toRoute,
-            });
-          }
-        }
-      };
-      return {
-        breadArr,
-        openKeys,
-        selectedKeys,
-        collapsed,
-        lockBeforeCollapsed,
-        onChangeCollapsed,
-        onMenuSelect,
-        exactUniqueTabId,
-      };
+      // if (found) found.routePath = fullPath;
     }
-    const activeNavUniqueId = ref("");
-    // 默认显示dashboard
-    // const navList: TNavItem[] = reactive([
-    //   // {
-    //   //   // routeName: "Dashboard",
-    //   //   routePath: "/dashboard",
-    //   //   title: "common.dashboard",
-    //   //   icon: "dashboard", // 从属的父级菜单的icon
-    //   // },
-    // ]);
-    const navList = useLocalStorage<TNavItem[]>("navList", []);
-    /** navlist 中文件tab的数量 */
-    const navFileTabCount = computed(() => {
-      return navList.value.filter((i) => i.routePath.includes("metanet/file"))
-        .length;
-    });
-    // 同时加载本地的fileWindow数据
-    baseStore.loadStorageFileWindow();
-    /** nav tab栏 */
-    function useNavTabs() {
-      // console.log("route", route);
-      // activeNavUniqueId = ref(route.meta.title as string);
-      // navList = reactive([route.meta.title as string]);
-      const onClickNavTab = (item: TNavItem) => {
-        // router.push()
-        // console.log("onClickNavTab", item);
-        // 如果不是当前的路由的tab , 就跳转
-        if (item.routePath !== route.fullPath) {
-          router.push(item.routePath);
-        }
-      };
-      const onCloseNavItem = (itemRouteFullPath: string) => {
-        // console.log("onCloseNavItem", itemRouteFullPath, activeNavUniqueId.value);
-        // 1 如果关闭的是当前,路由到上一个且数组移除
-        // 2 如果关闭的是其他,直接数组移除
-        // metanet/file
-        const closeItemUniqueId = exactUniqueTabId(itemRouteFullPath);
-        if (closeItemUniqueId === activeNavUniqueId.value) {
-          // router.push;
-          const foundIndex = navList.value.findIndex(
-            (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
-          );
-          // console.log("foundIndex", foundIndex);
-          remove(
-            navList.value,
-            (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
-          );
-          if (itemRouteFullPath.includes("metanet/file")) {
-            // 如果关闭的是文件窗口, 需要重置对应的窗口id
-            baseStore.setWindowIdItem(+closeItemUniqueId, null);
-          }
-          const toRoutePath =
-            foundIndex > 0
-              ? // 代表有前一项,push 到前一项
-                navList.value[foundIndex - 1].routePath
-              : // 没有前一项,push用下一项(也就是删除后的foundIndex的位置)
-                navList.value[foundIndex].routePath;
-          // console.log("-----------", toRoutePath);
-          router.push(toRoutePath);
-        } else {
-          remove(
-            navList.value,
-            (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
-          );
-          if (closeItemUniqueId.includes("metanet/file")) {
-            // 如果关闭的是文件窗口, 需要重置对应的窗口id
-            baseStore.setWindowIdItem(+closeItemUniqueId, null);
-          }
-        }
-      };
-      /** 获取文件窗口id 的路径或者描述信息 */
-      const getFileWindowTips = (item: TNavItem, type: "path" | "tag") => {
-        const windowId = exactUniqueTabId(item.routePath);
-        // console.log(
-        //   "windowId",
-        //   item.routePath,
-        //   windowId,
-        //   baseStore.fileWindow,
-        //   baseStore.fileWindow[windowId]
-        // );
-        return type === "path"
-          ? baseStore.fileWindow[windowId]?.path || ""
-          : baseStore.fileWindow[windowId]?.desc || { tagArr: [], text: "" };
-      };
-      /** 上传中的数量 */
-      const uploadingCount = computed(() => {
-        // return 10;
-        return transPortStore.uploadingList.length;
-      });
-      // 首次打开装载本地存储里已完成的list
-      transPortStore.loadStorageFinishedList();
-      /** 上传成功的数量 */
-      const uploadSuccessCount = computed(() => {
-        return transPortStore.uploadSuccessList.length;
-      });
-      /** 需要keep-alive 的组件 ,组件的name === 路由里注册的name,根据navTab 动态改变 */
-      // const keepAliveList = [
-      //   "MetanetFile",
-      //   "MetanetShare",
-      //   "MetanetPublish",
-      //   "MetanetCollect",
-      //   "MetanetRecycle",
-      //   "MetanetSharedFile" // TODO 多个链接怎么办
-      // ];
-      const mapPathToName = (path: string) => {
-        // console.log("mappath", path);
-        if (path.includes("/metanet/file")) return "MetanetFile";
-        if (path.includes("/metanet/share")) return "MetanetShare";
-        if (path.includes("/metanet/publish")) return "MetanetPublish";
-        if (path.includes("/metanet/collect")) return "MetanetCollect";
-        if (path.includes("/metanet/recycle")) return "MetanetRecycle";
-        if (path.includes("/metanet/sharedFile")) return "MetanetSharedFile";
-        if (path.includes("/transport/uploading")) return "TransportUpLoading";
-        if (path.includes("/transport/uploadHistory"))
-          return "TransportHistory";
-        if (path.includes("/transport/peerTransfer"))
-          return "TransportPeerTransfer";
-        else return "";
-      };
-      const keepAliveList = computed(() => {
-        const arr = navList.value
-          .filter((i) => !i.routePath.includes("dashboard"))
-          .map((i) => mapPathToName(i.routePath));
-        // console.log("common-keepAliveList", arr);
-        return arr;
-      });
-      let sortable: Sortable | null = null;
-      onMounted(() => {
-        const navBox = document.getElementById("navBox");
-        if (!navBox) {
-          console.log("navBox创建失败-找不到element");
-          return;
-        }
-        sortable = Sortable.create(navBox, {
-          animation: 150,
-          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-          // ghostClass: "blue-background-class",
-        });
-        // console.log("sortable", sortable);
-      });
-      onUnmounted(() => {
-        if (sortable) {
-          sortable.destroy();
-          sortable = null;
-        }
-      });
-      return {
-        activeNavUniqueId,
-        navList,
-        navFileTabCount,
-        onClickNavTab,
-        onCloseNavItem,
-        getFileWindowTips,
-        uploadingCount,
-        uploadSuccessCount,
-        keepAliveList,
-        TAG_COLOR_LIST,
-      };
-    }
-    /** nkn client 连接状态 */
-    function useNknStatus() {
-      // 正否正在加载nkn 节点
-      const isLoadingNknMulticlient = computed(() => {
-        return userStore.isLoadingMultiClient;
-      });
-      const nknStatusCount = ref(0);
-      const wifiPngIdx = computed(() => {
-        const e = nknStatusCount.value;
-        // 12 个节点的判断
-        // if (e === 0) return 0;
-        // else if (e <= 3.6) return 1;
-        // else if (e <= 7.2) return 2;
-        // else if (e < 12) return 3;
-        // else return 4;
-        // 大于4个节点就显示满了, 否则显示对应的格子图
-        if (e >= 4) return 4;
-        return e;
-      });
-      let readClientCounter: number;
-      watch(
-        () => isLoadingNknMulticlient.value,
-        (newVal) => {
-          clearInterval(readClientCounter);
-          if (newVal === false) {
-            userStore.getStoreMultiClient().then((multiClient) => {
-              nknStatusCount.value = multiClient.readyClientIDs().length;
-              // console.log(
-              //   "multiClient-isuserstoreclient same multiclient",
-              //   userStore.multiClient?.addr === multiClient.addr,
-              //   multiClient.readyClientIDs().length,
-              //   nknStatusCount.value
-              // );
-              // 节点未全满的情况下始终去更新 nknStatusCount
-              if (nknStatusCount.value < NKN_SUB_CLIENT_COUNT) {
-                readClientCounter = window.setInterval(() => {
-                  nknStatusCount.value = multiClient.readyClientIDs().length;
-                  if (nknStatusCount.value >= NKN_SUB_CLIENT_COUNT) {
-                    clearInterval(readClientCounter);
-                  }
-                }, 1000);
-              }
-            });
-          }
-        },
-        { immediate: true }
-      );
-
-      /** 重置nkn 节点 */
-      // const onResetNknMultiClient = () => {
-      //   Modal.confirm({
-      //     content: "重置nkn节点?",
-      //     onOk: () => {
-      //       console.log("重置节点");
-      //     },
-      //   });
-      // };
-      const nknCountInputValue = ref(1);
-      const isShowSetDefaultNknCountModal = ref(false);
-      const onShowSetDefaultNknCountModal = () => {
-        nknCountInputValue.value = userStore.defaultNknCount;
-        isShowSetDefaultNknCountModal.value = true;
-      };
-      const onSetDefaultNknCountModalConfirm = () => {
-        const v = nknCountInputValue.value;
-        // 不一样才设置(调用函数)
-        if (v !== userStore.defaultNknCount) {
-          // 有上传任务, 不能设置
-          if (transPortStore.uploadingList.length) {
-            message.warning("有任务正在上传, 请稍后再试");
-          } else {
-            userStore.setDefaultNknCount(v);
-          }
-        }
-        isShowSetDefaultNknCountModal.value = false;
-      };
-      return {
-        NKN_SUB_CLIENT_COUNT,
-        isLoadingNknMulticlient,
-        nknStatusCount,
-        wifiPngIdx,
-        // onResetNknMultiClient
-        nknCountInputValue,
-        isShowSetDefaultNknCountModal,
-        onShowSetDefaultNknCountModal,
-        onSetDefaultNknCountModalConfirm,
-      };
-    }
-    return {
-      getWiFiImageUrl,
-      ...useNavTabs(),
-      ...useLayoutMenu(),
-      ...useSvgLogo(),
-      ...useNknStatus(),
-    };
   },
+  {
+    immediate: true,
+    deep: true,
+  }
+);
+// 测试打印 navlist
+// watch(
+//   () => navList,
+//   (newVal) => {
+//     console.log("watch-navList", newVal);
+//   },
+//   {
+//     immediate: true,
+//     deep: true,
+//   }
+// );
+const collapsed = ref(false);
+const lockBeforeCollapsed = ref(true);
+const onChangeCollapsed = () => {
+  if (collapsed.value === true) {
+    collapsed.value = !collapsed.value;
+    lockBeforeCollapsed.value = true;
+  } else {
+    lockBeforeCollapsed.value = false;
+    setTimeout(() => {
+      collapsed.value = !collapsed.value;
+    }, 0);
+  }
+};
+const onMenuSelect = ({ item, key, keyPath }: TMenuSelect) => {
+  // key: "account"
+  // keyPath: (2) ["account", "general"]
+  // console.log("选中的菜单key", key, keyPath);
+  const toRoute = "/" + keyPath.reverse().join("/");
+  // console.log("onMenuSelect-toRoute", toRoute);
+  // /metanet/file
+  // console.log("toRouwte", toRoute, route);
+  // 新开文件tab
+  if (toRoute === "/metanet/file") {
+    // 要打开的窗口id
+    const windowId = baseStore.getNewOpenWindowId();
+    // console.log(`左菜单栏点击的,获取的还未激活的windoId,${windowId}`);
+    router.push({
+      name: "MetanetFile",
+      query: {
+        id: windowId,
+        path: "~",
+      },
+    });
+  } else {
+    if (toRoute !== route.fullPath) {
+      // console.log("router.push", item);
+      // /general/account
+      router.push({
+        path: toRoute,
+      });
+    }
+  }
+};
+// 默认显示dashboard
+// const navList: TNavItem[] = reactive([
+//   // {
+//   //   // routeName: "Dashboard",
+//   //   routePath: "/dashboard",
+//   //   title: "common.dashboard",
+//   //   icon: "dashboard", // 从属的父级菜单的icon
+//   // },
+// ]);
+/** navlist 中文件tab的数量 */
+const navFileTabCount = computed(() => {
+  return navList.value.filter((i) => i.routePath.includes("metanet/file"))
+    .length;
 });
+// 同时加载本地的fileWindow数据
+baseStore.loadStorageFileWindow();
+/** nav tab栏 */
+// console.log("route", route);
+// activeNavUniqueId = ref(route.meta.title as string);
+// navList = reactive([route.meta.title as string]);
+const onClickNavTab = (item: TNavItem) => {
+  // router.push()
+  // console.log("onClickNavTab", item);
+  // 如果不是当前的路由的tab , 就跳转
+  if (item.routePath !== route.fullPath) {
+    router.push(item.routePath);
+  }
+};
+const onCloseNavItem = (itemRouteFullPath: string) => {
+  // console.log("onCloseNavItem", itemRouteFullPath, activeNavUniqueId.value);
+  // 1 如果关闭的是当前,路由到上一个且数组移除
+  // 2 如果关闭的是其他,直接数组移除
+  // metanet/file
+  const closeItemUniqueId = exactUniqueTabId(itemRouteFullPath);
+  if (closeItemUniqueId === activeNavUniqueId.value) {
+    // router.push;
+    const foundIndex = navList.value.findIndex(
+      (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
+    );
+    // console.log("foundIndex", foundIndex);
+    remove(
+      navList.value,
+      (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
+    );
+    if (itemRouteFullPath.includes("metanet/file")) {
+      // 如果关闭的是文件窗口, 需要重置对应的窗口id
+      baseStore.setWindowIdItem(+closeItemUniqueId, null);
+    }
+    const toRoutePath =
+      foundIndex > 0
+        ? // 代表有前一项,push 到前一项
+          navList.value[foundIndex - 1].routePath
+        : // 没有前一项,push用下一项(也就是删除后的foundIndex的位置)
+          navList.value[foundIndex].routePath;
+    // console.log("-----------", toRoutePath);
+    router.push(toRoutePath);
+  } else {
+    remove(
+      navList.value,
+      (v) => exactUniqueTabId(v.routePath) === closeItemUniqueId
+    );
+    if (closeItemUniqueId.includes("metanet/file")) {
+      // 如果关闭的是文件窗口, 需要重置对应的窗口id
+      baseStore.setWindowIdItem(+closeItemUniqueId, null);
+    }
+  }
+};
+/** 获取文件窗口id 的路径或者描述信息 */
+// const getFileWindowTips = (
+//   item: TNavItem,
+//   type: "path" | "desc"
+// ): string | { tagArr: string[]; text: string } => {
+//   const windowId = exactUniqueTabId(item.routePath);
+//   // console.log(
+//   //   "windowId",
+//   //   item.routePath,
+//   //   windowId,
+//   //   baseStore.fileWindow,
+//   //   baseStore.fileWindow[windowId]
+//   // );
+//   return type === "path"
+//     ? baseStore.fileWindow[windowId]?.path || ""
+//     : baseStore.fileWindow[windowId]?.desc || { tagArr: [], text: "" };
+// };
+const getFileWindowTipsPath = (item: TNavItem) => {
+  const windowId = exactUniqueTabId(item.routePath);
+  return baseStore.fileWindow[windowId]?.path || "";
+};
+const getFileWindowTipsTagObj = (item: TNavItem) => {
+  const windowId = exactUniqueTabId(item.routePath);
+  return baseStore.fileWindow[windowId]?.desc || { tagArr: [], text: "" };
+};
+
+/** 上传中的数量 */
+const uploadingCount = computed(() => {
+  // return 10;
+  return transPortStore.uploadingList.length;
+});
+// 首次打开装载本地存储里已完成的list
+transPortStore.loadStorageFinishedList();
+/** 上传成功的数量 */
+const uploadSuccessCount = computed(() => {
+  return transPortStore.uploadSuccessList.length;
+});
+/** 需要keep-alive 的组件 ,组件的name === 路由里注册的name,根据navTab 动态改变 */
+// const keepAliveList = [
+//   "MetanetFile",
+//   "MetanetShare",
+//   "MetanetPublish",
+//   "MetanetCollect",
+//   "MetanetRecycle",
+//   "MetanetSharedFile" // TODO 多个链接怎么办
+// ];
+const mapPathToName = (path: string) => {
+  // console.log("mappath", path);
+  if (path.includes("/metanet/file")) return "MetanetFile";
+  if (path.includes("/metanet/share")) return "MetanetShare";
+  if (path.includes("/metanet/publish")) return "MetanetPublish";
+  if (path.includes("/metanet/collect")) return "MetanetCollect";
+  if (path.includes("/metanet/recycle")) return "MetanetRecycle";
+  if (path.includes("/metanet/sharedFile")) return "MetanetSharedFile";
+  if (path.includes("/transport/uploading")) return "TransportUpLoading";
+  if (path.includes("/transport/uploadHistory")) return "TransportHistory";
+  if (path.includes("/transport/peerTransfer")) return "TransportPeerTransfer";
+  else return "";
+};
+const keepAliveList = computed(() => {
+  const arr = navList.value
+    .filter((i) => !i.routePath.includes("dashboard"))
+    .map((i) => mapPathToName(i.routePath));
+  // console.log("common-keepAliveList", arr);
+  return arr;
+});
+let sortable: Sortable | null = null;
+onMounted(() => {
+  const navBox = document.getElementById("navBox");
+  if (!navBox) {
+    console.log("navBox创建失败-找不到element");
+    return;
+  }
+  sortable = Sortable.create(navBox, {
+    animation: 150,
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+    // ghostClass: "blue-background-class",
+  });
+  // console.log("sortable", sortable);
+});
+onUnmounted(() => {
+  if (sortable) {
+    sortable.destroy();
+    sortable = null;
+  }
+});
+/** nkn client 连接状态 */
+// 正否正在加载nkn 节点
+const isLoadingNknMulticlient = computed(() => {
+  return userStore.isLoadingMultiClient;
+});
+const nknStatusCount = ref(0);
+const wifiPngIdx = computed(() => {
+  const e = nknStatusCount.value;
+  // 12 个节点的判断
+  // if (e === 0) return 0;
+  // else if (e <= 3.6) return 1;
+  // else if (e <= 7.2) return 2;
+  // else if (e < 12) return 3;
+  // else return 4;
+  // 大于4个节点就显示满了, 否则显示对应的格子图
+  if (e >= 4) return 4;
+  return e;
+});
+let readClientCounter: number;
+watch(
+  () => isLoadingNknMulticlient.value,
+  (newVal) => {
+    clearInterval(readClientCounter);
+    if (newVal === false) {
+      userStore.getStoreMultiClient().then((multiClient) => {
+        nknStatusCount.value = multiClient.readyClientIDs().length;
+        // console.log(
+        //   "multiClient-isuserstoreclient same multiclient",
+        //   userStore.multiClient?.addr === multiClient.addr,
+        //   multiClient.readyClientIDs().length,
+        //   nknStatusCount.value
+        // );
+        // 节点未全满的情况下始终去更新 nknStatusCount
+        if (nknStatusCount.value < NKN_SUB_CLIENT_COUNT) {
+          readClientCounter = window.setInterval(() => {
+            nknStatusCount.value = multiClient.readyClientIDs().length;
+            if (nknStatusCount.value >= NKN_SUB_CLIENT_COUNT) {
+              clearInterval(readClientCounter);
+            }
+          }, 1000);
+        }
+      });
+    }
+  },
+  { immediate: true }
+);
+
+/** 重置nkn 节点 */
+// const onResetNknMultiClient = () => {
+//   Modal.confirm({
+//     content: "重置nkn节点?",
+//     onOk: () => {
+//       console.log("重置节点");
+//     },
+//   });
+// };
+const nknCountInputValue = ref(1);
+const isShowSetDefaultNknCountModal = ref(false);
+const onShowSetDefaultNknCountModal = () => {
+  nknCountInputValue.value = userStore.defaultNknCount;
+  isShowSetDefaultNknCountModal.value = true;
+};
+const onSetDefaultNknCountModalConfirm = () => {
+  const v = nknCountInputValue.value;
+  // 不一样才设置(调用函数)
+  if (v !== userStore.defaultNknCount) {
+    // 有上传任务, 不能设置
+    if (transPortStore.uploadingList.length) {
+      message.warning("有任务正在上传, 请稍后再试");
+    } else {
+      userStore.setDefaultNknCount(v);
+    }
+  }
+  isShowSetDefaultNknCountModal.value = false;
+};
 </script>
 
 <style lang="less">

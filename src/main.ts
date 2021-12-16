@@ -4,8 +4,6 @@ import { createPinia } from "pinia";
 // markdown style
 // import "./assets/github-markdown-css.less";
 import "./assets/github-markdown.css";
-// import "./assets/tailwind.css";
-import "tailwindcss/tailwind.css";
 // 注意 是响应式的
 import languages from "./languages";
 import { createI18n } from "vue-i18n";
@@ -27,6 +25,8 @@ import Vant from "vant";
 import "vant/lib/index.css";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.less";
+import "tailwindcss/tailwind.css";
+
 // ui framework -end
 
 import AppMobile from "./views/mobile/App_mobile.vue";

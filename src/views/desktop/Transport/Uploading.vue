@@ -96,7 +96,9 @@
             <a-tooltip title="选择拖拽上传默认路径">
               <PlusSquareOutlined class="mr-2" />
               <!-- 上传进度>0 的时候隐藏路径 -->
-              <template v-if="totalPercent === 0">{{ selectedDefaultPathShowName }}</template>
+              <template v-if="totalPercent === 0">{{
+                selectedDefaultPathShowName
+              }}</template>
             </a-tooltip>
           </div>
           <div
@@ -112,7 +114,11 @@
               {{ showBarText }}
             </span>
           </div>
-          <a-progress id="totalProgressBar" :showInfo="false" :percent="totalPercent" />
+          <a-progress
+            id="totalProgressBar"
+            :showInfo="false"
+            :percent="totalPercent"
+          />
         </div>
       </div>
     </div>
@@ -157,9 +163,11 @@
               :percent="record.progress"
               :showInfo="false"
             ></a-progress>
-            <div :style="{
-              'margin-top': '-4px',
-            }">
+            <div
+              :style="{
+                'margin-top': '-4px',
+              }"
+            >
               <!-- 指示灯 -->
               <a-tooltip>
                 <template #title>
@@ -179,19 +187,36 @@
                       <i
                         v-for="color in ['#2170FF', '#FF0078', '#FF9F00']"
                         :key="color"
-                        class="tdHashDot relative align-middle ml-0.5 inline-block"
+                        class="
+                          tdHashDot
+                          relative
+                          align-middle
+                          ml-0.5
+                          inline-block
+                        "
                         :style="{
                           'background-color': color,
                           'font-size': 0,
                         }"
                       ></i>
                     </div>
-                    <div class="ml-0.5">{{ calcRecordStatusTooltip(record).slice(-5) }}</div>
+                    <div class="ml-0.5">
+                      {{ calcRecordStatusTooltip(record).slice(-5) }}
+                    </div>
                   </div>
-                  <template v-else>{{ calcRecordStatusTooltip(record) }}</template>
+                  <template v-else>{{
+                    calcRecordStatusTooltip(record)
+                  }}</template>
                 </template>
                 <span
-                  class="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle"
+                  class="
+                    inline-block
+                    w-1.5
+                    h-1.5
+                    rounded-full
+                    mr-1
+                    align-middle
+                  "
                   :style="{
                     'background-color': calcRecordStatusColor(record),
                   }"
@@ -205,7 +230,9 @@
                   <!-- {{ calcStatusText(record.status) }} -->
                   {{ formatBytes(record.speed) }}/S
                 </span>
-                <span v-if="record.speed > 0">- {{ calcTimeLeftText(record) }}</span>
+                <span v-if="record.speed > 0"
+                  >- {{ calcTimeLeftText(record) }}</span
+                >
               </template>
               <template v-else-if="record.status === 'queueing'">
                 <span>排队中</span>
@@ -230,13 +257,19 @@
         </template>-->
         <template #action="{ record }">
           <div class="flex items-center text-gray-600">
-            <a class="flex-1" href="javascript:;" @click="onRecordStartOrPause(record)">
+            <a
+              class="flex-1"
+              href="javascript:;"
+              @click="onRecordStartOrPause(record)"
+            >
               <template v-if="['pause'].includes(record.status)">
                 <a-tooltip title="开始">
                   <RightSquareOutlined />
                 </a-tooltip>
               </template>
-              <template v-if="['queueing', 'uploading'].includes(record.status)">
+              <template
+                v-if="['queueing', 'uploading'].includes(record.status)"
+              >
                 <a-tooltip title="暂停">
                   <PauseOutlined />
                 </a-tooltip>
@@ -276,6 +309,11 @@
   </div>
 </template>
 
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "TransportUpLoading" };
+</script>
+
 <script setup lang="ts">
 import { useTransportStore, useUserStore } from "../../../store";
 import {
@@ -306,7 +344,12 @@ import {
   PlusSquareOutlined,
 } from "@ant-design/icons-vue";
 import { useI18n } from "vue-i18n";
-import { XFileTypeIcon, XTableFiles, XModalDir, XLink } from "../../../components/desktop";
+import {
+  XFileTypeIcon,
+  XTableFiles,
+  XModalDir,
+  XLink,
+} from "../../../components/desktop";
 import {
   formatBytes,
   getFileSHA256,
@@ -400,9 +443,7 @@ const isShowBatchStartBtn = computed(() => {
   const list = selectedRows.value;
   if (list.length === 0) return true;
   // list 里可以暂停的数量
-  const canStartCount = list.filter((i) =>
-    ["pause"].includes(i.status)
-  ).length;
+  const canStartCount = list.filter((i) => ["pause"].includes(i.status)).length;
   // list 里可以开始的数量
   const canPauseCount = list.filter((i) =>
     ["queueing", "uploading"].includes(i.status)
@@ -474,13 +515,12 @@ const getSetDefaultPathModalTableData = () => {
       // console.log("目录res", item.dirId, item.dirName, resItem);
       if (resultQueryFileItem.err) return item;
       // 排除 非目录文件/ 根目录/ 自身/ 父目录(上一级)
-      const afterFilterList =
-        resultQueryFileItem.data.driveListFiles.filter(
-          (i): i is TFileItem =>
-            i !== null &&
-            i.isDir &&
-            !["root", item.dirId, parentId].includes(i.id)
-        );
+      const afterFilterList = resultQueryFileItem.data.driveListFiles.filter(
+        (i): i is TFileItem =>
+          i !== null &&
+          i.isDir &&
+          !["root", item.dirId, parentId].includes(i.id)
+      );
       // console.log("afterFilterList", afterFilterList);
       if (!afterFilterList.length) return item;
       item.children = await Promise.all(
@@ -543,10 +583,7 @@ const defaultPathModalTableCustomRow = (record: TDir, index: number) => ({
     defaultPathModalCurrentSelectedDir.value = record;
   },
 });
-const defaultPathModalTableRowClassName = (
-  record: TDir,
-  index: number
-) => {
+const defaultPathModalTableRowClassName = (record: TDir, index: number) => {
   return record.dirId === defaultPathModalCurrentSelectedDir.value.dirId
     ? "copyMoveModalRow copyMoveModalRowActive"
     : "copyMoveModalRow";
@@ -588,9 +625,7 @@ const onDrop = async (event: DragEvent) => {
   const { availableSpace } = resultQuerySpace.data.me.driveSetting;
   // 如果即将要传的文件总大小超出可用, 退出
   const toUploadFiles = [...files];
-  if (
-    toUploadFiles.reduce((a, b) => (a += b.size), 0) > +availableSpace
-  ) {
+  if (toUploadFiles.reduce((a, b) => (a += b.size), 0) > +availableSpace) {
     message.warning("超出最大可用容量!");
     return;
   }
@@ -689,14 +724,10 @@ const totalPercent = computed(() => {
       i.roundId === transportStore.uploadCurRoundId
   );
   // console.log("totalPercent-filterListLen", list.length);
-  if (
-    !list.length ||
-    list.every((i) => SUCCESS_STATUS_ARR.includes(i.status))
-  )
+  if (!list.length || list.every((i) => SUCCESS_STATUS_ARR.includes(i.status)))
     return 0;
   const val = Math.floor(
-    (list.reduce((a, b) => (a += b.progress), 0) / (list.length * 100)) *
-    100
+    (list.reduce((a, b) => (a += b.progress), 0) / (list.length * 100)) * 100
   );
   return val;
 });
@@ -833,7 +864,6 @@ const calcRecordStatusColor = (record: UploadItem) => {
   // 连接的话返回对方浏览器信息
   return "#52c41a"; //green
 };
-
 
 const isLoadingNknMulticlient = computed(() => {
   return userStore.isLoadingMultiClient;

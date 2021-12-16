@@ -16,24 +16,15 @@
     :customRow="customRow"
   >
     <!-- slot="header" 是插入别人的插槽 -->
-    <!-- <template v-for="slotName in slots" :key="slotName" #[slotName]="data"> -->
-    <template v-for="slotName in slots" :key="slotName" #[slotName]>
+    <template v-for="slotName in slots" :key="slotName" #[slotName]="data">
+      <!-- <template v-for="slotName in slots" :key="slotName" #[slotName]> -->
       <slot :name="slotName" v-bind="data"></slot>
     </template>
   </a-table>
 </template>
 
-<script lang="ts">
-import { debounce } from "lodash";
-import {
-  computed,
-  defineComponent,
-  onUnmounted,
-  PropType,
-  reactive,
-  ref,
-  watch,
-} from "vue";
+<script setup lang="ts">
+import { debounce } from "lodash-es";
 
 type TColumn = {
   title: string;
@@ -45,119 +36,108 @@ type TColumn = {
   };
 };
 
-export default defineComponent({
-  props: {
-    rowKey: {
-      type: [String, Function],
-      required: true,
-    },
-    locale: {
-      type: Object,
-      default: () => ({}),
-    },
-    data: {
-      type: Array,
-      required: true,
-    },
-    columns: {
-      type: Array,
-      required: true,
-    },
-    loading: {
-      type: Boolean,
-    },
-    selectedRows: {
-      type: Array,
-      default: () => [],
-    },
-    selectedRowKeys: {
-      type: Array as PropType<string[]>,
-      default: () => [],
-    },
-    disableSelect: {
-      type: Boolean,
-      default: false,
-    },
-    showHeader: {
-      type: Boolean,
-      default: true,
-    },
-    rowClassName: {
-      type: Function,
-      default: () => "",
-    },
-    customRow: {
-      type: [Function, Object],
-      default: () => null,
-    },
-    scroll: {
-      type: Object,
-      default: () => ({ x: false }),
-    },
+const props = defineProps({
+  rowKey: {
+    type: [String, Function],
+    required: true,
   },
-  emits: ["update:selectedRows", "update:selectedRowKeys"],
-  setup(props, { emit }) {
-    // 不能通过props 传递个ref 然后 .value = 赋值改了的话就没有响应式了 , 需要toRef 改成响应父组件的的
-    // 从 column 里面算出要slot 的
-    const slots = props.columns
-      .filter((i:any) => i.slots)
-      .map((i:any) => i.slots?.customRender);
-    const rowSelection = props.disableSelect
-      ? null
-      : {
-          onChange: (
-            selectedRowKeys: string[],
-            selectedRows: { [key: string]: any }[]
-          ) => {
-            // console.log(
-            //   `selectedRowKeys: ${selectedRowKeys}`,
-            //   "selectedRows: ",
-            //   selectedRows
-            // );
-            emit("update:selectedRowKeys", selectedRowKeys);
-            emit("update:selectedRows", selectedRows);
-          },
-          getCheckboxProps: (record: { [key: string]: any }) => ({
-            // 禁选上级目录
-            disabled: record.fullName && record.fullName[0] === "...", // Column configuration not to be checked
-            // name: record.name,
-            // 默认选中
-            defaultChecked: props.selectedRowKeys.includes(
-              typeof props.rowKey === "string"
-                ? record[props.rowKey]
-                : record[props.rowKey(record)]
-            ),
-          }),
-        };
-    const customScroll = reactive<{ x: boolean | number; y: boolean | number }>(
-      {
-        x: false,
-        y: false,
-      }
-    );
-    const curDataLength = computed(() => props.data.length);
-    watch(
-      () => curDataLength.value,
-      (newVal) => setCustomScroll()
-    );
-    const setCustomScroll = () => {
-      // console.log("call debounceSetCustomScroll");
-      const tableMaxHeight = window.innerHeight - 220;
-      const curDataHeight = curDataLength.value * 42; // 每行42px高度
-      customScroll.y = curDataHeight > tableMaxHeight ? tableMaxHeight : false;
-    };
-    const debounceSetCustomScroll = debounce(setCustomScroll, 100);
-    window.addEventListener("resize", debounceSetCustomScroll);
-    onUnmounted(() =>
-      window.removeEventListener("resize", debounceSetCustomScroll)
-    );
-    return {
-      slots,
-      rowSelection,
-      customScroll,
-    };
+  locale: {
+    type: Object,
+    default: () => ({}),
+  },
+  data: {
+    type: Array,
+    required: true,
+  },
+  columns: {
+    type: Array,
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+  },
+  selectedRows: {
+    type: Array,
+    default: () => [],
+  },
+  selectedRowKeys: {
+    type: Array,
+    default: () => [],
+  },
+  disableSelect: {
+    type: Boolean,
+    default: false,
+  },
+  showHeader: {
+    type: Boolean,
+    default: true,
+  },
+  rowClassName: {
+    type: Function,
+    default: () => "",
+  },
+  customRow: {
+    type: [Function, Object],
+    default: () => null,
+  },
+  scroll: {
+    type: Object,
+    default: () => ({ x: false }),
   },
 });
+const emit = defineEmits(["update:selectedRows", "update:selectedRowKeys"]);
+// 不能通过props 传递个ref 然后 .value = 赋值改了的话就没有响应式了 , 需要toRef 改成响应父组件的的
+// 从 column 里面算出要slot 的
+const slots = props.columns
+  .filter((i: any) => i.slots)
+  .map((i: any) => i.slots?.customRender);
+const rowSelection = props.disableSelect
+  ? null
+  : {
+      onChange: (
+        selectedRowKeys: string[],
+        selectedRows: { [key: string]: any }[]
+      ) => {
+        // console.log(
+        //   `selectedRowKeys: ${selectedRowKeys}`,
+        //   "selectedRows: ",
+        //   selectedRows
+        // );
+        emit("update:selectedRowKeys", selectedRowKeys);
+        emit("update:selectedRows", selectedRows);
+      },
+      getCheckboxProps: (record: { [key: string]: any }) => ({
+        // 禁选上级目录
+        disabled: record.fullName && record.fullName[0] === "...", // Column configuration not to be checked
+        // name: record.name,
+        // 默认选中
+        defaultChecked: props.selectedRowKeys.includes(
+          typeof props.rowKey === "string"
+            ? record[props.rowKey]
+            : record[props.rowKey(record)]
+        ),
+      }),
+    };
+const customScroll = reactive<{ x: boolean | number; y: boolean | number }>({
+  x: false,
+  y: false,
+});
+const curDataLength = computed(() => props.data.length);
+watch(
+  () => curDataLength.value,
+  (newVal) => setCustomScroll()
+);
+const setCustomScroll = () => {
+  // console.log("call debounceSetCustomScroll");
+  const tableMaxHeight = window.innerHeight - 220;
+  const curDataHeight = curDataLength.value * 42; // 每行42px高度
+  customScroll.y = curDataHeight > tableMaxHeight ? tableMaxHeight : false;
+};
+const debounceSetCustomScroll = debounce(setCustomScroll, 100);
+window.addEventListener("resize", debounceSetCustomScroll);
+onUnmounted(() =>
+  window.removeEventListener("resize", debounceSetCustomScroll)
+);
 </script>
 
 <style lang="less" scoped>

@@ -1,7 +1,10 @@
 <template>
-  <div class="w-full h-full" :style="{
-    background: '#f0f2f5',
-  }">
+  <div
+    class="w-full h-full"
+    :style="{
+      background: '#f0f2f5',
+    }"
+  >
     <header class="px-12 h-14 mb-6 bg-white flex items-center justify-between">
       <div
         class="flex items-center justify-center cursor-pointer"
@@ -14,7 +17,16 @@
         <XSvgIcon icon="logo" :size="28" />
       </div>
       <div
-        class="flex-1 font-14 text-gray-400 text-center pt-1 flex items-center justify-center relative"
+        class="
+          flex-1
+          font-14
+          text-gray-400 text-center
+          pt-1
+          flex
+          items-center
+          justify-center
+          relative
+        "
       >
         📅
         <span class="mx-1">{{ insertedAtText }}</span>
@@ -67,17 +79,33 @@
                 >
                   <!-- 头像 -->
                   <div
-                    class="rounded-full w-14 h-14 flex items-center justify-center text-white text-2xl mb-3"
+                    class="
+                      rounded-full
+                      w-14
+                      h-14
+                      flex
+                      items-center
+                      justify-center
+                      text-white text-2xl
+                      mb-3
+                    "
                     :style="{
                       background:
                         'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
                     }"
-                  >{{ userPreview.username[0].toUpperCase() }}</div>
+                  >
+                    {{ userPreview.username[0].toUpperCase() }}
+                  </div>
                   <!-- 名字 -->
-                  <div class="w-full text-center mb-4 font-semibold">{{ userPreview.username }}</div>
+                  <div class="w-full text-center mb-4 font-semibold">
+                    {{ userPreview.username }}
+                  </div>
                   <!-- inputcode -->
                   <div class="w-full mb-4">
-                    <a-input v-model:value="inputCode" placeholder="请输入访问码" />
+                    <a-input
+                      v-model:value="inputCode"
+                      placeholder="请输入访问码"
+                    />
                   </div>
                   <!-- 提取文件 -->
                   <div class="w-full mb-4">
@@ -86,10 +114,13 @@
                       type="primary"
                       :loading="confirmLoading"
                       @click="onConfirmCode"
-                    >提取文件</a-button>
+                      >提取文件</a-button
+                    >
                   </div>
                   <!-- 文件有效期 -->
-                  <div class="w-full text-center font-12 text-gray-400">{{ expiredText }}</div>
+                  <div class="w-full text-center font-12 text-gray-400">
+                    {{ expiredText }}
+                  </div>
                 </div>
                 <!-- 通过访问码控制了 -->
                 <div v-else>
@@ -100,13 +131,26 @@
                     }"
                   >
                     <div
-                      class="rounded-full w-10 h-10 flex items-center justify-center text-white text-xl mr-2"
+                      class="
+                        rounded-full
+                        w-10
+                        h-10
+                        flex
+                        items-center
+                        justify-center
+                        text-white text-xl
+                        mr-2
+                      "
                       :style="{
                         background:
                           'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
                       }"
-                    >{{ userPreview.username[0].toUpperCase() }}</div>
-                    <div class="font-semibold font-16 mr-2">{{ userPreview.username }} 给你分享了文件</div>
+                    >
+                      {{ userPreview.username[0].toUpperCase() }}
+                    </div>
+                    <div class="font-semibold font-16 mr-2">
+                      {{ userPreview.username }} 给你分享了文件
+                    </div>
                     <!-- <div class="font-12 text-gray-400 pt-1 flex items-center">
                       📅
                       <span class="mx-1">{{ insertedAtText }}</span>
@@ -114,15 +158,25 @@
                       {{ expiredText }}
                     </div>-->
                     <div class="flex-1"></div>
-                    <div class="font-22 text-gray-500 px-1 mr-2" @click="onCollectShare">
+                    <div
+                      class="font-22 text-gray-500 px-1 mr-2"
+                      @click="onCollectShare"
+                    >
                       <a-tooltip title="收藏">
-                        <StarFilled v-if="isCurrentShareCollected" :style="{ color: '#faad14' }" />
+                        <StarFilled
+                          v-if="isCurrentShareCollected"
+                          :style="{ color: '#faad14' }"
+                        />
                         <StarOutlined v-else />
                       </a-tooltip>
                     </div>
                     <div class="font-22 text-gray-500 px-2">
                       <a-tooltip title="转发">
-                        <XSvgIcon class="cursor-pointer" icon="share" :size="22" />
+                        <XSvgIcon
+                          class="cursor-pointer"
+                          icon="share"
+                          :size="22"
+                        />
                       </a-tooltip>
                     </div>
                   </div>
@@ -156,23 +210,40 @@
                       }"
                     >
                       <a-tooltip title="描述信息">
-                        <a class="mr-2" href="javascript:;" @click="onShowDescriptionModal">
+                        <a
+                          class="mr-2"
+                          href="javascript:;"
+                          @click="onShowDescriptionModal"
+                        >
                           <InfoCircleOutlined />
                         </a>
                       </a-tooltip>
-                      <div v-if="isCurrentShareFolder" class="mr-2 flex-1 flex items-center">
-                        <template v-for="(dir, idx) in historyDir" :key="dir.dirId">
+                      <div
+                        v-if="isCurrentShareFolder"
+                        class="mr-2 flex-1 flex items-center"
+                      >
+                        <template
+                          v-for="(dir, idx) in historyDir"
+                          :key="dir.dirId"
+                        >
                           <a
                             :class="{
                               'text-gray-400': idx === historyDir.length - 1,
                             }"
                             @click="onUpperLevel(idx)"
-                          >{{ dir.dirName }}</a>
-                          <span v-if="idx !== historyDir.length - 1" class="px-2 text-gray-400">></span>
+                            >{{ dir.dirName }}</a
+                          >
+                          <span
+                            v-if="idx !== historyDir.length - 1"
+                            class="px-2 text-gray-400"
+                            >></span
+                          >
                         </template>
                         <!-- 点击了文件名(非文件夹),地址栏显示 -->
                         <!-- TODO -->
-                        <template v-if="isShowDescriptionModalFileNameInAddressBar">
+                        <template
+                          v-if="isShowDescriptionModalFileNameInAddressBar"
+                        >
                           <span class="px-2 text-gray-400">></span>
                           {{ currentDescriptionModalFileName }}
                         </template>
@@ -254,7 +325,17 @@
                           />
                           <div
                             v-if="isCanFilePreview(record)"
-                            class="absolute text-white bottom-0 font-12 bg-gray-400 opacity-70 left-0 right-0 text-center"
+                            class="
+                              absolute
+                              text-white
+                              bottom-0
+                              font-12
+                              bg-gray-400
+                              opacity-70
+                              left-0
+                              right-0
+                              text-center
+                            "
                             :style="{
                               height: '14px',
                               'line-height': '14px',
@@ -266,7 +347,9 @@
                                 transform: 'scale(.833)',
                               }"
                               @click="onItemIconClick(record)"
-                            >预览</div>
+                            >
+                              预览
+                            </div>
                           </div>
                         </div>
 
@@ -275,7 +358,8 @@
                           class="mx-2"
                           :title="lastOfArray(record.userFile.fullName)"
                           @click="onItemNameClick(record)"
-                        >{{ lastOfArray(record.userFile.fullName) }}</a>
+                          >{{ lastOfArray(record.userFile.fullName) }}</a
+                        >
                         <!-- class="truncate" -->
                         <div
                           class="text-overflow-2"
@@ -295,12 +379,21 @@
                               :key="tag"
                               :color="TAG_COLOR_LIST[idx]"
                               class="mr-1"
-                            >{{ tag }}</a-tag>
+                              >{{ tag }}</a-tag
+                            >
                           </template>
                         </div>
                         <!-- hover 才显示的shortCut栏 -->
                         <!-- 非上级目录 -->
-                        <div class="tableShortcut hidden inline-block absolute right-0">
+                        <div
+                          class="
+                            tableShortcut
+                            hidden
+                            inline-block
+                            absolute
+                            right-0
+                          "
+                        >
                           <!-- 保存到网盘 -->
                           <a-tooltip title="保存到网盘">
                             <a
@@ -411,6 +504,11 @@
   </div>
 </template>
 
+<script lang="ts">
+// 注册name才能 keep-alive
+export default { name: "MetanetSharedFile" };
+</script>
+
 <script setup lang="ts">
 import {
   computed,
@@ -435,7 +533,7 @@ import {
   apiSecondUpload,
   QueryShareFileItem,
 } from "../../../apollo/api";
-import type { TFileItem } from '../../../apollo/api'
+import type { TFileItem } from "../../../apollo/api";
 import dayjs from "dayjs/esm";
 import {
   onBeforeRouteLeave,
@@ -924,9 +1022,7 @@ const columns = [
       // 文件夹的排在前面
       if (a.userFile?.isDir && !b.userFile?.isDir) return 0;
       else if (!a.userFile?.isDir && b.userFile?.isDir) return 0;
-      return dayjs(a.userFile?.updatedAt).diff(
-        dayjs(b.userFile?.updatedAt)
-      );
+      return dayjs(a.userFile?.updatedAt).diff(dayjs(b.userFile?.updatedAt));
     },
   },
   {
@@ -1057,8 +1153,8 @@ const getSetFileData = async () => {
     uri: currentUri.value,
     ...(!isCodeResolved.value
       ? {
-        code: inputCode.value,
-      }
+          code: inputCode.value,
+        }
       : {}),
   });
   isLoadingListData.value = false;
@@ -1148,9 +1244,9 @@ const handleUriChange = (queryUri: string) => {
         dayjs(),
         "days"
       )}天后过期`;
-      insertedAtText.value = dayjs(
-        data.drivePreviewShare.insertedAt
-      ).format("YY-MM-DD");
+      insertedAtText.value = dayjs(data.drivePreviewShare.insertedAt).format(
+        "YY-MM-DD"
+      );
       // 如果不需要访问码, 立即请求文件
       if (isCodeResolved.value === true) {
         getSetFileData().finally(() => {
@@ -1191,9 +1287,7 @@ const onSaveToMetanetModalConfirm = async () => {
     return false;
   };
   if (
-    saveToMetanetModalSelectedFileList.value.some((i) =>
-      checkSameParent(i)
-    )
+    saveToMetanetModalSelectedFileList.value.some((i) => checkSameParent(i))
   ) {
     message.warning("目标文件夹已包含要保存的文件!");
     return;
@@ -1290,13 +1384,12 @@ const getAndSetSaveToMetanetModalTableData = () => {
       // console.log("目录res", item.dirId, item.dirName, resItem);
       if (resultQueryFileItem.err) return item;
       // 排除 非目录文件/ 根目录/ 自身/ 父目录(上一级)
-      const afterFilterList =
-        resultQueryFileItem.data.driveListFiles.filter(
-          (i): i is TFileItem =>
-            i !== null &&
-            i.isDir &&
-            !["root", item.dirId, parentId].includes(i.id)
-        );
+      const afterFilterList = resultQueryFileItem.data.driveListFiles.filter(
+        (i): i is TFileItem =>
+          i !== null &&
+          i.isDir &&
+          !["root", item.dirId, parentId].includes(i.id)
+      );
       // console.log("afterFilterList", afterFilterList);
       if (!afterFilterList.length) return item;
       item.children = await Promise.all(
@@ -1373,5 +1466,4 @@ onBeforeRouteLeave((to, from) => {
 });
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>
