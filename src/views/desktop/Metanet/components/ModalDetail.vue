@@ -44,8 +44,7 @@
   </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
 import { XFileTypeIcon } from "../../../../components/desktop";
 
 export type TDetailInfo = {
@@ -65,32 +64,25 @@ const MAP_DETAIL_KEY: { [k: string]: string } = {
   shareLink: "分享链接",
   shareHash: "Hash",
 };
-export default defineComponent({
-  components: {
-    XFileTypeIcon,
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-    detail: {
-      type: Object as PropType<TDetailInfo>,
-      required: true,
-    },
-  },
-  emits: ["update:visible"],
-  setup(props, { emit }) {
-    // 需要显示tooltip 的数组
-    const canShowToolTipKeys = ["shareLink", "shareHash", "location"];
-    // console.log("props", props.detail);
-    /** 穿透v-model */
-    const updateFromAModal = (v: boolean) => emit("update:visible", v);
-    /** map出文字 */
-    const formatDetailKey = (k: string) => MAP_DETAIL_KEY[k] ?? "";
-    return { updateFromAModal, formatDetailKey, canShowToolTipKeys };
+  detail: {
+    type: Object as PropType<TDetailInfo>,
+    required: true,
   },
 });
+const emit = defineEmits(["update:visible"]);
+// 需要显示tooltip 的数组
+const canShowToolTipKeys = ["shareLink", "shareHash", "location"];
+// console.log("props", props.detail);
+/** 穿透v-model */
+const updateFromAModal = (v: boolean) => emit("update:visible", v);
+/** map出文字 */
+const formatDetailKey = (k: string) => MAP_DETAIL_KEY[k] ?? "";
 </script>
 
 <style scoped></style>

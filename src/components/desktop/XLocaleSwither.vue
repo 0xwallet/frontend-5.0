@@ -39,61 +39,39 @@
   </a-dropdown>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from "vue";
+<script setup lang="ts">
 import { useLocalStorage, useTitle } from "@vueuse/core";
 import { DEFAULT_LANG, PRODUCT_NAME } from "../../constants";
 import { Locale, useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { TranslationOutlined } from "@ant-design/icons-vue";
 
-export default defineComponent({
-  components: {
-    TranslationOutlined,
-  },
-  setup() {
-    const route = useRoute();
-    function useLocaleMenu() {
-      const globalComposer = useI18n();
-      const localeSelectedKeys = reactive([globalComposer.locale.value]);
-      const onMenuItemClick = (
-        // i18nGlobal: ExportedGlobalComposer,
-        itemLocale: Locale
-      ) => {
-        // console.log("i18nGlobal", i18nGlobal);
-        globalComposer.locale.value = itemLocale;
-        useLocalStorage("locale", DEFAULT_LANG).value = itemLocale;
-        localeSelectedKeys.fill(itemLocale);
-        // console.log(route);
-        const textPath = `${route.meta.title}`;
-        useTitle(`${globalComposer.t(textPath)} - ${PRODUCT_NAME}`);
-      };
-      // TODO 美化样式
-      const localeMap: { [key: string]: string } = {
-        zh_CN: "简体中文",
-        en_US: "English",
-      };
-      // console.log("localeSelectedKeys", localeSelectedKeys);
-      // return { localeSelectedKeys, onMenuItemClick, localeMap };
-      return {
-        localeObj: {
-          localeSelectedKeys,
-          onMenuItemClick,
-          availableLocales: globalComposer.availableLocales,
-          localeMap,
-        },
-      };
-    }
-    return { ...useLocaleMenu() };
-  },
-});
+const route = useRoute();
+const globalComposer = useI18n();
+const localeSelectedKeys = reactive([globalComposer.locale.value]);
+const onMenuItemClick = (
+  // i18nGlobal: ExportedGlobalComposer,
+  itemLocale: Locale
+) => {
+  // console.log("i18nGlobal", i18nGlobal);
+  globalComposer.locale.value = itemLocale;
+  useLocalStorage("locale", DEFAULT_LANG).value = itemLocale;
+  localeSelectedKeys.fill(itemLocale);
+  // console.log(route);
+  const textPath = `${route.meta.title}`;
+  useTitle(`${globalComposer.t(textPath)} - ${PRODUCT_NAME}`);
+};
+// TODO 美化样式
+const localeMap: { [key: string]: string } = {
+  zh_CN: "简体中文",
+  en_US: "English",
+};
+const localeObj = {
+  localeSelectedKeys,
+  onMenuItemClick,
+  availableLocales: globalComposer.availableLocales,
+  localeMap,
+};
+// console.log("localeSelectedKeys", localeSelectedKeys);
+// return { localeSelectedKeys, onMenuItemClick, localeMap };
 </script>
-
-<style lang="less" scoped>
-// .ant-dropdown-menu-item-selected {
-  // a {
-    // background: blue !important;
-    // color: white !important;
-  // }
-// }
-</style>

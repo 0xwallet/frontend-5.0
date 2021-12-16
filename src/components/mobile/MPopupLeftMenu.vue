@@ -233,20 +233,12 @@
   </van-popup>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { apiQueryMeSpace } from "../../apollo/api";
 import { useUserStore } from "../../store";
 import { formatBytes } from "../../hooks";
 import { useLocalStorage } from "@vueuse/core";
 import { remove } from "lodash-es";
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-} from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { MSvgIcon } from "../../components/mobile";
@@ -254,132 +246,105 @@ import { MSvgIcon } from "../../components/mobile";
 /** 当前展开的索引,0网盘,1传输,2账户,3安全,4国际化 */
 type ExpandV = 0 | 1 | 2 | 3 | 4;
 
-export default defineComponent({
-  components: {
-    MSvgIcon,
-  },
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  emits: ["update:visible"],
-  setup(props, { emit }) {
-    const globalComposer = useI18n();
-    const [route, router] = [useRoute(), useRouter()];
-    const updateVisible = (v: boolean) => {
-      emit("update:visible", v);
-    };
-    const userStore = useUserStore();
-
-    function useDiskInfo() {
-      const diskInfo = reactive({
-        usedSpace: "",
-        totalSpace: "",
-        usedPercent: "",
-      });
-      apiQueryMeSpace().then((resultQuerySpace) => {
-        if (resultQuerySpace.err) return;
-        const { usedSpace, totalSpace, availableSpace } =
-          resultQuerySpace.data.me.driveSetting;
-        diskInfo.usedSpace = formatBytes(+usedSpace);
-        diskInfo.totalSpace = formatBytes(+totalSpace);
-        diskInfo.usedPercent = ((+usedSpace / +totalSpace) * 100).toFixed(0);
-      });
-      return { diskInfo };
-    }
-    /** 是否路由包含对应字符串 */
-    const isRouteIncludes = (str: string) => route.fullPath.includes(str);
-
-    function useMenu() {
-      const expandKeys = reactive<ExpandV[]>([]);
-      // 根据路由自动展开
-      watch(
-        () => route,
-        (newVal) => {
-          if (newVal.fullPath.includes("metanet")) {
-            if (!expandKeys.includes(0)) expandKeys.push(0);
-          } else if (newVal.fullPath.includes("transport")) {
-            if (!expandKeys.includes(1)) expandKeys.push(1);
-          }
-        },
-        {
-          // TODO deep performance?
-          deep: true,
-        }
-      );
-      const localeList = [
-        { name: "简体中文", value: "zh_CN" },
-        { name: "English", value: "en_US" },
-      ];
-      const curLocale = ref("");
-      const localeSelectList = ref<{ name: string; value: string }[]>([]);
-      watch(
-        () => curLocale.value,
-        (newVal) => {
-          localeSelectList.value = localeList.filter((i) => i.name !== newVal);
-        }
-      );
-      onMounted(() => {
-        const v = localStorage.getItem("locale");
-        if (v) {
-          curLocale.value = localeList.find((i) => i.value === v)?.name ?? "";
-        }
-      });
-      /** 展开菜单 */
-      const onExpand = (v: ExpandV) => {
-        if (v === 2) {
-          // 账户
-          router.push({ name: "Account" });
-        } else if (v === 3) {
-          // 安全
-          router.push({ name: "Security" });
-        } else {
-          expandKeys.includes(v)
-            ? remove(expandKeys, (i) => i === v)
-            : expandKeys.push(v);
-        }
-      };
-      /** 菜单子项的点击 */
-      const onClickSubMenuItem = (routeName: string) => {
-        if (routeName === "MetanetFile") {
-          router.push({
-            name: "MetanetFile",
-            query: {
-              path: "~",
-            },
-          });
-        } else {
-          router.push({ name: routeName });
-        }
-        updateVisible(false);
-      };
-      const onSelectLocale = (item: { name: string; value: string }) => {
-        // TODO 设置语言后刷新?
-        curLocale.value = item.name;
-        globalComposer.locale.value = item.value;
-        useLocalStorage("locale", "zh_CN").value = item.value;
-      };
-      return {
-        expandKeys,
-        onExpand,
-        curLocale,
-        localeSelectList,
-        onClickSubMenuItem,
-        onSelectLocale,
-      };
-    }
-
-    return {
-      updateVisible,
-      userStore,
-      ...useDiskInfo(),
-      ...useMenu(),
-      isRouteIncludes,
-    };
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
   },
 });
+const emit = defineEmits(["update:visible"]);
+const globalComposer = useI18n();
+const [route, router] = [useRoute(), useRouter()];
+const updateVisible = (v: boolean) => {
+  emit("update:visible", v);
+};
+const userStore = useUserStore();
+
+const diskInfo = reactive({
+  usedSpace: "",
+  totalSpace: "",
+  usedPercent: "",
+});
+apiQueryMeSpace().then((resultQuerySpace) => {
+  if (resultQuerySpace.err) return;
+  const { usedSpace, totalSpace, availableSpace } =
+    resultQuerySpace.data.me.driveSetting;
+  diskInfo.usedSpace = formatBytes(+usedSpace);
+  diskInfo.totalSpace = formatBytes(+totalSpace);
+  diskInfo.usedPercent = ((+usedSpace / +totalSpace) * 100).toFixed(0);
+});
+
+/** 是否路由包含对应字符串 */
+const isRouteIncludes = (str: string) => route.fullPath.includes(str);
+
+const expandKeys = reactive<ExpandV[]>([]);
+// 根据路由自动展开
+watch(
+  () => route,
+  (newVal) => {
+    if (newVal.fullPath.includes("metanet")) {
+      if (!expandKeys.includes(0)) expandKeys.push(0);
+    } else if (newVal.fullPath.includes("transport")) {
+      if (!expandKeys.includes(1)) expandKeys.push(1);
+    }
+  },
+  {
+    // TODO deep performance?
+    deep: true,
+  }
+);
+const localeList = [
+  { name: "简体中文", value: "zh_CN" },
+  { name: "English", value: "en_US" },
+];
+const curLocale = ref("");
+const localeSelectList = ref<{ name: string; value: string }[]>([]);
+watch(
+  () => curLocale.value,
+  (newVal) => {
+    localeSelectList.value = localeList.filter((i) => i.name !== newVal);
+  }
+);
+onMounted(() => {
+  const v = localStorage.getItem("locale");
+  if (v) {
+    curLocale.value = localeList.find((i) => i.value === v)?.name ?? "";
+  }
+});
+/** 展开菜单 */
+const onExpand = (v: ExpandV) => {
+  if (v === 2) {
+    // 账户
+    router.push({ name: "Account" });
+  } else if (v === 3) {
+    // 安全
+    router.push({ name: "Security" });
+  } else {
+    expandKeys.includes(v)
+      ? remove(expandKeys, (i) => i === v)
+      : expandKeys.push(v);
+  }
+};
+/** 菜单子项的点击 */
+const onClickSubMenuItem = (routeName: string) => {
+  if (routeName === "MetanetFile") {
+    router.push({
+      name: "MetanetFile",
+      query: {
+        path: "~",
+      },
+    });
+  } else {
+    router.push({ name: routeName });
+  }
+  updateVisible(false);
+};
+const onSelectLocale = (item: { name: string; value: string }) => {
+  // TODO 设置语言后刷新?
+  curLocale.value = item.name;
+  globalComposer.locale.value = item.value;
+  useLocalStorage("locale", "zh_CN").value = item.value;
+};
 </script>
 
 <style lang="less" scoped>

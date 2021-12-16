@@ -31,7 +31,7 @@
   </a-tooltip>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import { CopyOutlined } from "@ant-design/icons-vue";
 import { useClipboard } from "@vueuse/core";
@@ -41,38 +41,30 @@ import { message } from "ant-design-vue";
 // import { chunk } from "lodash-es";
 // const colorHash = new ColorHash();
 
-export default defineComponent({
-  components: {
-    CopyOutlined,
+const props = defineProps({
+  hash: {
+    type: String,
+    required: true,
   },
-  props: {
-    hash: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      default: "SHA256", // txid TxID
-    },
-  },
-  setup(props) {
-    const { t } = useI18n();
-    const { copy } = useClipboard({ read: false });
-    const onCopyHash = () => {
-      const text =
-        props.type === "SHA256"
-          ? props.hash
-          : `${window.location.origin}/#/p?txid=${props.hash}`;
-      copy(text).then(() => message.success(t("metanet.copySuccess")));
-    };
-    // const colors = chunk([...props.hash], Math.floor(props.hash.length / 6))
-    //   .slice(0, 6)
-    //   .map((i) => colorHash.hex(i.join("")));
-    // console.log("colors", colors);
-    // return { colors, onCopyHash };
-    return { onCopyHash };
+  type: {
+    type: String,
+    default: "SHA256", // txid TxID
   },
 });
+const { t } = useI18n();
+const { copy } = useClipboard({ read: false });
+const onCopyHash = () => {
+  const text =
+    props.type === "SHA256"
+      ? props.hash
+      : `${window.location.origin}/#/p?txid=${props.hash}`;
+  copy(text).then(() => message.success(t("metanet.copySuccess")));
+};
+// const colors = chunk([...props.hash], Math.floor(props.hash.length / 6))
+//   .slice(0, 6)
+//   .map((i) => colorHash.hex(i.join("")));
+// console.log("colors", colors);
+// return { colors, onCopyHash };
 </script>
 
 <style lang="less">

@@ -45,70 +45,54 @@
   </a-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { apiSendSignInEmailCaptcha } from "../../../../apollo/api";
 import { useForm } from "@ant-design-vue/use";
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useI18n } from "vue-i18n";
 // TODO nMobile 登录!!
-export default defineComponent({
-  emits: ["setKey"],
-  setup() {
-    const loginLoading = ref<boolean>(false);
-    const { t } = useI18n();
-    const modelRef = reactive({
-      email: "",
-      captcha: "",
-    });
-    const rulesRef = reactive({
-      email: [
-        {
-          type: "email",
-          required: true,
-          message: t("pageLogin.emailPlaceholder"),
-        },
-      ],
-      captcha: [
-        {
-          required: true,
-          message: t("pageLogin.smsPlaceholder"),
-        },
-      ],
-    });
-    const { resetFields, validate, validateInfos } = useForm(
-      modelRef,
-      rulesRef
-    );
-    const onSendSignInEmailCaptcha = () => {
-      validate(["email"])
-        .then(async ({ email }) => {
-          console.log("email", email);
-          const resultSendCaptcha = await apiSendSignInEmailCaptcha({ email });
-          if (resultSendCaptcha.err) {
-            return;
-          }
-          console.log("sendCaptcha-res", resultSendCaptcha);
-        })
-        .catch((err) => console.log(err));
-    };
-    const onnMobileLogin = () =>
-      validate()
-        .then(() => {
-          const params = toRaw(modelRef);
-          console.log(params);
-        })
-        .catch((err) => console.log("error", err));
-
-    return {
-      onSendSignInEmailCaptcha,
-      onnMobileLogin,
-      loginLoading,
-      validateInfos,
-      resetFields,
-      modelRef,
-    };
-  },
+const emit = defineEmits(["setKey"]);
+const loginLoading = ref<boolean>(false);
+const { t } = useI18n();
+const modelRef = reactive({
+  email: "",
+  captcha: "",
 });
+const rulesRef = reactive({
+  email: [
+    {
+      type: "email",
+      required: true,
+      message: t("pageLogin.emailPlaceholder"),
+    },
+  ],
+  captcha: [
+    {
+      required: true,
+      message: t("pageLogin.smsPlaceholder"),
+    },
+  ],
+});
+const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef);
+const onSendSignInEmailCaptcha = () => {
+  validate(["email"])
+    .then(async ({ email }) => {
+      console.log("email", email);
+      const resultSendCaptcha = await apiSendSignInEmailCaptcha({ email });
+      if (resultSendCaptcha.err) {
+        return;
+      }
+      console.log("sendCaptcha-res", resultSendCaptcha);
+    })
+    .catch((err) => console.log(err));
+};
+const onnMobileLogin = () =>
+  validate()
+    .then(() => {
+      const params = toRaw(modelRef);
+      console.log(params);
+    })
+    .catch((err) => console.log("error", err));
 </script>
 
 <style scoped></style>

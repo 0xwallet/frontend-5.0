@@ -2,7 +2,7 @@
   <span class="anticon" role="img" v-html="svgStr"></span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 
 const SVG_MAP: { [key: string]: (size: number) => string } = {
@@ -83,23 +83,18 @@ const SVG_MAP: { [key: string]: (size: number) => string } = {
   // ant icons --end
 };
 // 用法, 从iconfont复制svg代码(加 fill="currentColor" 才能继承颜色, 改width/height)
-export default defineComponent({
-  props: {
-    icon: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  icon: {
+    type: String,
+    required: true,
   },
-  setup(props) {
-    const svgStr = SVG_MAP[props.icon](props.size);
-    return { svgStr };
+  size: {
+    type: Number,
+    required: true,
   },
 });
+
+const svgStr = SVG_MAP[props.icon](props.size);
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

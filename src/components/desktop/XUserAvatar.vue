@@ -199,7 +199,7 @@
   </a-dropdown>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useUserStore } from "../../store";
 import { Modal } from "ant-design-vue";
 import { computed, createVNode, defineComponent, ref } from "vue";
@@ -213,90 +213,61 @@ import {
 
 type UserStatus = "online" | "leave" | "busy" | "offline";
 
-export default defineComponent({
-  components: {
-    RightOutlined,
-    CheckOutlined,
-  },
-  setup() {
-    const [route, router] = [useRoute(), useRouter()];
-    const { t } = useI18n();
-    const userStore = useUserStore();
-    /** 用户状态: */
-    function useUserStatus() {
-      const currentUserStatus = ref<UserStatus>("online");
-      const setUserStatus = (s: UserStatus) => (currentUserStatus.value = s);
-      const makeItem = (color: string, text: string, tips: string) => {
-        return { color, text, tips };
-      };
-      const userStatusColorMap: {
-        [key in UserStatus]: {
-          color: string;
-          text: string;
-          tips: string;
-        };
-      } = {
-        online: makeItem("#6dcc50", "在线", ""),
-        leave: makeItem("#f9a646", "离开", ""),
-        busy: makeItem("#ff625c", "忙碌", "您将不再收到任何聊天通知。"),
-        offline: makeItem(
-          "#a4a4a7",
-          "离线",
-          " 即使您处于离线状态，也可以访问网盘。"
-        ),
-      };
-      return {
-        currentUserStatus,
-        setUserStatus,
-        userStatusColorMap,
-      };
-    }
-    /** TODO 用api query回来带有头像的数据 */
-    function useUserDetailInfo() {
-      const onAvatarDropdownMenuClick = (key: string) => {
-        // console.log("onAvatarDropdownMenuClick-key", key);
-        if (key === "Logout") {
-          Modal.confirm({
-            icon: createVNode(ExclamationCircleOutlined),
-            title: t("common.logoutTip"),
-            content: t("common.logoutMessage"),
-            onOk: () => {
-              return new Promise<void>((resolve) => {
-                userStore.signOutAndClear();
-                setTimeout(() => {
-                  resolve();
-                  router.push({
-                    name: "Login",
-                    query: {
-                      redirect: route.fullPath,
-                    },
-                  });
-                }, 300);
-              });
-            },
-          });
-        } else {
-          router.push({ name: key });
-        }
-      };
-      const detailInfo = computed(() => {
-        return {
-          avatar: userStore.avatar,
-          username: userStore.username,
-          email: userStore.email,
-        };
-      });
-      // console.log("detailInfo", detailInfo);
-      return {
-        detailInfo,
-        onAvatarDropdownMenuClick,
-      };
-    }
-    return {
-      ...useUserStatus(),
-      ...useUserDetailInfo(),
-    };
-  },
+const [route, router] = [useRoute(), useRouter()];
+const { t } = useI18n();
+const userStore = useUserStore();
+/** 用户状态: */
+const currentUserStatus = ref<UserStatus>("online");
+const setUserStatus = (s: UserStatus) => (currentUserStatus.value = s);
+const makeItem = (color: string, text: string, tips: string) => {
+  return { color, text, tips };
+};
+const userStatusColorMap: {
+  [key in UserStatus]: {
+    color: string;
+    text: string;
+    tips: string;
+  };
+} = {
+  online: makeItem("#6dcc50", "在线", ""),
+  leave: makeItem("#f9a646", "离开", ""),
+  busy: makeItem("#ff625c", "忙碌", "您将不再收到任何聊天通知。"),
+  offline: makeItem("#a4a4a7", "离线", " 即使您处于离线状态，也可以访问网盘。"),
+};
+
+/** TODO 用api query回来带有头像的数据 */
+const onAvatarDropdownMenuClick = (key: string) => {
+  // console.log("onAvatarDropdownMenuClick-key", key);
+  if (key === "Logout") {
+    Modal.confirm({
+      icon: createVNode(ExclamationCircleOutlined),
+      title: t("common.logoutTip"),
+      content: t("common.logoutMessage"),
+      onOk: () => {
+        return new Promise<void>((resolve) => {
+          userStore.signOutAndClear();
+          setTimeout(() => {
+            resolve();
+            router.push({
+              name: "Login",
+              query: {
+                redirect: route.fullPath,
+              },
+            });
+          }, 300);
+        });
+      },
+    });
+  } else {
+    router.push({ name: key });
+  }
+};
+const detailInfo = computed(() => {
+  return {
+    avatar: userStore.avatar,
+    username: userStore.username,
+    email: userStore.email,
+  };
 });
 </script>
 

@@ -12,30 +12,24 @@
   </a>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
 // https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a
-export default defineComponent({
-  props: {
-    href: {
-      type: String,
-      default: "javascript:;",
-    },
-    target: {
-      type: String as PropType<"_self" | "_blank">,
-      default: "_self",
-    },
-    title: {
-      type: String,
-      default: "",
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  href: {
+    type: String,
+    default: "javascript:;",
   },
-  setup() {
-    return {};
+  target: {
+    type: String as PropType<"_self" | "_blank">,
+    default: "_self",
+  },
+  title: {
+    type: String,
+    default: "",
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

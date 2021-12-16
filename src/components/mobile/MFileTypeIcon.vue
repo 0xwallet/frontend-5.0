@@ -2,7 +2,7 @@
   <img :src="svg" class="inline-block align-middle" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import archive from "../../assets/svg/fileType/archive.svg";
 import audio from "../../assets/svg/fileType/audio.svg";
@@ -38,13 +38,8 @@ function getIcon(fileType: string | undefined) {
   if (FILE_TYPE_MAP.video.includes(e)) return video;
   else return defaultFile;
 }
-
-export default defineComponent({
-  props: {
-    type: String, // 文件后缀
-  },
-  setup(props) {
-    return { svg: getIcon(props.type) };
-  },
+const props = defineProps({
+  type: String, // 文件后缀
 });
+const svg = getIcon(props.type);
 </script>

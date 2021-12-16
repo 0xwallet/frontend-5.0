@@ -91,7 +91,7 @@
     </a-form-item>
   </a-form>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useForm } from "@ant-design-vue/use";
 import { notification } from "ant-design-vue";
@@ -100,76 +100,62 @@ import { useI18n } from "vue-i18n";
 import { useUserStore } from "../../../../store";
 import { apiEmailLogin } from "../../../../apollo/api";
 
-export default defineComponent({
-  emits: ["setKey"],
-  setup() {
-    const router = useRouter();
-    const loginLoading = ref(false);
-    const { t } = useI18n();
-    const modelRef = reactive({
-      email: "",
-      password: "",
-      isRememberMe: false,
-    });
-    const rulesRef = reactive({
-      email: [
-        {
-          type: "email",
-          required: true,
-          message: t("pageLogin.emailPlaceholder"),
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: t("pageLogin.passwordPlaceholder"),
-        },
-      ],
-    });
-    const { resetFields, validate, validateInfos } = useForm(
-      modelRef,
-      rulesRef
-    );
-    const onSubmit = () => {
-      validate()
-        .then(async () => {
-          const params = toRaw(modelRef);
-          console.log(params);
-          loginLoading.value = true;
-          const resultEmailLogin = await apiEmailLogin(params);
-          loginLoading.value = false;
-          if (resultEmailLogin.err) {
-            // Modal.error(err); // initApollo onError 会报错
-            return;
-          }
-          console.log("apiEmailLogin", resultEmailLogin.data);
-          const { token } = resultEmailLogin.data.signin;
-          const { id, username } = resultEmailLogin.data.signin.user;
-          notification.success({
-            message: t("pageLogin.loginSuccessTitle"),
-            description: `${t("pageLogin.loginSuccessDesc")}: ${username}`,
-          });
-          const { signInFullPath } = useUserStore();
-          const resultSignInFullPath = await signInFullPath({
-            id,
-            token,
-            username,
-            email: params.email,
-          });
-          if (resultSignInFullPath.err) return;
-          router.replace("/");
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
-    };
-    return {
-      loginLoading,
-      validateInfos,
-      resetFields,
-      modelRef,
-      onSubmit,
-    };
-  },
+const emit = defineEmits(["setKey"]);
+const router = useRouter();
+const loginLoading = ref(false);
+const { t } = useI18n();
+const modelRef = reactive({
+  email: "",
+  password: "",
+  isRememberMe: false,
 });
+const rulesRef = reactive({
+  email: [
+    {
+      type: "email",
+      required: true,
+      message: t("pageLogin.emailPlaceholder"),
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: t("pageLogin.passwordPlaceholder"),
+    },
+  ],
+});
+const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef);
+const onSubmit = () => {
+  validate()
+    .then(async () => {
+      const params = toRaw(modelRef);
+      console.log(params);
+      loginLoading.value = true;
+      const resultEmailLogin = await apiEmailLogin(params);
+      loginLoading.value = false;
+      if (resultEmailLogin.err) {
+        // Modal.error(err); // initApollo onError 会报错
+        return;
+      }
+      console.log("apiEmailLogin", resultEmailLogin.data);
+      const { token } = resultEmailLogin.data.signin;
+      const { id, username } = resultEmailLogin.data.signin.user;
+      notification.success({
+        message: t("pageLogin.loginSuccessTitle"),
+        description: `${t("pageLogin.loginSuccessDesc")}: ${username}`,
+      });
+      const { signInFullPath } = useUserStore();
+      const resultSignInFullPath = await signInFullPath({
+        id,
+        token,
+        username,
+        email: params.email,
+      });
+      if (resultSignInFullPath.err) return;
+      router.replace("/");
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
+};
 </script>

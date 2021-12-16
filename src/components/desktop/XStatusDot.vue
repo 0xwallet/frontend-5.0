@@ -7,9 +7,7 @@
   ></span>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
-
+<script setup lang="ts">
 type DotTypes = "default" | "processing" | "success" | "error";
 const STATUS_COLOR_MAP: { [key in DotTypes]: string } = {
   default: "#d9d9d9",
@@ -18,18 +16,12 @@ const STATUS_COLOR_MAP: { [key in DotTypes]: string } = {
   error: "#ff4d4f",
 };
 
-export default defineComponent({
-  props: {
-    type: {
-      type: String as PropType<DotTypes>,
-      default: "success",
-    },
-  },
-  setup() {
-    return { STATUS_COLOR_MAP };
+const props = defineProps({
+  type: {
+    type: String as PropType<DotTypes>,
+    default: "success",
   },
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

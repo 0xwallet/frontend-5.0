@@ -100,15 +100,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  PropType,
-  ref,
-  watch,
-} from "vue";
+<script setup lang="ts">
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 import PhotoSwipe from "photoswipe";
@@ -117,136 +109,126 @@ import { onClickOutside } from "@vueuse/core";
 import { useBaseStore } from "../../store";
 import { MMdParser } from ".";
 
-export default defineComponent({
-  components: {
-    MMdParser,
-  },
-  setup(props) {
-    const baseStore = useBaseStore();
-    const mdContent = ref("");
-    let gallery: null | PhotoSwipe<any> = null;
-    const captionRef = ref(null);
-    // const stopClickOutSide = onClickOutside(captionRef, (e) => {
-    //   console.log("click-caption-outside");
-    // });
-    const setMdContentFromItemList = (idx: number) =>
-      (mdContent.value = baseStore.photoSwipe.itemList[idx].title ?? "");
-    const openPhotoSwipe = () => {
-      closePhotoSwipe();
-      // console.log("call openPhotoSwipe");
-      const totalLen = baseStore.photoSwipe.itemList.length;
-      // 注册第一次打开的 描述markdown
-      setMdContentFromItemList(baseStore.photoSwipe.options.index ?? 0);
-      gallery = new PhotoSwipe(
-        document.querySelectorAll(".pswp")[0] as HTMLElement,
-        PhotoSwipeUI_Default,
-        baseStore.photoSwipe.itemList.map((item, idx) => ({
-          ...item,
-          // 加上 1/11 的索引
-          title: `${idx + 1}/${totalLen}  ${item.title}`,
-        })),
-        {
-          closeOnScroll: false,
-          closeOnVerticalDrag: false,
-          index: 0, // start at first slide
-          ...baseStore.photoSwipe.options,
-        }
-      );
-      // 解决移动端全屏的bug,copy from photoswipe.com 源码 --start
+const baseStore = useBaseStore();
+const mdContent = ref("");
+let gallery: null | PhotoSwipe<any> = null;
+const captionRef = ref(null);
+// const stopClickOutSide = onClickOutside(captionRef, (e) => {
+//   console.log("click-caption-outside");
+// });
+const setMdContentFromItemList = (idx: number) =>
+  (mdContent.value = baseStore.photoSwipe.itemList[idx].title ?? "");
+const openPhotoSwipe = () => {
+  closePhotoSwipe();
+  // console.log("call openPhotoSwipe");
+  const totalLen = baseStore.photoSwipe.itemList.length;
+  // 注册第一次打开的 描述markdown
+  setMdContentFromItemList(baseStore.photoSwipe.options.index ?? 0);
+  gallery = new PhotoSwipe(
+    document.querySelectorAll(".pswp")[0] as HTMLElement,
+    PhotoSwipeUI_Default,
+    baseStore.photoSwipe.itemList.map((item, idx) => ({
+      ...item,
+      // 加上 1/11 的索引
+      title: `${idx + 1}/${totalLen}  ${item.title}`,
+    })),
+    {
+      closeOnScroll: false,
+      closeOnVerticalDrag: false,
+      index: 0, // start at first slide
+      ...baseStore.photoSwipe.options,
+    }
+  );
+  // 解决移动端全屏的bug,copy from photoswipe.com 源码 --start
 
-      let realViewportWidth,
-        useLargeImages = false,
-        firstResize = true,
-        imageSrcWillChange: boolean;
-      gallery.listen("beforeResize", function () {
-        if (!gallery) return;
-        let dpiRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
-        dpiRatio = Math.min(dpiRatio, 2.5);
-        realViewportWidth = gallery.viewportSize.x * dpiRatio;
+  let realViewportWidth,
+    useLargeImages = false,
+    firstResize = true,
+    imageSrcWillChange: boolean;
+  gallery.listen("beforeResize", function () {
+    if (!gallery) return;
+    let dpiRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+    dpiRatio = Math.min(dpiRatio, 2.5);
+    realViewportWidth = gallery.viewportSize.x * dpiRatio;
 
-        if (
-          realViewportWidth >= 1200 ||
-          (!(gallery as any).likelyTouchDevice && realViewportWidth > 800) ||
-          screen.width > 1200
-        ) {
-          if (!useLargeImages) {
-            useLargeImages = true;
-            imageSrcWillChange = true;
-          }
-        } else {
-          if (useLargeImages) {
-            useLargeImages = false;
-            imageSrcWillChange = true;
-          }
-        }
-
-        if (imageSrcWillChange && !firstResize) {
-          // console.log("call-gallery.invalidateCurrItems");
-          gallery.invalidateCurrItems();
-        }
-
-        if (firstResize) {
-          firstResize = false;
-        }
-
-        imageSrcWillChange = false;
-      });
-      // 解决移动端全屏的bug,copy from photoswipe.com 源码 --end
-
-      gallery.listen("imageLoadComplete", function (index, item) {
-        // 如果是 0 的话, 设为自动宽高
-        // console.log("item...", item);
-        if (item.h === 0 || item.w === 0) {
-          let img = new Image();
-          img.onload = () => {
-            item.w = img.width;
-            item.h = img.height;
-            gallery?.invalidateCurrItems();
-            gallery?.updateSize(true);
-          };
-          img.src = item.src as string;
-        }
-      });
-      gallery.listen("beforeChange", () => {
-        setMdContentFromItemList(gallery?.getCurrentIndex() ?? 0);
-      });
-      gallery.listen("close", () => {
-        baseStore.setPhotoSwipeVisible(false);
-      });
-      gallery.init();
-    };
-    const closePhotoSwipe = () => {
-      if (gallery) {
-        gallery.close();
-        gallery = null;
+    if (
+      realViewportWidth >= 1200 ||
+      (!(gallery as any).likelyTouchDevice && realViewportWidth > 800) ||
+      screen.width > 1200
+    ) {
+      if (!useLargeImages) {
+        useLargeImages = true;
+        imageSrcWillChange = true;
       }
-      // stopClickOutSide && stopClickOutSide();
-    };
-    const isExpandMdContainer = ref(false);
-    const onExpandMdContainer = () => {
-      isExpandMdContainer.value = !isExpandMdContainer.value;
-      document
-        .getElementById("captionBox")
-        ?.classList.add("importantOpacity-100");
-    };
-    watch(
-      () => baseStore.photoSwipe.isShow,
-      (newVal) => {
-        if (newVal === true) {
-          openPhotoSwipe();
-        } else {
-          closePhotoSwipe();
-          isExpandMdContainer.value = false;
-        }
-      },
-      { immediate: true }
-    );
+    } else {
+      if (useLargeImages) {
+        useLargeImages = false;
+        imageSrcWillChange = true;
+      }
+    }
 
-    onUnmounted(() => {
+    if (imageSrcWillChange && !firstResize) {
+      // console.log("call-gallery.invalidateCurrItems");
+      gallery.invalidateCurrItems();
+    }
+
+    if (firstResize) {
+      firstResize = false;
+    }
+
+    imageSrcWillChange = false;
+  });
+  // 解决移动端全屏的bug,copy from photoswipe.com 源码 --end
+
+  gallery.listen("imageLoadComplete", function (index, item) {
+    // 如果是 0 的话, 设为自动宽高
+    // console.log("item...", item);
+    if (item.h === 0 || item.w === 0) {
+      let img = new Image();
+      img.onload = () => {
+        item.w = img.width;
+        item.h = img.height;
+        gallery?.invalidateCurrItems();
+        gallery?.updateSize(true);
+      };
+      img.src = item.src as string;
+    }
+  });
+  gallery.listen("beforeChange", () => {
+    setMdContentFromItemList(gallery?.getCurrentIndex() ?? 0);
+  });
+  gallery.listen("close", () => {
+    baseStore.setPhotoSwipeVisible(false);
+  });
+  gallery.init();
+};
+const closePhotoSwipe = () => {
+  if (gallery) {
+    gallery.close();
+    gallery = null;
+  }
+  // stopClickOutSide && stopClickOutSide();
+};
+const isExpandMdContainer = ref(false);
+const onExpandMdContainer = () => {
+  isExpandMdContainer.value = !isExpandMdContainer.value;
+  document.getElementById("captionBox")?.classList.add("importantOpacity-100");
+};
+watch(
+  () => baseStore.photoSwipe.isShow,
+  (newVal) => {
+    if (newVal === true) {
+      openPhotoSwipe();
+    } else {
       closePhotoSwipe();
-    });
-    return { captionRef, mdContent, isExpandMdContainer, onExpandMdContainer };
+      isExpandMdContainer.value = false;
+    }
   },
+  { immediate: true }
+);
+
+onUnmounted(() => {
+  closePhotoSwipe();
 });
 </script>
 

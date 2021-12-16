@@ -176,6 +176,9 @@ body {
   // 测试用边框
   border: 1px solid red;
 }
+.van-button--primary {
+  background: var(--van-button-primary-background-color);
+}
 </style>
 
 <style lang="less">

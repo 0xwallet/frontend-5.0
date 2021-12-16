@@ -22,22 +22,12 @@
   </a-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { QR_CODE_URL } from "../../../../constants";
 import { defineComponent } from "vue";
 import { XQrCode } from "../../../../components/desktop";
 
-export default defineComponent({
-  emits: ["setKey"],
-  components: {
-    XQrCode,
-  },
-  setup() {
-    return {
-      QR_CODE_URL,
-    };
-  },
-});
+const emit = defineEmits(["setKey"]);
 </script>
 
 <style scoped></style>

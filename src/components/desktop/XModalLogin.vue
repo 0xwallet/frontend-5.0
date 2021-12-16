@@ -313,7 +313,7 @@
   </a-modal>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
   apiEmailLogin,
   apiSendSignUpEmailCaptcha,
@@ -349,233 +349,203 @@ const LOGINTYPE_MAP: { [key in LoginType]: string } = {
   nMobile: "nMobile",
   webAuthn: "webAuthn",
 };
-export default defineComponent({
-  components: {
-    CloseOutlined,
-    ArrowLeftOutlined,
-    DownOutlined,
-    XSvgIcon,
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  emits: ["update:visible", "ok"],
-  setup(props, { emit }) {
-    const { t } = useI18n();
-    const [route, router] = [useRoute(), useRouter()];
-    const userStore = useUserStore();
-    const baseStore = useBaseStore();
-    const updateVisible = (v: boolean) => {
-      emit("update:visible", v);
-    };
-    const onModalCancel = () => {
-      console.log("onModalCancel");
-      // 重置 表单值 和 表单类型
-      formType.value = "signIn";
-      loginType.value = "password";
-      resetForm();
-      resetSignUpForm();
-      updateVisible(false);
-    };
-    const loginType = ref<LoginType>("password");
-    const otherLoginType = computed(() => {
-      const all: LoginType[] = ["password", "nMobile", "webAuthn"];
-      return all.filter((i) => i !== loginType.value);
-    });
-    const onChangeLoginType = (s: LoginType) => (loginType.value = s);
-    const formType = ref<FormType>("signIn");
-    const form = reactive({
-      email: "",
-      password: "",
-    });
-    const resetForm = () => {
-      form.email = "";
-      form.password = "";
-    };
-    const signUpForm = reactive({
-      email: "",
-      code: "", // 验证码
-    });
-    const resetSignUpForm = () => {
-      signUpForm.email = "";
-      signUpForm.code = "";
-    };
-    const submitLoading = ref(false);
-    const signUpSubmitLoading = ref(false);
-    const isLockSendEamil = ref(false);
-    const countdownSendEamil = ref(0);
-    let counter: number;
-    const onSendEmailCode = async () => {
-      const { email } = toRaw(signUpForm);
-      if (!email.length || !REG_OBJ.email.test(email)) {
-        message.warning(t("pageLogin.emailPlaceholder"));
-        return;
-      }
-      if (isLockSendEamil.value) {
-        return;
-      }
-      const resultSendCaptcha = await apiSendSignUpEmailCaptcha({
-        email,
-        type: "ACTIVE_EMAIL",
-      });
-      if (resultSendCaptcha.err) return;
-      // 验证码发送成功 提示语 按钮60秒禁用 ?
-      message.success(t("pageLogin.verificationSend"));
-      // 禁用发送验证码按钮和计数
-      isLockSendEamil.value = true;
-      countdownSendEamil.value = 60;
-      counter = window.setInterval(() => {
-        if (countdownSendEamil.value > 1) {
-          countdownSendEamil.value--;
-        } else {
-          // 倒数完毕,清空计时器,重置锁定
-          clearInterval(counter);
-          isLockSendEamil.value = false;
-        }
-      }, 1000);
-      // 防止内存泄漏
-    };
-    onUnmounted(() => counter && clearInterval(counter));
-    const onSubmit = async () => {
-      if (!form.email || !form.password) {
-        message.warning("请完善表单");
-        return;
-      }
-      console.log("校验通过,开始登录");
-      submitLoading.value = true;
-      const resultEmailLogin = await apiEmailLogin({
-        email: form.email,
-        password: form.password,
-      });
-      submitLoading.value = false;
-      if (resultEmailLogin.err) {
-        // Modal.error(err); // initApollo onError 会报错
-        return;
-      }
-      console.log("apiEmailLogin", resultEmailLogin.data);
-      const { token } = resultEmailLogin.data.signin;
-      const { id, username } = resultEmailLogin.data.signin.user;
-      const { signInFullPath } = useUserStore();
-      const resultSignInFullPath = await signInFullPath({
-        id,
-        token,
-        username,
-        email: form.email,
-      });
-      if (resultSignInFullPath.err) return;
-      message.success("登录成功!");
+});
+const emit = defineEmits(["update:visible", "ok"]);
+const { t } = useI18n();
+const [route, router] = [useRoute(), useRouter()];
+const userStore = useUserStore();
+const baseStore = useBaseStore();
+const updateVisible = (v: boolean) => {
+  emit("update:visible", v);
+};
+const onModalCancel = () => {
+  console.log("onModalCancel");
+  // 重置 表单值 和 表单类型
+  formType.value = "signIn";
+  loginType.value = "password";
+  resetForm();
+  resetSignUpForm();
+  updateVisible(false);
+};
+const loginType = ref<LoginType>("password");
+const otherLoginType = computed(() => {
+  const all: LoginType[] = ["password", "nMobile", "webAuthn"];
+  return all.filter((i) => i !== loginType.value);
+});
+const onChangeLoginType = (s: LoginType) => (loginType.value = s);
+const formType = ref<FormType>("signIn");
+const form = reactive({
+  email: "",
+  password: "",
+});
+const resetForm = () => {
+  form.email = "";
+  form.password = "";
+};
+const signUpForm = reactive({
+  email: "",
+  code: "", // 验证码
+});
+const resetSignUpForm = () => {
+  signUpForm.email = "";
+  signUpForm.code = "";
+};
+const submitLoading = ref(false);
+const signUpSubmitLoading = ref(false);
+const isLockSendEamil = ref(false);
+const countdownSendEamil = ref(0);
+let counter: number;
+const onSendEmailCode = async () => {
+  const { email } = toRaw(signUpForm);
+  if (!email.length || !REG_OBJ.email.test(email)) {
+    message.warning(t("pageLogin.emailPlaceholder"));
+    return;
+  }
+  if (isLockSendEamil.value) {
+    return;
+  }
+  const resultSendCaptcha = await apiSendSignUpEmailCaptcha({
+    email,
+    type: "ACTIVE_EMAIL",
+  });
+  if (resultSendCaptcha.err) return;
+  // 验证码发送成功 提示语 按钮60秒禁用 ?
+  message.success(t("pageLogin.verificationSend"));
+  // 禁用发送验证码按钮和计数
+  isLockSendEamil.value = true;
+  countdownSendEamil.value = 60;
+  counter = window.setInterval(() => {
+    if (countdownSendEamil.value > 1) {
+      countdownSendEamil.value--;
+    } else {
+      // 倒数完毕,清空计时器,重置锁定
+      clearInterval(counter);
+      isLockSendEamil.value = false;
+    }
+  }, 1000);
+  // 防止内存泄漏
+};
+onUnmounted(() => counter && clearInterval(counter));
+const onSubmit = async () => {
+  if (!form.email || !form.password) {
+    message.warning("请完善表单");
+    return;
+  }
+  console.log("校验通过,开始登录");
+  submitLoading.value = true;
+  const resultEmailLogin = await apiEmailLogin({
+    email: form.email,
+    password: form.password,
+  });
+  submitLoading.value = false;
+  if (resultEmailLogin.err) {
+    // Modal.error(err); // initApollo onError 会报错
+    return;
+  }
+  console.log("apiEmailLogin", resultEmailLogin.data);
+  const { token } = resultEmailLogin.data.signin;
+  const { id, username } = resultEmailLogin.data.signin.user;
+  const { signInFullPath } = useUserStore();
+  const resultSignInFullPath = await signInFullPath({
+    id,
+    token,
+    username,
+    email: form.email,
+  });
+  if (resultSignInFullPath.err) return;
+  message.success("登录成功!");
+  resetForm();
+  resetSignUpForm();
+  baseStore.changeIsShowLoginModal(false);
+};
+const onSignUpSubmit = async () => {
+  const { email, code } = signUpForm;
+  if (!email || !code) {
+    message.warning("请完善表单");
+    return;
+  }
+  // TODO
+  // 根据邮箱, 验证码 生成随机6位密码登录, 弹窗6位密码的提示
+  // getRandomNumAndStr
+  const password = getRandomNumAndStr(6);
+  signUpSubmitLoading.value = true;
+  const resultSignUp = await apiSignUp({
+    email,
+    password,
+    code,
+    username: email.split("@")[0],
+    nknPublicKey: "",
+  });
+  if (resultSignUp.err) {
+    signUpSubmitLoading.value = false;
+    // TODO 注册失败?
+    console.log(resultSignUp.err);
+    message.warning(resultSignUp.err.message);
+    return;
+  }
+  const resultEmailLogin = await apiEmailLogin({ email, password });
+  if (resultEmailLogin.err) {
+    signUpSubmitLoading.value = false;
+    // Modal.error(err); // initApollo onError 会报错
+    message.warning(t("pageLogin.loginFailed"));
+    return;
+  }
+  const { token } = resultEmailLogin.data.signin;
+  const { id, username } = resultEmailLogin.data.signin.user;
+  const resultSignInFullPath = await userStore.signInFullPath({
+    id,
+    token,
+    username,
+    email,
+  });
+  signUpSubmitLoading.value = false;
+  if (resultSignInFullPath.err) {
+    signUpSubmitLoading.value = false;
+    message.warning(resultSignInFullPath.err.message);
+    return;
+  }
+  Modal.success({
+    title: "登录/注册成功!",
+    content: createVNode("div", {}, [
+      createVNode("span", { class: "mr-2" }, "新密码是 "),
+      createVNode("span", { style: { color: "red" } }, `${password}`),
+    ]),
+    onOk: () => {
       resetForm();
       resetSignUpForm();
       baseStore.changeIsShowLoginModal(false);
-    };
-    const onSignUpSubmit = async () => {
-      const { email, code } = signUpForm;
-      if (!email || !code) {
-        message.warning("请完善表单");
-        return;
-      }
-      // TODO
-      // 根据邮箱, 验证码 生成随机6位密码登录, 弹窗6位密码的提示
-      // getRandomNumAndStr
-      const password = getRandomNumAndStr(6);
-      signUpSubmitLoading.value = true;
-      const resultSignUp = await apiSignUp({
-        email,
-        password,
-        code,
-        username: email.split("@")[0],
-        nknPublicKey: "",
-      });
-      if (resultSignUp.err) {
-        signUpSubmitLoading.value = false;
-        // TODO 注册失败?
-        console.log(resultSignUp.err);
-        message.warning(resultSignUp.err.message);
-        return;
-      }
-      const resultEmailLogin = await apiEmailLogin({ email, password });
-      if (resultEmailLogin.err) {
-        signUpSubmitLoading.value = false;
-        // Modal.error(err); // initApollo onError 会报错
-        message.warning(t("pageLogin.loginFailed"));
-        return;
-      }
-      const { token } = resultEmailLogin.data.signin;
-      const { id, username } = resultEmailLogin.data.signin.user;
-      const resultSignInFullPath = await userStore.signInFullPath({
-        id,
-        token,
-        username,
-        email,
-      });
-      signUpSubmitLoading.value = false;
-      if (resultSignInFullPath.err) {
-        signUpSubmitLoading.value = false;
-        message.warning(resultSignInFullPath.err.message);
-        return;
-      }
-      Modal.success({
-        title: "登录/注册成功!",
-        content: createVNode("div", {}, [
-          createVNode("span", { class: "mr-2" }, "新密码是 "),
-          createVNode("span", { style: { color: "red" } }, `${password}`),
-        ]),
-        onOk: () => {
-          resetForm();
-          resetSignUpForm();
-          baseStore.changeIsShowLoginModal(false);
-        },
-      });
-      ///
-    };
-    const onSwitchFormType = (t: FormType) => {
-      if (t === "signIn") {
-        resetForm();
-        formType.value = "signIn";
-      } else {
-        // XToast("输入邮箱，注册账号");
-        resetSignUpForm();
-        formType.value = "signUp";
-      }
-    };
-    const onDropdownMenuItemClick = (item: LoginType) => {
-      onSwitchFormType("signIn");
-      onChangeLoginType(item);
-    };
-    const onClickForgetPwd = () => {
-      // emit("update:visible", false);
-      // router.push({
-      //   name: "ResetPwd",
-      //   query: { redirect: route.fullPath },
-      // });
-      window.open(router.resolve({ name: "ResetPwd" }).href, "_blank");
-    };
-    return {
-      onModalCancel,
-      updateVisible,
-      loginType,
-      otherLoginType,
-      LOGINTYPE_MAP,
-      onChangeLoginType,
-      formType,
-      form,
-      signUpForm,
-      isLockSendEamil,
-      countdownSendEamil,
-      onSendEmailCode,
-      submitLoading,
-      signUpSubmitLoading,
-      onSubmit,
-      onSignUpSubmit,
-      onSwitchFormType,
-      onDropdownMenuItemClick,
-      onClickForgetPwd,
-    };
-  },
-});
+    },
+  });
+  ///
+};
+const onSwitchFormType = (t: FormType) => {
+  if (t === "signIn") {
+    resetForm();
+    formType.value = "signIn";
+  } else {
+    // XToast("输入邮箱，注册账号");
+    resetSignUpForm();
+    formType.value = "signUp";
+  }
+};
+const onDropdownMenuItemClick = (item: LoginType) => {
+  onSwitchFormType("signIn");
+  onChangeLoginType(item);
+};
+const onClickForgetPwd = () => {
+  // emit("update:visible", false);
+  // router.push({
+  //   name: "ResetPwd",
+  //   query: { redirect: route.fullPath },
+  // });
+  window.open(router.resolve({ name: "ResetPwd" }).href, "_blank");
+};
 </script>
 
 <style lang="less">

@@ -41,72 +41,61 @@
   </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
 import { XFileTypeIcon } from "./";
 import { FolderFilled, FolderOpenFilled } from "@ant-design/icons-vue";
 
-export default defineComponent({
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-    rowKey: {
-      type: String,
-      required: true,
-    },
-    dataSource: {
-      type: Array,
-      required: true,
-    },
-    columns: {
-      type: Array,
-      required: true,
-    },
-    rowClassName: {
-      type: Function,
-      required: true,
-    },
-    customRow: {
-      type: Function,
-      required: true,
-    },
-    footer: {
-      type: [String, Object] as PropType<String | Object | null>,
-      // 源码中 undefined 才会显示默认的按钮
-      default: () => undefined,
-    },
-    tableLoading: {
-      type: Boolean,
-    },
-    confirmLoading: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  emits: ["update:visible", "ok"],
-  components: {
-    XFileTypeIcon,
-    FolderFilled,
-    FolderOpenFilled,
+  visible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props, { emit }) {
-    const onOk = () => emit("ok");
-    const updateVisible = (v: boolean) => {
-      emit("update:visible", v);
-    };
-    const onExpandedChange = () => {
-      console.log("onExpandedChange", arguments);
-    };
-    return { updateVisible, onOk, onExpandedChange };
+  rowKey: {
+    type: String,
+    required: true,
+  },
+  dataSource: {
+    type: Array,
+    required: true,
+  },
+  columns: {
+    type: Array,
+    required: true,
+  },
+  rowClassName: {
+    type: Function,
+    required: true,
+  },
+  customRow: {
+    type: Function,
+    required: true,
+  },
+  footer: {
+    type: [String, Object] as PropType<String | Object | null>,
+    // 源码中 undefined 才会显示默认的按钮
+    default: () => undefined,
+  },
+  tableLoading: {
+    type: Boolean,
+  },
+  confirmLoading: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const emit = defineEmits(["update:visible", "ok"]);
+const onOk = () => emit("ok");
+const updateVisible = (v: boolean) => {
+  emit("update:visible", v);
+};
+const onExpandedChange = () => {
+  console.log("onExpandedChange", arguments);
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -70,7 +70,7 @@
   </a-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { apiSendSignUpEmailCaptcha, apiResetPwd } from "../../../../apollo/api";
 import { useDelay } from "../../../../hooks";
 import { useUserStore } from "../../../../store";
@@ -81,129 +81,109 @@ import { defineComponent, onBeforeUnmount, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import PasswordMeter from "vue-simple-password-meter";
 
-export default defineComponent({
-  emits: ["setKey"],
-  components: {
-    PasswordMeter,
-  },
-  setup(props, { emit }) {
-    const loginLoading = ref<boolean>(false);
-    const { t } = useI18n();
-    const modelRef = reactive({
-      email: "",
-      captcha: "",
-      password: "",
-      confirmPassword: "",
-    });
+const emit = defineEmits(["setKey"]);
+const loginLoading = ref<boolean>(false);
+const { t } = useI18n();
+const modelRef = reactive({
+  email: "",
+  captcha: "",
+  password: "",
+  confirmPassword: "",
+});
 
-    const rulesRef = reactive({
-      email: [
-        {
-          type: "email",
-          required: true,
-          message: t("pageLogin.emailPlaceholder"),
-        },
-      ],
-      captcha: [
-        {
-          required: true,
-          message: t("pageLogin.smsPlaceholder"),
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: t("pageLogin.passwordPlaceholder"),
-        },
-      ],
-      confirmPassword: [
-        {
-          required: true,
-          trigger: "change",
-          asyncValidator: (rule: RuleObject, val: string) => {
-            return new Promise<void>((resolve, reject) => {
-              val && val === modelRef.password
-                ? resolve()
-                : reject(t("pageLogin.diffPwd"));
-            });
-          },
-        },
-      ],
-    });
-    const { resetFields, validate, validateInfos } = useForm(
-      modelRef,
-      rulesRef
-    );
-    const isDisabledCaptcha = ref(false);
-    const counterCaptcha = ref(60);
-    let id: number;
-    const countDown = {
-      startWithAutoStop() {
-        if (id) clearInterval(id);
-        counterCaptcha.value = 60;
-        isDisabledCaptcha.value = true;
-        id = window.setInterval(() => {
-          if (counterCaptcha.value === 1) {
-            clearInterval(id);
-            isDisabledCaptcha.value = false;
-          }
-          counterCaptcha.value--;
-        }, 1000);
+const rulesRef = reactive({
+  email: [
+    {
+      type: "email",
+      required: true,
+      message: t("pageLogin.emailPlaceholder"),
+    },
+  ],
+  captcha: [
+    {
+      required: true,
+      message: t("pageLogin.smsPlaceholder"),
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: t("pageLogin.passwordPlaceholder"),
+    },
+  ],
+  confirmPassword: [
+    {
+      required: true,
+      trigger: "change",
+      asyncValidator: (rule: RuleObject, val: string) => {
+        return new Promise<void>((resolve, reject) => {
+          val && val === modelRef.password
+            ? resolve()
+            : reject(t("pageLogin.diffPwd"));
+        });
       },
-      stop() {
+    },
+  ],
+});
+const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef);
+const isDisabledCaptcha = ref(false);
+const counterCaptcha = ref(60);
+let id: number;
+const countDown = {
+  startWithAutoStop() {
+    if (id) clearInterval(id);
+    counterCaptcha.value = 60;
+    isDisabledCaptcha.value = true;
+    id = window.setInterval(() => {
+      if (counterCaptcha.value === 1) {
         clearInterval(id);
         isDisabledCaptcha.value = false;
-      },
-    };
-    // 防止内存泄漏
-    onBeforeUnmount(() => id && countDown.stop());
-    /** 校验邮箱然后发送验证码 */
-    const onSendSignUpEmailCaptcha = () => {
-      validate(["email"])
-        .then(async ({ email }) => {
-          const resultSendCaptcha = await apiSendSignUpEmailCaptcha({
-            email,
-            type: "RESET_PASSWORD",
-          });
-          if (resultSendCaptcha.err) return;
-          // 验证码发送成功 提示语 按钮60秒禁用 ?
-          message.success(t("pageLogin.verificationSend"));
-          // 禁用发送验证码按钮和计数
-          countDown.startWithAutoStop();
-          console.log("res", resultSendCaptcha);
-        })
-        .catch((err) => console.log(err));
-    };
-    /** 创建用户按钮点击 */
-    const onResetClick = () => {
-      validate<typeof modelRef>()
-        .then(async ({ email, password, captcha }) => {
-          const resultResetPwd = await apiResetPwd({
-            email,
-            newPassword: password,
-            code: captcha,
-            nknPublicKey: "",
-          });
-          if (resultResetPwd.err) return;
-          notification.success({
-            message: t("account.changeSuccess"),
-          });
-          // 先清除旧的信息
-          useUserStore().signOutAndClear();
-          useDelay().then(() => emit("setKey", "email"));
-        })
-        .catch((err) => console.log(err));
-    };
-    return {
-      counterCaptcha,
-      onSendSignUpEmailCaptcha,
-      onResetClick,
-      isDisabledCaptcha,
-      loginLoading,
-      validateInfos,
-      resetFields,
-      modelRef,
-    };
+      }
+      counterCaptcha.value--;
+    }, 1000);
   },
-});
+  stop() {
+    clearInterval(id);
+    isDisabledCaptcha.value = false;
+  },
+};
+// 防止内存泄漏
+onBeforeUnmount(() => id && countDown.stop());
+/** 校验邮箱然后发送验证码 */
+const onSendSignUpEmailCaptcha = () => {
+  validate(["email"])
+    .then(async ({ email }) => {
+      const resultSendCaptcha = await apiSendSignUpEmailCaptcha({
+        email,
+        type: "RESET_PASSWORD",
+      });
+      if (resultSendCaptcha.err) return;
+      // 验证码发送成功 提示语 按钮60秒禁用 ?
+      message.success(t("pageLogin.verificationSend"));
+      // 禁用发送验证码按钮和计数
+      countDown.startWithAutoStop();
+      console.log("res", resultSendCaptcha);
+    })
+    .catch((err) => console.log(err));
+};
+/** 创建用户按钮点击 */
+const onResetClick = () => {
+  validate<typeof modelRef>()
+    .then(async ({ email, password, captcha }) => {
+      const resultResetPwd = await apiResetPwd({
+        email,
+        newPassword: password,
+        code: captcha,
+        nknPublicKey: "",
+      });
+      if (resultResetPwd.err) return;
+      notification.success({
+        message: t("account.changeSuccess"),
+      });
+      // 先清除旧的信息
+      useUserStore().signOutAndClear();
+      useDelay().then(() => emit("setKey", "email"));
+    })
+    .catch((err) => console.log(err));
+};
 </script>

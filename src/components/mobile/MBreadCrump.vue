@@ -7,21 +7,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  props: {
-    titleArr: {
-      type: Array,
-      required: true,
-    },
-  },
-  setup() {
-    return {};
+<script setup lang="ts">
+const props = defineProps({
+  titleArr: {
+    type: Array,
+    required: true,
   },
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

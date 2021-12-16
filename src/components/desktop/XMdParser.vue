@@ -2,61 +2,53 @@
   <div class="markdown-body" :class="themeClassName" v-html="clean"></div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, watch } from "vue";
+<script setup lang="ts">
 import marked from "marked";
 import DOMPurify from "dompurify";
 import { transformRawDescription } from "../../hooks";
 
 type MdTheme = "light" | "dark";
 
-export default defineComponent({
-  props: {
-    content: {
-      type: String,
-      required: true,
-    },
-    theme: {
-      type: String as PropType<MdTheme>,
-      default: "light",
-    },
+const props = defineProps({
+  content: {
+    type: String,
+    required: true,
   },
-  setup(props) {
-    const clean = ref("");
-    const themeClassName = ref("");
-    themeClassName.value = `markdown-body-${props.theme}`;
-    // marked.setOptions({});
-    marked.use({
-      renderer: {
-        // tag renderer
-        text(text) {
-          // console.log("arguments", arguments);
-          // console.log("text", text, typeof text);
-          return transformRawDescription(text);
-        },
-      },
-    });
-    // DOMPurify.addHook("afterSanitizeAttributes", (node) => {
-    //   if ("target" in (node as any)) {
-    //     node.setAttribute("target", "_blank");
-    //   }
-    // });
-    watch(
-      () => props.content,
-      (newVal) => {
-        const parsedContent = marked(newVal);
-        clean.value = DOMPurify.sanitize(parsedContent);
-      },
-      {
-        immediate: true,
-      }
-    );
-    // const parsedContent = marked(props.content);
-    // clean.value = DOMPurify.sanitize(parsedContent);
-    // console.log("clean", clean);
-    return { clean, themeClassName };
+  theme: {
+    type: String as PropType<MdTheme>,
+    default: "light",
   },
 });
+
+const clean = ref("");
+const themeClassName = ref("");
+themeClassName.value = `markdown-body-${props.theme}`;
+// marked.setOptions({});
+marked.use({
+  renderer: {
+    // tag renderer
+    text(text) {
+      // console.log("arguments", arguments);
+      // console.log("text", text, typeof text);
+      return transformRawDescription(text);
+    },
+  },
+});
+// DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+//   if ("target" in (node as any)) {
+//     node.setAttribute("target", "_blank");
+//   }
+// });
+watch(
+  () => props.content,
+  (newVal) => {
+    const parsedContent = marked(newVal);
+    clean.value = DOMPurify.sanitize(parsedContent);
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <style lang="less">

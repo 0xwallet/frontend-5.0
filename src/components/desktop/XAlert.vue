@@ -33,37 +33,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from "vue";
+<script setup lang="ts">
 import {
   CloseOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons-vue";
 
-export default defineComponent({
-  components: {
-    CloseOutlined,
-    ExclamationCircleOutlined,
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ["close"],
-  setup(props, { emit }) {
-    const onClickCloseIcon = () => {
-      emit("close");
-    };
-    return { onClickCloseIcon };
+  content: {
+    type: String,
+    required: true,
   },
 });
+const emit = defineEmits(["close"]);
+const onClickCloseIcon = () => {
+  emit("close");
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -30,40 +30,34 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useBaseStore } from "../../store";
 import { message } from "ant-design-vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-export default defineComponent({
-  setup() {
-    // 未登录状态的分享文件
-    const router = useRouter();
-    const route = useRoute();
-    const baseStore = useBaseStore();
-    const onClickHeaderSignIn = () => {
-      message.info("TODO");
-      // router.push({
-      //   name: "Login",
-      //   query: {
-      //     callback: route.fullPath,
-      //   },
-      // });
-    };
-    const onClickHeaderLogin = () => {
-      // baseStore.changeIsShowLoginModal(true);
-      router.push({
-        name: "Login",
-        query: {
-          redirect: route.fullPath,
-        },
-      });
-    };
-    return { onClickHeaderSignIn, onClickHeaderLogin };
-  },
-});
+// 未登录状态的分享文件
+const router = useRouter();
+const route = useRoute();
+const baseStore = useBaseStore();
+const onClickHeaderSignIn = () => {
+  message.info("TODO");
+  // router.push({
+  //   name: "Login",
+  //   query: {
+  //     callback: route.fullPath,
+  //   },
+  // });
+};
+const onClickHeaderLogin = () => {
+  // baseStore.changeIsShowLoginModal(true);
+  router.push({
+    name: "Login",
+    query: {
+      redirect: route.fullPath,
+    },
+  });
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
