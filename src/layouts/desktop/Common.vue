@@ -159,10 +159,11 @@
           <a-dropdown placement="topCenter">
             <div class="cursor-pointer flex items-center justify-center">
               <LoadingOutlined v-if="isLoadingNknMulticlient" class="font-14" />
+              <!-- :src="require(`../../assets/images/wifi_${wifiPngIdx}.png`)" -->
               <img
                 v-else
                 class="inline-block"
-                :src="require(`../../assets/images/wifi_${wifiPngIdx}.png`)"
+                :src="getWiFiImageUrl(wifiPngIdx)"
                 :style="{
                   width: '16px',
                   height: '16px',
@@ -226,7 +227,6 @@
                     relative
                     border-solid border
                     whitespace-nowrap
-                    rounded-sm
                     py-px
                     pl-3
                     pr-2
@@ -238,7 +238,7 @@
                     rounded-full
                   "
                   :class="{
-                    navTabBox: item.routeName !== 'Dashboard',
+                    navTabBox: !item.routePath.includes('dashboard'),
                     'border-transparent':
                       activeNavUniqueId === exactUniqueTabId(item.routePath),
                     activeNavItem:
@@ -500,7 +500,11 @@ import {
   NKN_SUB_CLIENT_COUNT,
   TAG_COLOR_LIST,
 } from "../../constants";
-import { XLocaleSwither, XUserAvatar, XSvgIcon } from "../../components/desktop";
+import {
+  XLocaleSwither,
+  XUserAvatar,
+  XSvgIcon,
+} from "../../components/desktop";
 import { useBaseStore, useTransportStore, useUserStore } from "../../store";
 import { message, Modal } from "ant-design-vue";
 import { useI18n } from "vue-i18n";
@@ -532,6 +536,12 @@ type TNavItem = {
   routePath: string;
   title: string;
   uniqueId: string; // navItem 唯一标识
+};
+
+const getWiFiImageUrl = (wifiPngIdx: number) => {
+  return new URL(`../../assets/images/wifi_${wifiPngIdx}.png`, import.meta.url)
+    .href;
+  // return new URL(`./dir/${name}.png`, import.meta.url).href
 };
 
 export default defineComponent({
@@ -961,6 +971,7 @@ export default defineComponent({
       };
     }
     return {
+      getWiFiImageUrl,
       ...useNavTabs(),
       ...useLayoutMenu(),
       ...useSvgLogo(),

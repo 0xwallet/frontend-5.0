@@ -57,7 +57,7 @@
               </a-popover>
               <XLink class="flex-1 truncate mr-2" @click="onCopyPeerLink">
                 {{
-                peerLink
+                  peerLink
                 }}
               </XLink>
               <XLink class="inline-block" @click="onCopyPeerLink">
@@ -149,9 +149,9 @@
           <!-- 处于ws等待状态的时候 已发送大小显示手动改为文件的全大小, 因为progress实际上还没到100(为了等待故意暂停的) -->
           <div class="text-gray-400">
             {{
-            record.status === "waiting"
-            ? formatBytes(record.fileSize)
-            : formatBytes(record.fileSize * (record.progress / 100))
+              record.status === "waiting"
+                ? formatBytes(record.fileSize)
+                : formatBytes(record.fileSize * (record.progress / 100))
             }}
             /
             {{ formatBytes(record.fileSize) }}
@@ -364,7 +364,7 @@ import {
   calcPercent,
   browserDetect,
 } from "../../../hooks";
-import { classMultiClient, TMessageType, TSession } from "nkn-sdk";
+import type { classMultiClient, TMessageType, TSession } from "nkn";
 import { getAnonymousMultiClient } from "../../../apollo/nknConfig";
 import { useTransportStore, useUserStore } from "../../../store";
 import { pick, remove } from "lodash-es";

@@ -11,6 +11,7 @@
       content="black-translucent"
     />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
+    <link rel="preload" href="./js/nkn.min.js" as="script" />
     <link rel="icon" href="./favicon.ico" />
     <style>
       .hidden {
@@ -182,6 +183,8 @@
         </div>
       </div>
     </div>
+    <!-- nkn -->
+    <script src="./js/nkn.min.js"></script>
     <!-- 用vite plugin 切换不同环境的cdn -->
     {{development_CDNS}} {{production_CDNS}}
     <script

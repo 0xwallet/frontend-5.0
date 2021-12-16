@@ -1,5 +1,5 @@
 // declare module "nkn-sdk" { // 这种是 import {..} from "nkn-sdk" 的方法
-declare module "nkn-sdk" {
+declare module "nkn" {
   // 这种是 import {..} from "nkn-sdk" 的方法
   // declare namespace nkn {
   class CacheClass<K, V> {
@@ -177,5 +177,16 @@ declare module "nkn-sdk" {
   export var Client = nkn.Client;
   export var MultiClient = nkn.MultiClient;
   export var Wallet = nkn.Wallet;
+
   export default nkn;
+}
+
+interface Window {
+  nkn: {
+    // setPRNG: string;
+    ready: Promise<void>;
+    Client: classNknClient;
+    MultiClient: InewClassMultiClient;
+    Wallet: InewClassWallet;
+  };
 }

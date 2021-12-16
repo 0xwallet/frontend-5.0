@@ -19,9 +19,18 @@ import FileItem from "./components/FileItem.vue";
 //     acc[cur] = FileItem;
 //     return acc;
 //   }, {});
+const FileItem1 = FileItem;
+const FileItem2 = FileItem;
+const FileItem3 = FileItem;
+const FileItem4 = FileItem;
+const FileItem5 = FileItem;
+const FileItem6 = FileItem;
+const FileItem7 = FileItem;
+const FileItem8 = FileItem;
+const FileItem9 = FileItem;
+const FileItem10 = FileItem;
 /** 根据数字获取对应的组件名称 */
 const getComponentNameByNum = (n: number) => `FileItem${n}`;
-
 
 // 每次进来, 判断路由, 根据navList 确定keepAliveList
 const baseStore = useBaseStore();
@@ -127,5 +136,4 @@ onActivated(() => {
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

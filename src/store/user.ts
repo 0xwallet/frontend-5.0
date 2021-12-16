@@ -1,5 +1,6 @@
 import { useLocalStorage } from "@vueuse/core";
-import { Wallet, ClassWallet, classMultiClient } from "nkn-sdk";
+import type { ClassWallet, classMultiClient } from "nkn";
+const { Wallet } = window.nkn;
 import { pick, assign } from "lodash-es";
 import { defineStore } from "pinia";
 import { getMultiClient } from "../apollo/nknConfig";

@@ -2,11 +2,11 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import writeCDNScripts from "./vitePlugins/writeCDN";
 // vite.config.js
-import ViteComponents, {
-  AntDesignVueResolver,
-  VantResolver,
-} from "unplugin-vue-components/resolvers";
-import Components from "unplugin-vue-components/vite";
+// import ViteComponents, {
+//   AntDesignVueResolver,
+//   VantResolver,
+// } from "unplugin-vue-components/resolvers";
+// import Components from "unplugin-vue-components/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,12 +18,15 @@ export default defineConfig({
   plugins: [
     vue(),
     writeCDNScripts(),
-    Components({
-      resolvers: [AntDesignVueResolver(), VantResolver()],
-    }),
+    // Components({
+    // 这个懒加载会使得 vite 的加载异常的慢
+    //   resolvers: [AntDesignVueResolver(), VantResolver()],
+    // }),
   ],
   optimizeDeps: {
+    include: ["ant-design-vue", "vant"],
     exclude: [
+      "nkn",
       "vue",
       "vue-router",
       "vue-i18n",

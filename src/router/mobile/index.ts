@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useTitle } from "@vueuse/core";
-import { i18n } from "../../main_mobile";
+import { i18n } from "../../main";
 import { PRODUCT_NAME } from "../../constants";
 import { useBaseStore, useUserStore } from "../../store";
 

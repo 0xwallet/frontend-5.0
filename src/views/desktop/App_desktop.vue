@@ -3,7 +3,6 @@
     <!-- 全局登录弹窗 -->
     <XModalLogin :visible="isShowLoginModal" @update:visible="onUpdateVisible" />
     <router-view />
-    <h1 class="mt-2">heyyeyeh</h1>
     <XPhotoSwipe />
   </a-config-provider>
 </template>

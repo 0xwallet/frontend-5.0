@@ -1,4 +1,6 @@
-import { ClassWallet, MultiClient } from "nkn-sdk";
+// import { , MultiClient } from "nkn";
+const { MultiClient } = window.nkn;
+import type { ClassWallet } from "nkn";
 import dayjs from "dayjs/esm";
 import { MAX_MTU, NKN_SUB_CLIENT_COUNT } from "../constants";
 

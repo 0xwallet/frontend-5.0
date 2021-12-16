@@ -1,4 +1,4 @@
-import { classMultiClient, TSession } from "nkn-sdk";
+import type { classMultiClient, TSession } from "nkn";
 import {
   FILE_TYPE_MAP,
   LEN_OF_HEADER_U8_LENGTH,
