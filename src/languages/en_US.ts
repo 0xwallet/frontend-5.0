@@ -358,6 +358,7 @@ export default {
     uploadDrawerClearAll: "clear list",
   },
   fileType: {
+    "022": "Text",
     "18054": "Folder",
     "18055": "File",
     "1890": "Android App",

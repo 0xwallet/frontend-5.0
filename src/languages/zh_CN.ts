@@ -351,6 +351,7 @@ export default {
     uploadDrawerClearAll: "清空记录",
   },
   fileType: {
+    "022": "Text",
     "18054": "文件夹",
     "18055": "\u6587\u4ef6",
     "1890": "Android App",
