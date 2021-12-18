@@ -29,35 +29,14 @@
           </XLink>
         </a-tooltip>
         <div
-          class="
-            flex-1
-            mr-2
-            px-3
-            flex
-            items-center
-            h-address-bar
-            bg-address-bar
-            rounded-full
-            truncate
-            relative
-          "
+          class="flex-1 mr-2 px-3 flex items-center h-address-bar bg-address-bar rounded-full truncate relative"
         >
           <!-- <XLink @click="onSendAddFiles">
             <PlusSquareOutlined class="mr-2" />
           </XLink>-->
           <span v-if="!peerLink" class="text-gray-400">拖拽添加文件</span>
           <div
-            class="
-              absolute
-              left-2
-              inset-0
-              z-50
-              rounded-full
-              flex
-              items-center
-              justify-between
-              pr-2
-            "
+            class="absolute left-2 inset-0 z-50 rounded-full flex items-center justify-between pr-2"
             :style="{
               border: '2px dashed transparent',
             }"
@@ -89,19 +68,7 @@
         </div>
         <div
           v-if="isUserLoggedIn"
-          class="
-            w-28
-            text-center
-            font-semibold
-            h-address-bar
-            rounded-full
-            pl-2
-            bg-address-bar
-            flex
-            items-center
-            peerCodeWrap
-            mr-2
-          "
+          class="w-28 text-center font-semibold h-address-bar rounded-full pl-2 bg-address-bar flex items-center peerCodeWrap mr-2"
         >
           <div class="flex-1">
             <input
@@ -128,15 +95,7 @@
         <!-- 发送端 显示添加文件剩余时间和 关闭按钮 -->
         <!-- <template v-if="isActionSend"> -->
         <div
-          class="
-            rounded-full
-            h-address-bar
-            bg-address-bar
-            overflow-hidden
-            flex
-            items-center
-            justify-between
-          "
+          class="rounded-full h-address-bar bg-address-bar overflow-hidden flex items-center justify-between"
           :style="{
             transition: '.3s',
             'max-width': peerLink ? '200px' : '0px',
@@ -192,7 +151,8 @@
         <template #name="{ record }">
           <!-- <div>55----{{ record }}</div> -->
           <div :title="record.fileName" class="truncate">
-            <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" />
+            <!-- <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" /> -->
+            <GFileTypeIcon class="w-5" :type="record.fileType" />
             <span>{{ record.fileName }}</span>
           </div>
         </template>
@@ -251,14 +211,7 @@
                 <!-- 指示灯 -->
                 <a-tooltip :title="calcRecordStatusTooltip(record)">
                   <span
-                    class="
-                      inline-block
-                      w-1.5
-                      h-1.5
-                      rounded-full
-                      mr-1
-                      align-middle
-                    "
+                    class="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle"
                     :style="{
                       'background-color': calcRecordStatusColor(record),
                     }"
@@ -408,6 +361,7 @@ import {
   XQrCode,
   XAlert,
 } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import {
   LeftCircleOutlined,
   PlusSquareOutlined,

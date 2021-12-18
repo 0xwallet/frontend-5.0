@@ -17,16 +17,7 @@
         <XSvgIcon icon="logo" :size="28" />
       </div>
       <div
-        class="
-          flex-1
-          font-14
-          text-gray-400 text-center
-          pt-1
-          flex
-          items-center
-          justify-center
-          relative
-        "
+        class="flex-1 font-14 text-gray-400 text-center pt-1 flex items-center justify-center relative"
       >
         📅
         <span class="mx-1">{{ insertedAtText }}</span>
@@ -79,16 +70,7 @@
                 >
                   <!-- 头像 -->
                   <div
-                    class="
-                      rounded-full
-                      w-14
-                      h-14
-                      flex
-                      items-center
-                      justify-center
-                      text-white text-2xl
-                      mb-3
-                    "
+                    class="rounded-full w-14 h-14 flex items-center justify-center text-white text-2xl mb-3"
                     :style="{
                       background:
                         'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
@@ -131,16 +113,7 @@
                     }"
                   >
                     <div
-                      class="
-                        rounded-full
-                        w-10
-                        h-10
-                        flex
-                        items-center
-                        justify-center
-                        text-white text-xl
-                        mr-2
-                      "
+                      class="rounded-full w-10 h-10 flex items-center justify-center text-white text-xl mr-2"
                       :style="{
                         background:
                           'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
@@ -318,24 +291,19 @@
                       <div class="relative flex items-center">
                         <!-- 空白就是blank 文件夹就是folder -->
                         <div class="relative flex-shrink-0">
-                          <XFileTypeIcon
+                          <!-- <XFileTypeIcon
                             class="w-6 h-6 cursor-pointer"
+                            :type="record.userFile.fileType"
+                            @click="onItemIconClick(record)"
+                          /> -->
+                          <GFileTypeIcon
+                            class="w-6"
                             :type="record.userFile.fileType"
                             @click="onItemIconClick(record)"
                           />
                           <div
                             v-if="isCanFilePreview(record)"
-                            class="
-                              absolute
-                              text-white
-                              bottom-0
-                              font-12
-                              bg-gray-400
-                              opacity-70
-                              left-0
-                              right-0
-                              text-center
-                            "
+                            class="absolute text-white bottom-0 font-12 bg-gray-400 opacity-70 left-0 right-0 text-center"
                             :style="{
                               height: '14px',
                               'line-height': '14px',
@@ -386,13 +354,7 @@
                         <!-- hover 才显示的shortCut栏 -->
                         <!-- 非上级目录 -->
                         <div
-                          class="
-                            tableShortcut
-                            hidden
-                            inline-block
-                            absolute
-                            right-0
-                          "
+                          class="tableShortcut hidden inline-block absolute right-0"
                         >
                           <!-- 保存到网盘 -->
                           <a-tooltip title="保存到网盘">
@@ -552,6 +514,7 @@ import {
   XMdParser,
   XLocaleSwither,
 } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import { useI18n } from "vue-i18n";
 import {
   downloadFileByUrl,
@@ -814,14 +777,16 @@ const onItemIconClick = async (record: ListItem) => {
     );
     isShowDescriptionModalFileNameInAddressBar.value = false;
     // 1.2 change fileData
-  } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+    // } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+  } else if (fileType === "image") {
     const { user, space, id: fileId, fullName } = record.userFile;
     // 分享的预览用的token 是该分享数据的token
     const token = record.token;
     const tableImgList = fileData.value.filter(
       (item) =>
         item.userFile !== null &&
-        FILE_TYPE_MAP.image.includes(item.userFile.fileType ?? "")
+        // FILE_TYPE_MAP.image.includes(item.userFile.fileType ?? "")
+        item.userFile.fileType === "image"
     );
     const toPreviewList = tableImgList.map((item) => ({
       src: makeFileUrl({
@@ -884,7 +849,8 @@ const isCanFilePreview = (record: ListItem) => {
     isDir: f.isDir,
     fileName: lastOfArray(f.fullName),
   });
-  if (FILE_TYPE_MAP.image.includes(e) || e === "pdf") {
+  // if (FILE_TYPE_MAP.image.includes(e) || e === "pdf") {
+  if (e === "image" || e === "pdf") {
     return true;
   }
   // 其他类型返回false

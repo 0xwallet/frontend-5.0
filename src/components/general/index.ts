@@ -1,0 +1,1 @@
+export { default as GFileTypeIcon } from "./GFileTypeIcon.vue";

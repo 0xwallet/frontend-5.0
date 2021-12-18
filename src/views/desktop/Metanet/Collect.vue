@@ -64,7 +64,8 @@
       <template #name="{ record }">
         <div class="truncate relative">
           <!-- 空白就是blank 文件夹就是folder -->
-          <XFileTypeIcon class="w-6 h-6" :type="record.fileType" />
+          <!-- <XFileTypeIcon class="w-6 h-6" :type="record.fileType" /> -->
+          <GFileTypeIcon class="w-5" :type="record.fileType" />
           <a
             href="javascript:;"
             class="ml-2"
@@ -205,6 +206,7 @@ import {
   XTdHash,
   XStatusDot,
 } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import ModalDetail, { TDetailInfo } from "./components/ModalDetail.vue";
 import { message, Modal } from "ant-design-vue";
 import {

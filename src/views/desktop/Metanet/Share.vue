@@ -71,7 +71,8 @@
       <template #name="{ record }">
         <div class="truncate relative">
           <!-- 空白就是blank 文件夹就是folder -->
-          <XFileTypeIcon class="w-6 h-6" :type="record.userFile.fileType" />
+          <!-- <XFileTypeIcon class="w-6 h-6" :type="record.userFile.fileType" /> -->
+          <GFileTypeIcon class="w-5" :type="record.userFile.fileType" />
           <a
             href="javascript:;"
             class="ml-2"
@@ -337,6 +338,7 @@ import {
   XTableFiles,
   XMdParser,
 } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import { useI18n } from "vue-i18n";
 import dayjs from "dayjs/esm";
 import {

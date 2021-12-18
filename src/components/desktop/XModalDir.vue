@@ -33,7 +33,8 @@
           <!-- 空白就是blank 文件夹就是folder -->
           <!-- <FolderFilled /> -->
           <!-- <FolderOpenFilled /> -->
-          <XFileTypeIcon class="w-4 h-4" type="folder" />
+          <!-- <XFileTypeIcon class="w-4 h-4" type="folder" /> -->
+          <GFileTypeIcon class="w-5" type="folder" />
           <a href="javascript:;" class="ml-1">{{ record.dirName }}</a>
         </div>
       </template>
@@ -42,7 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { XFileTypeIcon } from "./";
+import { GFileTypeIcon } from "../general";
+// import { XFileTypeIcon } from "./";
 import { FolderFilled, FolderOpenFilled } from "@ant-design/icons-vue";
 
 const props = defineProps({

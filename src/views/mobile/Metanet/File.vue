@@ -1,7 +1,10 @@
 <template>
-  <div class="w-full h-full" :style="{
-    background: '#404A66',
-  }">
+  <div
+    class="w-full h-full"
+    :style="{
+      background: '#404A66',
+    }"
+  >
     <header class="h-11 px-4 flex items-center text-white mb-4">
       <div @click="onClickLogo">
         <!-- v-html="svgStr" -->
@@ -11,7 +14,10 @@
       </div>
       <!-- 中间的面包屑 -->
       <div class="flex-1">
-        <MBreadCrump class="flex items-center justify-center" :titleArr="titleArr" />
+        <MBreadCrump
+          class="flex items-center justify-center"
+          :titleArr="titleArr"
+        />
       </div>
       <div
         class="rounded-full w-5 h-5 flex items-center justify-center text-white font-12"
@@ -20,7 +26,9 @@
           background:
             'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
         }"
-      >{{ myInfo.userName[0].toUpperCase() }}</div>
+      >
+        {{ myInfo.userName[0].toUpperCase() }}
+      </div>
     </header>
     <section
       class="bg-white mx-4 pt-2"
@@ -43,7 +51,9 @@
           @click="onShowDescriptionPopup"
         />
         <!-- 中间的路径信息 -->
-        <div class="flex-1 flex items-center whitespace-nowrap overflow-hidden overflow-x-scroll">
+        <div
+          class="flex-1 flex items-center whitespace-nowrap overflow-hidden overflow-x-scroll"
+        >
           <template v-for="(dir, idx) in historyDir" :key="dir.dirId">
             <div
               class="historyDirItem"
@@ -51,8 +61,14 @@
                 'text-gray-400': idx === historyDir.length - 1,
               }"
               @click="onUpperLevel(idx)"
-            >{{ dir.dirName }}</div>
-            <span v-if="idx !== historyDir.length - 1" class="px-2 text-gray-400">></span>
+            >
+              {{ dir.dirName }}
+            </div>
+            <span
+              v-if="idx !== historyDir.length - 1"
+              class="px-2 text-gray-400"
+              >></span
+            >
           </template>
           <template v-if="isShowDescriptionModalFileNameInAddressBar">
             <div class="historyDirItem">
@@ -83,7 +99,11 @@
           height: 'calc(100% - 40px)',
         }"
       >
-        <van-loading v-if="tableLoading" class="absolute top-6 listLoading" size="36px" />
+        <van-loading
+          v-if="tableLoading"
+          class="absolute top-6 listLoading"
+          size="36px"
+        />
         <template v-if="tableData.length === 0">
           <!-- <div class="pt-4 pl-4 text-gray-400 text-center">空文件夹</div> -->
           <van-empty description="空文件夹" />
@@ -95,14 +115,22 @@
             :key="record.id"
           >
             <div class="mr-2 relative" @click="onItemIconClick(record)">
-              <MFileTypeIcon class="w-9 h-9" :type="record.fileType" />
+              <!-- <MFileTypeIcon class="w-9 h-9" :type="record.fileType" /> -->
+              <GFileTypeIcon class="w-9" :type="record.fileType" />
               <div
                 v-if="isCanFilePreview(record)"
                 class="absolute text-white bottom-0 font-12 bg-gray-400 opacity-60 left-0 right-0 text-center"
-              >预览</div>
+              >
+                预览
+              </div>
             </div>
-            <div class="flex-1 text-overflow-3 mr-2" @click="onItemNameClick(record)">
-              <div class="font-medium text-overflow-2">{{ lastOfArray(record.fullName) }}</div>
+            <div
+              class="flex-1 text-overflow-3 mr-2"
+              @click="onItemNameClick(record)"
+            >
+              <div class="font-medium text-overflow-2">
+                {{ lastOfArray(record.fullName) }}
+              </div>
               <div class="font-12 text-gray-400 text-overflow-2">
                 <template v-if="record.info.description">
                   <template
@@ -121,7 +149,8 @@
                         :key="tag"
                         :color="TAG_COLOR_LIST[idx]"
                         class="mr-1"
-                      >{{ tag }}</van-tag>
+                        >{{ tag }}</van-tag
+                      >
                     </template>
                   </template>
                 </template>
@@ -136,9 +165,9 @@
               <van-icon color="#404A66" size="14px" name="chat-o" />
               <span>66</span>
               </div>-->
-              <div
-                class="font-12 text-gray-400"
-              >{{ record.isDir ? "" : formatBytes(+record.info.size) }}</div>
+              <div class="font-12 text-gray-400">
+                {{ record.isDir ? "" : formatBytes(+record.info.size) }}
+              </div>
             </div>
             <div class="w-8 flex justify-end">
               <div
@@ -146,7 +175,11 @@
                 class="bg-gray-300 rounded-full w-2 h-2 mr-1.5"
                 @click="record.checked = true"
               ></div>
-              <van-checkbox v-else checked-color="#404A66" v-model="record.checked" />
+              <van-checkbox
+                v-else
+                checked-color="#404A66"
+                v-model="record.checked"
+              />
             </div>
           </div>
         </template>
@@ -198,7 +231,9 @@
         :style="{
           'margin-top': '-8px',
         }"
-      >{{ `${currentDescriptionModalFileName}` }}</div>
+      >
+        {{ `${currentDescriptionModalFileName}` }}
+      </div>
       <div
         :style="{
           'max-height': 'calc(100vh - 200px)',
@@ -251,6 +286,7 @@ import {
   MSvgIcon,
   MFooterBar,
 } from "../../../components/mobile";
+import { GFileTypeIcon } from "../../../components/general";
 import pdfjsLib from "pdfjs-dist";
 
 type THistoryDirItem = {
@@ -265,7 +301,6 @@ const idMapDescriptionCache = new Map<
 >();
 
 type TableList = Array<TFileItem & { checked: boolean }>;
-
 
 const [route, router] = [useRoute(), useRouter()];
 const userStore = useUserStore();
@@ -434,8 +469,7 @@ let getAndSetTableDataFn = (
               const obj = { ...i };
               // 如果目标文件夹是根目录,注册当前目录的id为root
               if (params.fullName?.length === 0) {
-                historyDir.value[historyDir.value.length - 1].isShared =
-                  false;
+                historyDir.value[historyDir.value.length - 1].isShared = false;
               }
               // 如果是当前目录, 注册fileWindow的路径和描述信息,然后返回null , 下一步把它去除(为了填到表格)
               if (
@@ -450,8 +484,7 @@ let getAndSetTableDataFn = (
                 historyDir.value[historyDir.value.length - 1].isShared =
                   obj.isShared;
                 // 这里注册当前文件夹的 dirId 给 historyDir
-                historyDir.value[historyDir.value.length - 1].dirId =
-                  obj.id;
+                historyDir.value[historyDir.value.length - 1].dirId = obj.id;
                 setCurrentDescriptionModalData(
                   obj.id,
                   lastOfArray(obj.fullName),
@@ -486,16 +519,14 @@ let getAndSetTableDataFn = (
         ).map((i) => ({ ...i, checked: false }));
         if (resultQueryFile.data.driveListFiles.length) {
           // 这里从第二页开始, 因为上面请求了第一页
-          apiLoopQueryFileByDir({ ...params, startPage: 2 }).then(
-            (loopRes) => {
-              tableData.value.push(
-                ...filterDriveListFiles(
-                  loopRes.data?.driveListFiles ?? []
-                ).map((i) => ({ ...i, checked: false }))
-              );
-              isLoadingAllTableData.value = false;
-            }
-          );
+          apiLoopQueryFileByDir({ ...params, startPage: 2 }).then((loopRes) => {
+            tableData.value.push(
+              ...filterDriveListFiles(loopRes.data?.driveListFiles ?? []).map(
+                (i) => ({ ...i, checked: false })
+              )
+            );
+            isLoadingAllTableData.value = false;
+          });
         } else {
           isLoadingAllTableData.value = false;
         }
@@ -607,7 +638,7 @@ const isCanFilePreview = (record: TFileItem) => {
     isDir: f.isDir,
     fileName: lastOfArray(f.fullName),
   });
-  if (FILE_TYPE_MAP.image.includes(e) || e === "pdf") {
+  if (e === "image" || e === "pdf") {
     return true;
   }
   // 其他类型返回false
@@ -654,7 +685,8 @@ const onItemIconClick = async (record: TFileItem) => {
     });
     isShowDescriptionModalFileNameInAddressBar.value = false;
     // 1.2 change fileData
-  } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+    // } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+  } else if (fileType === "image") {
     // 2.是图片
     const { user, space, id: fileId, fullName } = record;
     // 分享的预览用的token 是该分享数据的token
@@ -664,7 +696,8 @@ const onItemIconClick = async (record: TFileItem) => {
     const token = resultPreviewToken.data.drivePreviewToken;
     const tableImgList = tableData.value.filter(
       (item) =>
-        item !== null && FILE_TYPE_MAP.image.includes(item.fileType ?? "")
+        // item !== null && FILE_TYPE_MAP.image.includes(item.fileType ?? "")
+        item !== null && item.fileType === "image"
     );
     const toPreviewList = tableImgList.map((item) => ({
       src: makeFileUrl({

@@ -351,6 +351,8 @@ export default {
     uploadDrawerClearAll: "清空记录",
   },
   fileType: {
+    "18054": "文件夹",
+    "18055": "\u6587\u4ef6",
     "1890": "Android App",
     "16689": "\u5f52\u6863",
     "20238": "Autodesk 3D Studio\u7f51\u683c\u6587\u4ef6\u683c\u5f0f",

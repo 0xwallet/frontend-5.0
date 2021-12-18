@@ -25,7 +25,8 @@
       <template #name="{ record }">
         <!-- <div>55----{{ record }}</div> -->
         <div :title="lastOfArray(record.fullName)">
-          <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" />
+          <!-- <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" /> -->
+          <GFileTypeIcon class="w-5" :type="record.fileType" />
           <span>{{ lastOfArray(record.fullName) }}</span>
         </div>
       </template>
@@ -135,6 +136,7 @@ import {
 } from "@ant-design/icons-vue";
 import { useI18n } from "vue-i18n";
 import { XTableFiles, XFileTypeIcon } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import { formatBytes, lastOfArray } from "../../../hooks";
 import { UploadItem } from "../../../store/transport";
 import { useRouter } from "vue-router";

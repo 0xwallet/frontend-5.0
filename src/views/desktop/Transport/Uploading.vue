@@ -136,7 +136,8 @@
         <template #name="{ record }">
           <!-- <div>55----{{ record }}</div> -->
           <div :title="lastOfArray(record.fullName)">
-            <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" />
+            <!-- <XFileTypeIcon class="w-6 h-6 mr-2" :type="record.fileType" /> -->
+            <GFileTypeIcon class="w-5" :type="record.fileType" />
             <span>{{ lastOfArray(record.fullName) }}</span>
           </div>
         </template>
@@ -187,13 +188,7 @@
                       <i
                         v-for="color in ['#2170FF', '#FF0078', '#FF9F00']"
                         :key="color"
-                        class="
-                          tdHashDot
-                          relative
-                          align-middle
-                          ml-0.5
-                          inline-block
-                        "
+                        class="tdHashDot relative align-middle ml-0.5 inline-block"
                         :style="{
                           'background-color': color,
                           'font-size': 0,
@@ -209,14 +204,7 @@
                   }}</template>
                 </template>
                 <span
-                  class="
-                    inline-block
-                    w-1.5
-                    h-1.5
-                    rounded-full
-                    mr-1
-                    align-middle
-                  "
+                  class="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle"
                   :style="{
                     'background-color': calcRecordStatusColor(record),
                   }"
@@ -350,6 +338,7 @@ import {
   XModalDir,
   XLink,
 } from "../../../components/desktop";
+import { GFileTypeIcon } from "../../../components/general";
 import {
   formatBytes,
   getFileSHA256,

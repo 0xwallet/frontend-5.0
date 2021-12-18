@@ -241,7 +241,8 @@
       <template #name="{ record }">
         <div class="tdName relative truncate">
           <!-- 空白就是blank 文件夹就是folder -->
-          <XFileTypeIcon class="w-6 h-6" :type="record.fileType" />
+          <!-- <XFileTypeIcon class="w-6" :type="record.fileType" /> -->
+          <GFileTypeIcon class="w-5" :type="record.fileType" />
           <a
             v-if="currentRenameId !== record.id"
             href="javascript:;"
@@ -905,6 +906,7 @@ import {
   XMdParser,
   XLink,
 } from "../../../../components/desktop";
+import { GFileTypeIcon } from "../../../../components/general";
 import { useI18n } from "vue-i18n";
 import {
   apiBatchDelete,
@@ -950,7 +952,7 @@ import {
   getFileType,
   lastOfArray,
   makeShareUrlByUri,
-  getCommonFileType,
+  getFileTypeTranslateKey,
   transformRawDescription,
   makeFileUrl,
 } from "../../../../hooks";
@@ -2244,7 +2246,8 @@ const onClickItemName = async (record: TFileItem) => {
       },
     });
     // curFolderId.value = id;
-  } else if (FILE_TYPE_MAP.image.includes(e)) {
+    // } else if (FILE_TYPE_MAP.image.includes(e)) {
+  } else if (e === "image") {
     //  const { user, space, id: fileId, fullName } = item.userFile;
     const resultPreviewToken = await apiGetPreviewToken();
     // console.log("resultPreviewToken", resultPreviewToken);
@@ -2253,7 +2256,8 @@ const onClickItemName = async (record: TFileItem) => {
     // 把列表的所有图片都加进来
     const tableImgList = tableData.value.filter(
       (item): item is TFileItem =>
-        item !== null && FILE_TYPE_MAP.image.includes(item.fileType ?? "")
+        // item !== null && FILE_TYPE_MAP.image.includes(item.fileType ?? "")
+        item !== null && item.fileType === "image"
     );
     const toPreviewList = tableImgList.map((item) => ({
       src: makeFileUrl({
@@ -2457,12 +2461,18 @@ const columns = [
       // 文件夹的排在前面
       if (a.isDir && !b.isDir) return 1;
       if (!a.isDir && b.isDir) return -1;
-      const aCommonType = getCommonFileType(a.fileType ?? "");
-      const bCommonType = getCommonFileType(b.fileType ?? "");
+      const aCommonType = t(
+        getFileTypeTranslateKey(a.isDir, lastOfArray(a.fullName))
+      );
+      const bCommonType = t(
+        getFileTypeTranslateKey(b.isDir, lastOfArray(b.fullName))
+      );
       return aCommonType.localeCompare(bCommonType);
     },
     customRender: ({ record }: { record: TFileItem }) => {
-      return getCommonFileType(record.fileType ?? "");
+      return t(
+        getFileTypeTranslateKey(record.isDir, lastOfArray(record.fullName))
+      );
     },
     width: 100,
   },

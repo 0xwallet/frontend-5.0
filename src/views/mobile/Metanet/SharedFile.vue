@@ -1,7 +1,10 @@
 <template>
-  <div class="w-full h-full" :style="{
-    background: '#404A66',
-  }">
+  <div
+    class="w-full h-full"
+    :style="{
+      background: '#404A66',
+    }"
+  >
     <div v-if="lockPageLoading" class="w-full h-full relative">
       <div class="absolute inset-0 bg-white opacity-10"></div>
       <div class="absolute top-16 inset-x-0 text-center pt-28">
@@ -16,7 +19,9 @@
             <MSvgIcon icon="logoWhiteBorder" :size="22.1" />
           </div>
         </div>
-        <div class="flex-1 text-center flex items-center justify-center font-14 relative">
+        <div
+          class="flex-1 text-center flex items-center justify-center font-14 relative"
+        >
           📅
           <span class="mr-1">{{ insertedAtText }}</span>
           ⏳
@@ -40,7 +45,9 @@
               background:
                 'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
             }"
-          >{{ myInfo.userName[0].toUpperCase() }}</div>
+          >
+            {{ myInfo.userName[0].toUpperCase() }}
+          </div>
           <van-icon v-else color="#fff" size="20px" name="user-circle-o" />
         </div>
         <!-- <div @click="onShowRightPopup">
@@ -78,7 +85,11 @@
               left: 0,
             }"
           >
-            <van-icon v-if="isCurrentShareCollected" name="star" color="orange" />
+            <van-icon
+              v-if="isCurrentShareCollected"
+              name="star"
+              color="orange"
+            />
             <van-icon color="#fff" v-else name="star-o" />
           </div>
           <div
@@ -104,8 +115,12 @@
               background:
                 'linear-gradient(45deg, rgb(0, 172, 193), rgb(0, 213, 226))',
             }"
-          >{{ userPreview.username[0].toUpperCase() }}</div>
-          <div class="text-center font-semibold font-20 mx-3 mb-2">{{ userPreview.username }}</div>
+          >
+            {{ userPreview.username[0].toUpperCase() }}
+          </div>
+          <div class="text-center font-semibold font-20 mx-3 mb-2">
+            {{ userPreview.username }}
+          </div>
           <div class="text-gray-400 text-center"></div>
           <template v-if="!isCodeResolved">
             <div class="px-6 mb-4">
@@ -132,7 +147,8 @@
                 :loading="isLoadingConfirmCode"
                 :disabled="inputCode.length === 0"
                 @click="onConfirmCode"
-              >提取文件</van-button>
+                >提取文件</van-button
+              >
             </div>
           </template>
           <template v-else>
@@ -168,8 +184,14 @@
                           'text-gray-400': idx === historyDir.length - 1,
                         }"
                         @click="onUpperLevel(idx)"
-                      >{{ dir.dirName }}</div>
-                      <span v-if="idx !== historyDir.length - 1" class="px-2 text-gray-400">></span>
+                      >
+                        {{ dir.dirName }}
+                      </div>
+                      <span
+                        v-if="idx !== historyDir.length - 1"
+                        class="px-2 text-gray-400"
+                        >></span
+                      >
                     </template>
                     <template v-if="isShowDescriptionModalFileNameInAddressBar">
                       <div class="historyDirItem">
@@ -200,7 +222,12 @@
                   @click="onShowDescriptionPopup"
                 />
                 <!-- 登录后显示评论按钮 -->
-                <van-icon v-if="isUserLoggedIn" color="#404A66" size="16px" name="edit" />
+                <van-icon
+                  v-if="isUserLoggedIn"
+                  color="#404A66"
+                  size="16px"
+                  name="edit"
+                />
               </div>
             </div>
 
@@ -213,7 +240,11 @@
                 height: 'calc(100% - 80px)',
               }"
             >
-              <van-loading v-if="isLoadingListData" class="absolute top-6 listLoading" size="36px" />
+              <van-loading
+                v-if="isLoadingListData"
+                class="absolute top-6 listLoading"
+                size="36px"
+              />
               <template v-if="fileData.length === 0">
                 <!-- <div class="pt-4 pl-4 text-gray-400 text-center">空文件夹</div> -->
                 <van-empty description="空文件夹" />
@@ -225,16 +256,25 @@
                   :key="record.id"
                 >
                   <div class="mr-2 relative" @click="onItemIconClick(record)">
-                    <MFileTypeIcon class="w-9 h-9" :type="record.userFile?.fileType" />
+                    <!-- <MFileTypeIcon class="w-9 h-9" :type="record.userFile?.fileType" /> -->
+                    <GFileTypeIcon
+                      class="w-9"
+                      :type="record.userFile?.fileType"
+                    />
                     <div
                       v-if="isCanFilePreview(record)"
                       class="absolute text-white bottom-0 font-12 bg-gray-400 opacity-60 left-0 right-0 text-center"
-                    >预览</div>
+                    >
+                      预览
+                    </div>
                   </div>
-                  <div class="flex-1 text-overflow-3 mr-2" @click="onItemNameClick(record)">
-                    <div
-                      class="font-medium text-overflow-2"
-                    >{{ lastOfArray(record.userFile?.fullName??[]) }}</div>
+                  <div
+                    class="flex-1 text-overflow-3 mr-2"
+                    @click="onItemNameClick(record)"
+                  >
+                    <div class="font-medium text-overflow-2">
+                      {{ lastOfArray(record.userFile?.fullName ?? []) }}
+                    </div>
                     <div class="font-12 text-gray-400 text-overflow-2">
                       <template v-if="record.userFile?.info.description">
                         <template
@@ -254,7 +294,8 @@
                               :key="tag"
                               :color="TAG_COLOR_LIST[idx]"
                               class="mr-1"
-                            >{{ tag }}</van-tag>
+                              >{{ tag }}</van-tag
+                            >
                           </template>
                         </template>
                       </template>
@@ -276,7 +317,11 @@
                       class="bg-gray-300 rounded-full w-2 h-2 mr-1.5"
                       @click="record.checked = true"
                     ></div>
-                    <van-checkbox v-else checked-color="#404A66" v-model="record.checked" />
+                    <van-checkbox
+                      v-else
+                      checked-color="#404A66"
+                      v-model="record.checked"
+                    />
                   </div>
                 </div>
               </template>
@@ -334,13 +379,19 @@
               @click="saveToMetanetModalPreAction"
               :loading="isLoadingDirData"
               color="#404A66"
-            >保存到网盘</van-button>
+              >保存到网盘</van-button
+            >
           </MFooterBar>
         </transition>
       </template>
     </div>
     <!-- 保存到目标文件夹弹窗 -->
-    <van-popup v-if="isValid" v-model:show="popupState.isShow" round position="bottom">
+    <van-popup
+      v-if="isValid"
+      v-model:show="popupState.isShow"
+      round
+      position="bottom"
+    >
       <van-cascader
         title="请选择目标文件夹"
         :field-names="{
@@ -371,7 +422,9 @@
         :style="{
           'margin-top': '-8px',
         }"
-      >{{ `${currentDescriptionModalFileName}` }}</div>
+      >
+        {{ `${currentDescriptionModalFileName}` }}
+      </div>
       <div
         :style="{
           'max-height': 'calc(100vh - 200px)',
@@ -424,14 +477,23 @@
       </div>
     </van-popup>-->
     <!-- 底部预览pdf弹窗 -->
-    <van-popup v-model:show="isShowBottomPopup" position="bottom" :style="{ height: '100%' }">
+    <van-popup
+      v-model:show="isShowBottomPopup"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
       <div class="h-14 flex items-center justify-between van-hairline--bottom">
-        <div class="font-16 font-semibold pl-4">{{ currentPreviewPdfName }}</div>
+        <div class="font-16 font-semibold pl-4">
+          {{ currentPreviewPdfName }}
+        </div>
         <div @click="onCloseBottomPopup" class="p-4">
           <van-icon name="cross" size="22px" />
         </div>
       </div>
-      <div v-if="isLoadingPdf" class="absolute top-16 inset-x-0 text-center pt-28">
+      <div
+        v-if="isLoadingPdf"
+        class="absolute top-16 inset-x-0 text-center pt-28"
+      >
         <van-loading size="40" color="#0094ff" vertical>加载中...</van-loading>
       </div>
       <div
@@ -493,6 +555,7 @@ import {
   MFooterBar,
   MQrCode,
 } from "../../../components/mobile";
+import { GFileTypeIcon } from "../../../components/general";
 import { useBaseStore, useUserStore } from "../../../store";
 import { FILE_TYPE_MAP, TAG_COLOR_LIST } from "../../../constants";
 import pdfjsLib from "pdfjs-dist";
@@ -545,7 +608,7 @@ const isCanFilePreview = (record: ListItem) => {
     isDir: f.isDir,
     fileName: lastOfArray(f.fullName),
   });
-  if (FILE_TYPE_MAP.image.includes(e) || e === "pdf") {
+  if (e === "image" || e === "pdf") {
     return true;
   }
   // 其他类型返回false
@@ -687,13 +750,7 @@ const onDownload = () => {
   // console.log("onDownload");
   selectedRows.value.forEach((record) => {
     if (!record.userFile) return;
-    const {
-      user,
-      fullName,
-      space,
-      id: fileId,
-      updatedAt,
-    } = record.userFile;
+    const { user, fullName, space, id: fileId, updatedAt } = record.userFile;
     const downloadToken = record.token;
     // apiGetPreviewToken().then((resultPreviewToken) => {
     // if (resultPreviewToken.err) return;
@@ -805,13 +862,12 @@ const getSetSaveToMetanetModalTableData = () => {
         // console.log("目录res", item.dirId, item.dirName, resItem);
         if (resultQueryFileItem.err) return item;
         // 排除 非目录文件/ 根目录/ 自身/ 父目录(上一级)
-        const afterFilterList =
-          resultQueryFileItem.data.driveListFiles.filter(
-            (i): i is TFileItem =>
-              i !== null &&
-              i.isDir &&
-              !["root", item.dirId, parentId].includes(i.id)
-          );
+        const afterFilterList = resultQueryFileItem.data.driveListFiles.filter(
+          (i): i is TFileItem =>
+            i !== null &&
+            i.isDir &&
+            !["root", item.dirId, parentId].includes(i.id)
+        );
         // console.log("afterFilterList", afterFilterList);
         if (!afterFilterList.length) return item;
         item.children = await Promise.all(
@@ -971,8 +1027,8 @@ const getSetFileData = async () => {
     uri: currentUri.value,
     ...(!isCodeResolved.value || inputCode.value
       ? {
-        code: inputCode.value,
-      }
+          code: inputCode.value,
+        }
       : {}),
   });
   isLoadingListData.value = false;
@@ -1170,7 +1226,8 @@ const onItemIconClick = async (record: ListItem) => {
     getSetDriveList(record.userFile.id);
     isShowDescriptionModalFileNameInAddressBar.value = false;
     // 1.2 change fileData
-  } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+    // } else if (FILE_TYPE_MAP.image.includes(fileType)) {
+  } else if (fileType === "image") {
     // 2.是图片
     const { user, space, id: fileId, fullName } = record.userFile;
     // 分享的预览用的token 是该分享数据的token
@@ -1178,7 +1235,8 @@ const onItemIconClick = async (record: ListItem) => {
     const tableImgList = fileData.value.filter(
       (item) =>
         item.userFile !== null &&
-        FILE_TYPE_MAP.image.includes(item.userFile.fileType ?? "")
+        // FILE_TYPE_MAP.image.includes(item.userFile.fileType ?? "")
+        item.userFile.fileType === "image"
     );
     const toPreviewList = tableImgList.map((item) => ({
       src: makeFileUrl({
@@ -1418,9 +1476,9 @@ onBeforeRouteLeave((to, from) => {
 
 const onLikeDonate = () => {
   popupQrCodeVisible.value = false;
-}
-const popupQrCodeVisible = ref(true)
-const popupQrCodeAddr = 'https://www.baidu.com/'
+};
+const popupQrCodeVisible = ref(true);
+const popupQrCodeAddr = "https://www.baidu.com/";
 </script>
 
 <style lang="less" scoped>

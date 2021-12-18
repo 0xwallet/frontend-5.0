@@ -19,7 +19,8 @@
           'p-5': detail.type === 'folder',
         }"
       >
-        <XFileTypeIcon :type="detail.type" />
+        <!-- <XFileTypeIcon :type="detail.type" /> -->
+        <GFileTypeIcon :type="detail.type" />
       </div>
       <div class="w-2/4">
         <template v-for="(value, key) in detail">
@@ -46,6 +47,7 @@
 
 <script setup lang="ts">
 import { XFileTypeIcon } from "../../../../components/desktop";
+import { GFileTypeIcon } from "../../../../components/general";
 
 export type TDetailInfo = {
   [key: string]: any;

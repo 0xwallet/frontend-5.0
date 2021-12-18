@@ -7,9 +7,10 @@ import {
 } from "../constants";
 const { streamSaver } = window;
 const { saveAs } = window;
-export { browserDetect } from "./browser-detect";
+export { browserDetect } from "./browserDetect";
 import duration from "dayjs/esm/plugin/duration";
 import dayjs from "dayjs/esm";
+import { ext, getFileextByFileName, getMeagaFiletype } from "./fileTypes";
 dayjs.extend(duration);
 /** 延迟函数,默认1000毫秒(1秒) */
 export const useDelay = (t = 1000): Promise<void> => {
@@ -90,27 +91,37 @@ export const getFileType = (obj: {
   fileName: string;
 }): string => {
   if (obj.isDir) return "folder";
-  const arr = obj.fileName.split(".");
-  if (arr.length <= 1) return "file";
-  return arr.pop()?.toLowerCase() || "file";
+  // const arr = obj.fileName.split(".");
+  // if (arr.length <= 1) return "file";
+  // return arr.pop()?.toLowerCase() || "file";
+  // console.log("getMeagaFiletype(obj.fileName)", getMeagaFiletype(obj.fileName));
+  return getMeagaFiletype(obj.fileName) as string;
 };
 
 // TODO 英语
-/** 获取文件通用的显示类型 */
-export const getCommonFileType = (e: string) => {
-  if (!e || e === "file") return "文件";
-  if (/folder$/g.test(e)) return "文件夹";
-  if (/\docx?$/g.test(e)) return "WORD文档";
-  if (/xlsx?$/g.test(e)) return "EXCEL表格";
-  if (/pdf$/g.test(e)) return "PDF文件";
-  if (/ppt$/g.test(e)) return "PPT幻灯片";
-  if (/psd$/g.test(e)) return "PSD文档";
-  if (FILE_TYPE_MAP.image.includes(e)) return "图像";
-  if (FILE_TYPE_MAP.text.includes(e)) return "文本";
-  if (FILE_TYPE_MAP.archive.includes(e)) return "压缩文件";
-  if (FILE_TYPE_MAP.audio.includes(e)) return "音频";
-  if (FILE_TYPE_MAP.video.includes(e)) return "视频";
-  else return "文件";
+/** 获取文件的显示类型的国际化key */
+export const getFileTypeTranslateKey = (isDir: boolean, fileName: string) => {
+  const prefix = "fileType.";
+  if (isDir) return prefix + "18054";
+  const fileExt = getFileextByFileName(fileName);
+  if (ext[fileExt]) {
+    return prefix + ext[fileExt][1];
+  } else {
+    return prefix + "18055";
+  }
+  // if (!e || e === "file") return "文件";
+  // if (/folder$/g.test(e)) return "文件夹";
+  // if (/\docx?$/g.test(e)) return "WORD文档";
+  // if (/xlsx?$/g.test(e)) return "EXCEL表格";
+  // if (/pdf$/g.test(e)) return "PDF文件";
+  // if (/ppt$/g.test(e)) return "PPT幻灯片";
+  // if (/psd$/g.test(e)) return "PSD文档";
+  // if (FILE_TYPE_MAP.image.includes(e)) return "图像";
+  // if (FILE_TYPE_MAP.text.includes(e)) return "文本";
+  // if (FILE_TYPE_MAP.archive.includes(e)) return "压缩文件";
+  // if (FILE_TYPE_MAP.audio.includes(e)) return "音频";
+  // if (FILE_TYPE_MAP.video.includes(e)) return "视频";
+  // else return "文件";
 };
 
 /** 根据后端返回的fullName(未处理过的) 计算出所在位置 */

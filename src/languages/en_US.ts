@@ -358,6 +358,8 @@ export default {
     uploadDrawerClearAll: "clear list",
   },
   fileType: {
+    "18054": "Folder",
+    "18055": "File",
     "1890": "Android App",
     "16689": "Archive",
     "20238": "Autodesk 3D Studio mesh-file format",
