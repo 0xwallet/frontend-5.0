@@ -361,7 +361,7 @@ const onClickAddAsset = () => {
   modalAddAssetVisible.value = true;
 };
 const getCryptosImageUrl = (item: "bsv" | "nkn") => {
-  return new URL(`../../../assets/images/cryptos/${item}.png`, import.meta.url)
+  return new URL(`../../../../assets/images/cryptos/${item}.png`, import.meta.url)
     .href;
 };
 const onConfirmModalAssetStage = (s: ModalAssetStage) => {
