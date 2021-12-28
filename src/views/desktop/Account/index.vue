@@ -224,7 +224,7 @@
           width: 'calc(((100% - 16px)/3)*2)',
         }"
       >
-        <div
+        <!-- <div
           class="h-14 px-6 flex items-center justify-between"
           :style="{
             'border-bottom': '1px solid #eff2f9',
@@ -234,8 +234,11 @@
           <a-button @click="onClickAddAsset">
             <PlusOutlined class="align-middle" />添加
           </a-button>
-        </div>
-        <div class="p-6 flex items-center justify-between">
+        </div> -->
+        <Wallet/>
+        <!-- <CWallet /> -->
+        
+        <!-- <div class="p-6 flex items-center justify-between">
           <div
             class="rounded p-4"
             :style="{
@@ -248,7 +251,7 @@
             <div class="mb-4">{{ asset.name }}</div>
             <div>{{ asset.card }}</div>
           </div>
-        </div>
+        </div> -->
       </section>
     </div>
     <!-- 二维码弹窗 -->
@@ -395,6 +398,7 @@ import { apiGetBsvExchangeRate } from "../../../apollo/api";
 import { XStatusDot, XQrCode } from "../../../components/desktop";
 import { useClipboard } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
+import Wallet from "./components/Wallet.vue";
 
 type ModalAssetStage = 1 | 2 | 3;
 /** 1是数字货币,2是法定货币 */
