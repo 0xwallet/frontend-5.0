@@ -37,7 +37,7 @@
         </div>
         <div class="mb-2 font-12 font-bold">{{ $t("pageLogin.verification") }}</div>
         <div class="mb-4">
-          <van-field v-model="formRegister.email">
+          <van-field v-model="formRegister.code">
             <template #button>
               <!-- <van-button size="small" type="primary">发送</van-button> -->
               <div class="sendBtn font-12 font-semibold text-white" @click="onSendEmailCode">

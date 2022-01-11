@@ -136,7 +136,7 @@
           </a>
         </a-tooltip>
       </div>
-      <div class="relative h-full" :style="{ width: '178px' }">
+      <div class="relative h-full" :style="{ width: '210px' }">
         <transition name="no-mode-fade">
           <!-- different key forceUdpate -->
           <div key="1" class="absolute" v-if="selectedRows.length === 0">
@@ -1885,6 +1885,7 @@ const onCreateFolderModalConfirm = async () => {
         });
         if (resultMakeDirByPath.err) {
           message.warning(resultMakeDirByPath.err.message);
+          createFolderModalConfirmLoading.value = false;
           return;
         }
         onFinishedAndCloseModal();
