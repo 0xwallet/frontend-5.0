@@ -4,7 +4,7 @@ import { message } from "ant-design-vue";
 import { PRODUCT_NAME } from "../../constants/index";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useUserStore } from "../../store";
-// vue 文件
+// vue 文件备注
 import Login from "../../views/desktop/Login/index.vue";
 import Register from "../../views/desktop/Register/index.vue";
 import ResetPwd from "../../views/desktop/ResetPwd/index.vue";
